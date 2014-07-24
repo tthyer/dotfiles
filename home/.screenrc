@@ -1,0 +1,57 @@
+# Set default encoding to utf-8
+setenv LC_CTYPE en_US.UTF-8
+defutf8 on
+
+# Save everything. (Think 'defscrollback unlimited'.)
+defscrollback 32768
+
+# 'C-a h' appends to hardcopy.n, where n is the number of the current
+# screen window.
+hardcopy_append on
+
+# Show screen messages on hardstatus line (last terminal line).
+hardstatus on
+
+# always : always show hardstatus
+# lastline : reserve the last terminal line for hardstatus
+hardstatus alwayslastline
+
+# Format hardstatus when not displaying other messages.
+# See the STRING ESCAPES chapter in the screen man page:
+#   man screen<CR>/^STRING ESCAPES<CR>
+hardstatus string '%{= dc}[%02n %t] %H %=%l | %{c}%Y-%m-%d %D %0c:%0s'
+
+caption always
+caption string '%?%F%{bk}%:%{Kk}%?%-w%?%F%{yk}%:%{gk}%?%n %t%{-}%+w'
+
+msgminwait 1
+msgwait 5
+# Make each window a login (i.e., source ~/.bash_profile), by prefixing
+# the shell command with a hyphen.
+shell -/bin/bash
+startup_message off
+vbell off
+
+term xterm-256color
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+# erase background with current bg color
+defbce "on"
+
+
+#chdir
+#screen -t 'name'
+#stuff commandline
+#chdir ~/dir
+#screen -t 'name'
+#select 0
+
+# Reduce the likelihood of accidentally freezing the terminal with C-a s
+# instead of C-a S.
+bind s split
+# Avoid accidentally locking the terminal.
+bind x
+bind ^X
