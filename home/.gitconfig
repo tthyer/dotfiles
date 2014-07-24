@@ -1,9 +1,10 @@
 [user]
 	name = Tess Thyer
-	email = tess@aro.com
+	email = tthyer@zulily.com
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [core]
-	excludesfile = /Users/tess/.gitignore_global
+	excludesfile = /Users/tthyer/.gitignore_global
 [push]
 	default = simple
+
