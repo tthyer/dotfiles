@@ -1,10 +1,21 @@
 [user]
-	name = Tess Thyer
-	email = tthyer@zulily.com
+    name = T. Thyer
+    email = tmthyer@gmail.com
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    ls-branches-local = for-each-ref --sort=-committerdate refs/heads/
+    ls-branches-remote = for-each-ref --sort=-committerdate refs/heads/
+    branch-name = "!git rev-parse --abbrev-ref HEAD"
+    publish = "!git push -u origin $(git branch-name)"
+    common-ancestor = "!git merge-base master $(git branch-name)"
+    diff-ancestor = "!git diff $(git common-ancestor)..HEAD"
+    head = "!git lg | head -n 5"
+    alias = "config --get-regexp alias"
 [core]
-	excludesfile = /Users/tthyer/.gitignore_global
+    excludesfile = /Users/tthyer/.gitignore_global
 [push]
-	default = simple
-
+    default = simple
+[grep]
+    lineNumber = true
+[fetch]
+  prune = true
