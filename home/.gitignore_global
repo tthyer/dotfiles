@@ -4,4 +4,6 @@
 .settings/
 bin/
 target/
-
+.idea/
+*.iml
+venv
