@@ -31,10 +31,6 @@ test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\0
 ## ENVIRONMENT VARIABLES
 export JAVA_HOME=$(/usr/libexec/java_home)
 export SPARK_HOME=/spark-2.3.2-bin-hadoop2.7
-export PROJECT="${HOME}/bitbucket/yotascale-dev9"
-
-# export CLOUDSDK_COMPUTE_ZONE=us-west1
-# export CLOUDSDK_COMPUTE_REGION=us-west1-b
 
 ## PATH MANIPULATION
 export PATH="/usr/local/opt/openssl/bin:$PATH"
@@ -91,9 +87,6 @@ copyFromOpsPod() {
 copyToOpsPod() {
   kc cp $1 default/$(opsPodName):$2
 }
-
-alias ssh-coursera='ssh -i ~/.ssh/aws-tessthyer.pem ubuntu@ec2-34-216-251-92.us-west-2.compute.amazonaws.com'
-alias tunnel-coursera='ssh -i ~/.ssh/aws-tessthyer.pem -L 8000:localhost:8000 ubuntu@34.216.251.92'
 
 ## KAFKA
 alias startKafka="zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties & kafka-server-start /usr/local/etc/kafka/server.properties"
