@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ln -sv "home/.bash_profile" ~
-ln -sv "home/.vimrc" ~
-ln -sv "home/.gitconfig" ~
-ln -sv "home/.gitignore_global" ~
+ln -sv ".bash_profile" ~
+ln -sv ".vimrc" ~
+ln -sv ".gitconfig" ~
+ln -sv ".gitignore_global" ~
