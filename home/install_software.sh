@@ -24,6 +24,10 @@ echo "Installing Apache Spark..."
 brew install apache-spark
 echo "Done. Installed $(head -n 1 $SPARK_HOME/RELEASE).\n"
 
+echo "Installing Sublime..."
+brew cask install sublime-text
+echo "Done.\n"
+
 # echo "Would you liked to install awscli?"
 # select yn in "Yes" "No"; do
 #     case $yn in
