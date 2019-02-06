@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# TODO capture filename for these subsequent steps:
+# - ssh-add 
+# - editing the config
+# - copying to github
 set -e
 
 echo -n "Enter an email address to set up your ssh key and press [ENTER]:"
