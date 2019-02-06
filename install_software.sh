@@ -43,7 +43,7 @@ fi
 
 # Things I like to install through Homebrew
 # apache-spark is available but need to control the version
-brew_things=( scala@2.11 sbt tree gnu-sed bash-completion python maven jq parquet-tools )
+brew_things=( scala@2.11 sbt tree gnu-sed bash-completion python maven jq parquet-tools awscli )
 for i in "${brew_things[@]}"
 do
     if [[ -z "$(brew list | grep $i)" ]]; then
@@ -88,10 +88,11 @@ else
     echo "Sublime is already installed, skipping."    
 fi
 
-if [[ -z "$(brew list | grep awscli)" ]]; then 
-    echo "Installing awscli through Homebrew..."
-    brew install awscli
+# INTELLIJ
+if [[ -z "$(brew list | grep intellij-idea-ce)" && ! -d /Applications/IntelliJ\ IDEA\ CE.app/ ]]; then
+    echo "Installing Intellij CE..."
+    brew cask install intellij-idea-ce
     echo 'Done.\n'
 else
-    echo "awscli is already installed, skipping."
+    echo "Intellij CE is already installed, skipping."
 fi
