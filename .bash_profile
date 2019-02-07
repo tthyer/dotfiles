@@ -130,4 +130,4 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 # The next line enables shell command completion for gcloud.
 # if [ -f '/Users/tessthyer/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/tessthyer/google-cloud-sdk/completion.bash.inc'; fi
 
-complete -C '/usr/local/bin/aws_completer' aws
+#complete -C '/usr/local/bin/aws_completer' aws
