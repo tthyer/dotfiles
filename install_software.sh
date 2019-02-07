@@ -80,19 +80,47 @@ else
 fi
 
 # SUBLIME
-if [[ -z "$(brew list | grep sublime-text)" && ! -d /Applications/Sublime\ Text.app/ ]]; then
-    echo "Installing Sublime..."
-    brew cask install sublime-text
-    echo 'Done.\n'
-else
-    echo "Sublime is already installed, skipping."    
-fi
+# if [[ -z "$(brew list | grep sublime-text)" && ! -d /Applications/Sublime\ Text.app/ ]]; then
+#     echo "Installing Sublime..."
+#     brew cask install sublime-text
+#     echo 'Done.\n'
+# else
+#     echo "Sublime is already installed, skipping."    
+# fi
 
 # INTELLIJ
-if [[ -z "$(brew list | grep intellij-idea-ce)" && ! -d /Applications/IntelliJ\ IDEA\ CE.app/ ]]; then
-    echo "Installing Intellij CE..."
-    brew cask install intellij-idea-ce
-    echo 'Done.\n'
-else
-    echo "Intellij CE is already installed, skipping."
-fi
+# if [[ -z "$(brew list | grep intellij-idea-ce)" && ! -d /Applications/IntelliJ\ IDEA\ CE.app/ ]]; then
+#     echo "Installing Intellij CE..."
+#     brew cask install intellij-idea-ce
+#     echo 'Done.\n'
+# else
+#     echo "Intellij CE is already installed, skipping."
+# fi
+
+# Other things to install: Chrome, LastPass, Dropbox
+
+
+cask_things=( sublime-text intellig-idea-ce google-chrome )
+for i in "${cask_things[@]}"
+do
+    if [[ -z "$(brew list | grep $i)" ]]; then
+        echo "Installing $i through Homebrew Cask..."
+        brew cask install $i
+        echo 'Done.\n'
+    else
+        echo "$i is already installed, skipping."
+    fi
+done
+
+other_things_todo=(
+    "Log into Chrome"
+    "Install LastPass extension in Chrome"
+    "Paste license into Sublime"
+    )
+
+echo "Other things to do:"
+for i in "${other_things_todo[@]}"
+do
+    echo $i
+done
+
