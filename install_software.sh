@@ -122,3 +122,7 @@ do
     echo $i
 done
 
+# Set bottom left hot corner to sleep display
+defaults write com.apple.dock wvous-bl-corner -int 10
+defaults write com.apple.dock wvous-bl-modifier -int 0
+killall Dock
