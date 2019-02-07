@@ -1,6 +1,6 @@
 [user]
     name = T. Thyer
-	email = tess.thyer@nortal.com
+	email = tess.thyer@gmail.com
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ls-branches-local = for-each-ref --sort=-committerdate refs/heads/
