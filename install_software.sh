@@ -43,7 +43,7 @@ fi
 
 # Things I like to install through Homebrew
 # apache-spark is available but need to control the version
-brew_things=( scala@2.11 sbt tree gnu-sed bash-completion python maven jq parquet-tools awscli )
+brew_things=( scala@2.11 sbt tree wget gnu-sed bash-completion python maven jq parquet-tools awscli )
 for i in "${brew_things[@]}"
 do
     if [[ -z "$(brew list | grep $i)" ]]; then
@@ -97,9 +97,6 @@ fi
 #     echo "Intellij CE is already installed, skipping."
 # fi
 
-# Other things to install: Chrome, LastPass, Dropbox
-
-
 cask_things=( sublime-text intellig-idea-ce google-chrome )
 for i in "${cask_things[@]}"
 do
@@ -116,6 +113,7 @@ other_things_todo=(
     "Log into Chrome"
     "Install LastPass extension in Chrome"
     "Paste license into Sublime"
+    "Sync Sublime Settings"
     )
 
 echo "Other things to do:"
