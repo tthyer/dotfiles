@@ -1,6 +1,6 @@
 [user]
     name = T. Thyer
-    email = tess.thyer@gmail.com
+	email = tess.thyer@nortal.com
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ls-branches-local = for-each-ref --sort=-committerdate refs/heads/
@@ -12,7 +12,7 @@
     head = "!git lg | head -n 5"
     alias = "config --get-regexp alias"
 [core]
-    excludesfile = /Users/tthyer/.gitignore_global
+    excludesfile = ~/.gitignore_global
 [push]
     default = simple
 [grep]
