@@ -69,14 +69,6 @@ do
     fi
 done
 
-# SPARK
-# if [[ -z "$(brew list | grep spark)" ]]; then
-#     echo "Installing Apache Spark..."
-#     brew install apache-spark
-#     echo 'Done. Installed $(head -n 1 $SPARK_HOME/RELEASE).\n'
-# else
-#     echo "Spark is already installed, skipping."    
-# fi
 if [[ ! -d /spark-2.3.2-bin-hadoop2.7 ]]; then
     echo "Installing Apache Spark 2.3.2..."
     # download with options junk-session-cookies, insecure, redirect to new location
@@ -112,3 +104,12 @@ defaults write com.apple.dock wvous-bl-corner -int 10
 defaults write com.apple.dock wvous-bl-modifier -int 0
 killall Dock
 echo "Done."
+
+# Package control for Sublime
+if [[ ! -f "$HOME/Library/Application Support/Sublime Text 3/Installed Packages/Package Control.sublime-package" ]]; then
+    echo "Installing package control for Sublime. This will take effect when Sublime restarts."
+    wget https://packagecontrol.io/Package%20Control.sublime-package --directory-prefix="$HOME/Library/Application Support/Sublime Text 3/Installed Packages/"
+    echo "Done."
+else
+    echo "Package control for Sublime has already been installed."
+fi
