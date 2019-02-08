@@ -2,6 +2,14 @@
 
 set -e
 
+# Fix this check
+#if [[ -z "$(xcode-select --install 2>&1 | grep installed)" ]]; then
+#  echo "Xcode command line tools already installed, skipping."
+#else
+#  echo "Installing xcode command line tools"
+#   xcode-select --install
+#fi
+
 # ITERM
 if [[ ! -d "/Applications/iTerm.app" ]]; then
     echo "Installing iTerm"
@@ -9,7 +17,7 @@ if [[ ! -d "/Applications/iTerm.app" ]]; then
     unzip "iterm.zip"
     sudo mv "iTerm.app" "/Applications"
     rm "iterm.zip"
-    echo 'Done.\n'
+    echo "Done."
 else
     echo "iTerm is already installed, skipping."
 fi
@@ -18,28 +26,34 @@ fi
 if [[ -z "$(which brew)" ]]; then
     echo "Installing Homebrew..."
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    echo 'Done.\n'
+    echo "Done."
 else
     echo "Homebrew is already installed, skipping."
 fi
 
-# JDK
-if [[ -z "$(ls /Library/Java/JavaVirtualMachines/ | grep jdk)" ]]; then
-    echo "Installing JDK 8..."
-    # download with options junk-session-cookies, insecure, redirect to new location, header specified
-    curl --j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" \
-        -o jdk-8u201-macosx-x64.dmg \
-        https://download.oracle.com/otn-pub/java/jdk/8u201-b09/jdk-8u201-macosx-x64.dmg
-    # mount
-    hdiutil attach jdk-8u201-macosx-x64.dmg
-    # install
-    sudo installer -pkg /Volumes/Java\ 8\ Update\ 201/Java\ 8\ Update\ 201.app/Contents/Resources/JavaAppletPlugin.pkg -target /
-    # cleanup
-    diskutil umount /Volumes/Java\ 8\ Update\ 201
-    rm jdk-8u201-macosx-x64.dmg
-else
-    echo "JDK 8 is already installed, skipping."
-fi
+required_brew_dirs=( /usr/local/include /usr/local/opt /usr/local/sbin/ /usr/local/Cellar /usr/local/Frameworks)
+for i in "${required_brew_dirs[@]}"
+do
+    if [[ ! -d $i ]]; then
+        echo "Making required brew directory $i"
+        sudo mkdir -p $i
+        sudo chown -R $(whoami) $i
+    else
+        echo "Required directory $i already exists"
+    fi
+done
+
+cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz ) #google-chrome can be installed this way, too
+for i in "${cask_things[@]}"
+do
+    if [[ -z "$(brew cask list | grep $i)" ]]; then
+        echo "Installing $i through Homebrew Cask..."
+        brew cask install $i
+        echo "Done."
+    else
+        echo "$i is already installed, skipping."
+    fi
+done
 
 # Things I like to install through Homebrew
 # apache-spark is available but need to control the version
@@ -49,7 +63,7 @@ do
     if [[ -z "$(brew list | grep $i)" ]]; then
         echo "Installing $i through Homebrew..."
         brew install $i
-        echo 'Done.\n'
+        echo "Done."
     else
         echo "$i is already installed, skipping."
     fi
@@ -63,7 +77,7 @@ done
 # else
 #     echo "Spark is already installed, skipping."    
 # fi
-if [[ -z "$(which spark-submit)" ]]; then
+if [[ ! -d /spark-2.3.2-bin-hadoop2.7 ]]; then
     echo "Installing Apache Spark 2.3.2..."
     # download with options junk-session-cookies, insecure, redirect to new location
     curl -j -k -L -o spark-2.3.2-bin-hadoop2.7.tgz https://www-us.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
@@ -79,36 +93,6 @@ else
     echo "Spark is already installed, skipping."
 fi
 
-# SUBLIME
-# if [[ -z "$(brew list | grep sublime-text)" && ! -d /Applications/Sublime\ Text.app/ ]]; then
-#     echo "Installing Sublime..."
-#     brew cask install sublime-text
-#     echo 'Done.\n'
-# else
-#     echo "Sublime is already installed, skipping."    
-# fi
-
-# INTELLIJ
-# if [[ -z "$(brew list | grep intellij-idea-ce)" && ! -d /Applications/IntelliJ\ IDEA\ CE.app/ ]]; then
-#     echo "Installing Intellij CE..."
-#     brew cask install intellij-idea-ce
-#     echo 'Done.\n'
-# else
-#     echo "Intellij CE is already installed, skipping."
-# fi
-
-cask_things=( sublime-text intellig-idea-ce google-chrome )
-for i in "${cask_things[@]}"
-do
-    if [[ -z "$(brew list | grep $i)" ]]; then
-        echo "Installing $i through Homebrew Cask..."
-        brew cask install $i
-        echo 'Done.\n'
-    else
-        echo "$i is already installed, skipping."
-    fi
-done
-
 other_things_todo=(
     "Log into Chrome"
     "Install LastPass extension in Chrome"
@@ -123,6 +107,8 @@ do
 done
 
 # Set bottom left hot corner to sleep display
+echo "Setting hot corner..."
 defaults write com.apple.dock wvous-bl-corner -int 10
 defaults write com.apple.dock wvous-bl-modifier -int 0
 killall Dock
+echo "Done."
