@@ -113,3 +113,13 @@ if [[ ! -f "$HOME/Library/Application Support/Sublime Text 3/Installed Packages/
 else
     echo "Package control for Sublime has already been installed."
 fi
+
+sublime_things_to_do=(
+    "Pretty JSON: through Package Control search for package 'Pretty JSON'"
+    )
+echo "Things to install for Sublime:"
+for i in "${sublime_things_to_do[@]}"
+do
+    echo $i
+done
+
