@@ -16,6 +16,8 @@
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
+	<key>NSFontPanelAttributes</key>
+	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/Code/github/tthyer/dotfiles</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
@@ -51,12 +53,17 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>865 313 873 591 0 0 2560 1417 </string>
+	<string>864 164 1501 606 0 0 2560 1417 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>276 505 796 486 0 0 2560 1417 </string>
+	<string>276 820 918 423 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>555 264 1450 1035 0 0 2560 1417 </string>
+	<string>67 124 1490 1010 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -719,7 +726,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Menlo-Regular 11</string>
+			<string>Inconsolata-dz 14</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -842,7 +849,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-02-07T21:31:18Z</date>
+	<date>2019-02-08T21:31:19Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
