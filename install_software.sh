@@ -60,7 +60,7 @@ done
 
 # Things I like to install through Homebrew
 # apache-spark is available but need to control the version
-brew_things=( scala@2.11 sbt tree wget gnu-sed bash-completion python maven jq parquet-tools awscli docker )
+brew_things=( scala@2.11 sbt tree wget gnu-sed bash-completion python maven jq parquet-tools awscli )
 for i in "${brew_things[@]}"
 do
     if [[ -z "$(brew list | grep $i)" ]]; then
