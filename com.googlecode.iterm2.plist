@@ -61,9 +61,9 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>864 164 1501 606 0 0 2560 1417 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>276 820 918 423 0 0 2560 1417 </string>
+	<string>276 883 918 423 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>67 124 1490 1010 0 0 2560 1417 </string>
+	<string>351 368 2100 1025 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -726,7 +726,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Inconsolata-dz 14</string>
+			<string>Inconsolata-dz 18</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -849,7 +849,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-02-08T21:31:19Z</date>
+	<date>2019-02-28T00:45:56Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
