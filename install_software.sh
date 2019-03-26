@@ -43,15 +43,18 @@ do
     fi
 done
 
-cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz ) #google-chrome can be installed this way, too
-for i in "${cask_things[@]}"
+cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz dropbox ) #google-chrome can be installed this way, too
+cask_locs=( homebrew/cask-versions/java8 sublime-text intellij-idea-ce homebrew/cask-fonts/font-inconsolata-dz dropbox )
+for idx in "${!cask_things[@]}"
 do
-    if [[ -z "$(brew cask list | grep $i)" ]]; then
+    thing=${cask_things[$idx]}
+    cask=${cask_locs[$idx]}
+    if [[ -z "$(brew cask list | grep $thing)" ]]; then
         echo "Installing $i through Homebrew Cask..."
-        brew cask install $i
+        brew cask install $cask
         echo "Done."
     else
-        echo "$i is already installed, skipping."
+        echo "$thing is already installed, skipping."
     fi
 done
 
