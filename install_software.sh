@@ -43,8 +43,8 @@ do
     fi
 done
 
-cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz dropbox ) #google-chrome can be installed this way, too
-cask_locs=( homebrew/cask-versions/java8 sublime-text intellij-idea-ce homebrew/cask-fonts/font-inconsolata-dz dropbox )
+cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz dropbox r rstudio) #google-chrome can be installed this way, too
+cask_locs=( homebrew/cask-versions/java8 sublime-text intellij-idea-ce homebrew/cask-fonts/font-inconsolata-dz dropbox r rstudio)
 for idx in "${!cask_things[@]}"
 do
     thing=${cask_things[$idx]}
@@ -72,21 +72,22 @@ do
     fi
 done
 
-if [[ ! -d /spark-2.3.2-bin-hadoop2.7 ]]; then
-    echo "Installing Apache Spark 2.3.2..."
-    # download with options junk-session-cookies, insecure, redirect to new location
-    curl -j -k -L -o spark-2.3.2-bin-hadoop2.7.tgz https://www-us.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
-    # untar to root
-    echo "You will be prompted for your password to unpack spark at root."
-    sudo tar -zxvf spark-2.3.2-bin-hadoop2.7.tgz -C /
-    # cleanup
-    rm spark-2.3.2-bin-hadoop2.7.tgz
+# This keeps throwing an archive format error -- fix this.
+# if [[ ! -d /spark-2.3.2-bin-hadoop2.7 ]]; then
+#     echo "Installing Apache Spark 2.3.2..."
+#     # download with options junk-session-cookies, insecure, redirect to new location
+#     curl -j -k -L -o spark-2.3.2-bin-hadoop2.7.tgz https://www-us.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
+#     # untar to root
+#     echo "You will be prompted for your password to unpack spark at root."
+#     sudo tar -zxvf spark-2.3.2-bin-hadoop2.7.tgz -C /
+#     # cleanup
+#     rm spark-2.3.2-bin-hadoop2.7.tgz
 
-    echo "Spark is installed; remember to add /spark-2.3.2-bin-hadoop2.7/bin to PATH."
-    # TODO check whether it is added and if not then add export line in ~/.bash_profile and source it
-else
-    echo "Spark is already installed, skipping."
-fi
+#     echo "Spark is installed; remember to add /spark-2.3.2-bin-hadoop2.7/bin to PATH."
+#     # TODO check whether it is added and if not then add export line in ~/.bash_profile and source it
+# else
+#     echo "Spark is already installed, skipping."
+# fi
 
 other_things_todo=(
     "Log into Chrome"
