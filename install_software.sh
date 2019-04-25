@@ -43,8 +43,8 @@ do
     fi
 done
 
-cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz dropbox r rstudio) #google-chrome can be installed this way, too
-cask_locs=( homebrew/cask-versions/java8 sublime-text intellij-idea-ce homebrew/cask-fonts/font-inconsolata-dz dropbox r rstudio)
+cask_things=( java8 sublime-text intellij-idea-ce font-inconsolata-dz dropbox r rstudio docker slack ) #google-chrome can be installed this way, too
+cask_locs=( homebrew/cask-versions/java8 sublime-text intellij-idea-ce homebrew/cask-fonts/font-inconsolata-dz dropbox r rstudio docker slack)
 for idx in "${!cask_things[@]}"
 do
     thing=${cask_things[$idx]}
@@ -60,7 +60,7 @@ done
 
 # Things I like to install through Homebrew
 # apache-spark is available but need to control the version
-brew_things=( scala@2.11 sbt tree wget gnu-sed bash-completion python maven jq parquet-tools awscli )
+brew_things=( scala@2.11 sbt tree wget gnu-sed bash-completion python maven jq parquet-tools awscli graphviz)
 for i in "${brew_things[@]}"
 do
     if [[ -z "$(brew list | grep $i)" ]]; then
@@ -89,11 +89,20 @@ done
 #     echo "Spark is already installed, skipping."
 # fi
 
+./install.sh
+source $HOME/.bash_profile
+python -m pip install --upgrade pip
+python -m pip install jupyterlab flake8 yapf pandas numpy synapseclient
+
 other_things_todo=(
     "Log into Chrome"
     "Install LastPass extension in Chrome"
     "Paste license into Sublime"
     "Sync Sublime Settings"
+    "Log into Dropbox"
+    "Goto https://coderwall.com/p/h6yfda/use-and-to-jump-forwards-backwards-words-in-iterm-2-on-os-x for instructions on how to set up word navigation in iTerm"
+    "TODO: find other keys configuration needed for iTerm"
+    "Open Docker Desktop and login. You will also need to login on the command line."
     )
 
 echo "Other things to do:"
@@ -119,9 +128,11 @@ else
 fi
 
 sublime_things_to_do=(
-    "Pretty JSON: through Package Control search for package 'Pretty JSON'"
+    "Pretty JSON"
+    "SublimeLinter"
+    "SublimeLinter-flake8"
     )
-echo "Things to install for Sublime:"
+echo "Things to install for Sublime through Package Control:"
 for i in "${sublime_things_to_do[@]}"
 do
     echo $i
