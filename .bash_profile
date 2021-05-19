@@ -11,6 +11,7 @@ GREEN="\[\e[1;32m\]"
 
 ## Set the Command Prompt
 # export PS1="${BLUE}\W ${GREEN}\u${YELLOW}\$(__kube_ps1)${NORMAL} \$ "
+#export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date --iso-8601=seconds) ${NORMAL}\$ "
 export PS1="${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
 
 ## Colorizes output of `ls`
@@ -27,20 +28,9 @@ cd() { builtin cd "$@"; ls  --color=auto -lFah; tabTitle ${PWD##*/}; }
 unset PROMPT_COMMAND
 test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
 
-
-## ENVIRONMENT VARIABLES
-export JAVA_HOME=$(/usr/libexec/java_home)
-export SPARK_HOME="/usr/local/Cellar/apache-spark/2.4.4"
-
 ## PATH MANIPULATION
-export PATH="/usr/local/opt/scala@2.11/bin:${PATH}"         # Scala
-export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"        # Homebrew
-export PATH="/usr/local/opt/python/libexec/bin:${PATH}"     # Python3
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # GNU utilities
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"          # openssl
-
-## JAVA
-launchctl setenv JAVA_HOME $JAVA_HOME
+export PATH="$(brew --prefix scala)/bin:${PATH}"            # Scala
+export PATH="/opt/homebrew/bin:${PATH}"                     # Homebrew bin
 
 ## ALIASES
 alias ls='ls --color=auto'
@@ -48,69 +38,21 @@ alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
 alias notes='subl ~/Notes'
 alias beep='echo -e "\a"'
 
-if [[ -f "${HOME}/.aws_aliases" ]]; then
-  source "${HOME}/.aws_aliases"
+## K8S aliases and functions
+if [[ -f "${PWD}/.k8s" ]]; then
+  source "${PWD}/.k8s"
 fi
 
-### K8S ALIASES
-alias kc='kubectl'
-alias kc-context='kubectl config current-context'
-
-getPodImage() {
- kc get pod $1 -o json | jq '.spec.containers[].image'
-}
-
-getPodNode() {
-  kc get pod $1 -o json | jq '.spec.nodeName'
-}
-
-sshPod() {
-  kc exec -it $1 -- bash
-}
-
-opsPodName() {
-  cut -d'/' -f2 <<< $(kubectl -n=default get pod -l name=k8s-ops-tools -o name)
-}
-
-opsPod() {
-  kc -n=default exec -it $(opsPodName) -- bash
-}
-
-opsPodExec() {
-  kc -n=default exec -it $(opsPodName) -- $1
-}
-
-copyFromOpsPod() {
-  kc cp default/$(opsPodName):$1 $2
-}
-
-copyToOpsPod() {
-  kc cp $1 default/$(opsPodName):$2
-}
-
-## HOMEBREW
+## TOKENS
 if [[ -f "${HOME}/Dropbox/Code/tokens/homebrew" ]]; then
 	export HOMEBREW_GITHUB_API_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/homebrew)"
+fi
+if [[ -f "${HOME}/Dropbox/Code/tokens/ghcr" ]]; then
+  export GHCR_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/ghcr)"
 fi
 
 ## BASH COMPLETION
 test -e "$(brew --prefix)/etc/bash_completion" && . $(brew --prefix)/etc/bash_completion
-
-# The next line updates PATH for the Google Cloud SDK.
-# if [[ -f "${HOME}/google-cloud-sdk/path.bash.inc" ]]; then
-#   source "${HOME}/google-cloud-sdk/path.bash.inc"
-# fi
-
-# The next line enables shell command completion for gcloud.
-# if [[ -f "${HOME}/google-cloud-sdk/completion.bash.inc" ]]; then
-#   source "${HOME}/google-cloud-sdk/completion.bash.inc"
-# fi
-
-# Kubectl shell completion
-# if [[ -f "${HOME}/.kube/completion.bash.inc" ]]; then
-#   source "${HOME}/.kube/completion.bash.inc"
-# fi
-
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
@@ -141,3 +83,24 @@ module() {
 
 # Pyenv
 eval "$(pyenv init -)"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# create a kernel for use in jupyter notebook
+pykernel() {
+  ENVIRONMENT_NAME=$1
+  if [[ -z $ENVIRONMENT_NAME ]]; then
+    echo "a name for the environment must be the first argument"
+  fi
+  pipenv install ipykernel jupyterlab
+  pipenv run python -m ipykernel install --user --name=$ENVIRONMENT_NAME
+  echo "A kernel ${ENVIRONMENT_NAME} was created."
+  echo "To use activate the python environment, start jupyter, and select the kernel."
+}
+
+# Configure Java and Spark
+#echo "configuring java and spark"
+#source ~/.config-java-spark.sh
+
+#TODO troubleshoot java configuration 
+

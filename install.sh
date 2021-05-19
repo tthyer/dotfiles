@@ -1,16 +1,120 @@
 #!/usr/bin/env bash
 
-files=(
-    ".bash_profile"
-    ".vimrc"
-    ".gitconfig"
-    ".gitignore_global"
-    )
+set -e
 
-for dotfile in "${files[@]}"
+# Install command line tools
+if [[ -d /Library/Developer/CommandLineTools ]]; then
+ echo "Xcode command line tools already installed, skipping."
+else
+ echo "Installing xcode command line tools"
+  xcode-select --install
+fi
+
+# HOMEBREW
+if [[ -z "$(which brew)" ]]; then
+  echo "Installing Homebrew..."
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo "Done."
+else
+  echo "Homebrew is already installed, skipping."
+fi
+
+required_brew_dirs=( /usr/local/include /usr/local/opt /usr/local/sbin/ /usr/local/Cellar /usr/local/Frameworks)
+for i in "${required_brew_dirs[@]}"
 do
-    if [[ -f "$HOME/$dotfile" ]]; then
-      rm "$HOME/$dotfile"
-    fi
-    ln -sv "$(pwd)/$dotfile" "$HOME/$dotfile"
+  if [[ ! -d $i ]]; then
+    echo "Making required brew directory $i"
+    sudo mkdir -p $i
+    sudo chown -R $(whoami) $e
+  else
+    echo "Required directory $i already exists"
+  fi
 done
+
+installed_casks=( $(brew list --cask -1) )
+casks=(
+  iterm2
+  sublime-text
+  homebrew/cask-fonts/font-inconsolata
+  intellij-idea-ce
+  dropbox
+  r
+  rstudio
+  docker
+  slack
+  google-chrome
+  )
+for cask in "${casks[@]}"
+do
+  if [[ "${installed_casks[@]}" =~ "${cask}" ]]; then
+    echo "${cask} is already installed, skipping."
+  else
+    echo "Installing ${cask} through Homebrew Cask..."
+    brew install --cask "${cask}"
+    echo "Done."
+  fi
+done
+
+installed_formulae=( $(brew list --formula -1) )
+formulae=(
+  scala
+  openjdk@11
+  apache-spark
+  #sbt #only works on x86_64 atm 2021-05-20
+  tree
+  wget
+  gnu-sed
+  bash-completion
+  pyenv
+  jq
+  parquet-tools
+  awscli
+  graphviz
+  )
+for formula in "${formulae[@]}"
+do
+  if [[ "${installed_formulae[@]}" =~ "${formula}" ]]; then
+    echo "${formula} is already installed, skipping."
+  else
+    echo "Installing ${formula} through Homebrew..."
+    brew install "${formula}"
+    echo "Done."
+  fi
+done
+
+# Setup Python
+bash python-setup.sh
+
+# Setup Spark
+bash spark.sh
+
+# Setup dotfiles
+./dotfiles.sh
+source "${HOME}/.bash_profile"
+
+# Set bottom left hot corner to sleep display
+echo "Setting hot corner..."
+defaults write com.apple.dock wvous-bl-corner -int 10
+defaults write com.apple.dock wvous-bl-modifier -int 0
+killall Dock
+echo "Done."
+
+bash sublime.sh
+
+other_things_todo=(
+  "Log into Chrome"
+  "Install LastPass extension in Chrome"
+  "Paste license into Sublime"
+  "Sync Sublime Settings"
+  "Log into Dropbox"
+  "Goto https://coderwall.com/p/h6yfda/use-and-to-jump-forwards-backwards-words-in-iterm-2-on-os-x for instructions on how to set up word navigation in iTerm"
+  "TODO: find other keys configuration needed for iTerm"
+  "Open Docker Desktop and login. You will also need to login on the command line."
+  )
+
+echo "Other things to do:"
+for i in "${other_things_todo[@]}"
+do
+  echo $i
+done
+
