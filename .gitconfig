@@ -1,6 +1,6 @@
 [user]
     name = T. Thyer
-	email = tess.thyer@sagebionetworks.org
+    email = tess.thyer@sagebionetworks.org
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ls-branches-local = for-each-ref --sort=-committerdate refs/heads/
@@ -11,6 +11,8 @@
     diff-ancestor = "!git diff $(git common-ancestor)..HEAD"
     head = "!git lg | head -n 5"
     alias = "config --get-regexp alias"
+    clone = "!f() { git clone \"$1\" && pre-commit install }; f"
+    update-last = "!git add . && git commit --amend --no-edit && git push -f"
 [core]
     excludesfile = ~/.gitignore_global
 [push]
@@ -18,4 +20,4 @@
 [grep]
     lineNumber = true
 [fetch]
-  prune = true
+    prune = true
