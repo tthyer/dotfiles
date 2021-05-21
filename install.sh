@@ -19,7 +19,7 @@ else
   echo "Homebrew is already installed, skipping."
 fi
 
-required_brew_dirs=( /usr/local/include /usr/local/opt /usr/local/sbin/ /usr/local/Cellar /usr/local/Frameworks)
+required_brew_dirs=( /usr/local/lib/pkgconfig /usr/local/share/info /usr/local/share/man/man3 /usr/local/share/man/man5 )
 for i in "${required_brew_dirs[@]}"
 do
   if [[ ! -d $i ]]; then
@@ -29,6 +29,8 @@ do
   else
     echo "Required directory $i already exists"
   fi
+  sudo chown -R $(whoami) $i
+  chmod u+w $i
 done
 
 installed_casks=( $(brew list --cask -1) )
