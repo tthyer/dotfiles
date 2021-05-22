@@ -5,14 +5,9 @@ BLUE="\[\033[01;34m\]"
 YELLOW="\[\e[1;33m\]"
 GREEN="\[\e[1;32m\]"
 
-# if [ -f "${HOME}/kube-prompt.sh" ]; then
-#   source "${HOME}/kube-prompt.sh"
-# fi
-
 ## Set the Command Prompt
-# export PS1="${BLUE}\W ${GREEN}\u${YELLOW}\$(__kube_ps1)${NORMAL} \$ "
 #export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date --iso-8601=seconds) ${NORMAL}\$ "
-export PS1="${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
+export PS1="\$(iterm2_print_user_vars)${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
@@ -21,8 +16,14 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 ## Set iTerm2 tab titles
 tabTitle() { echo -ne "\033]0;"$*"\007"; }
 
+## ALIASES
+alias ls='ls -G'
+alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
+alias notes='subl ~/Notes'
+alias beep='echo -e "\a"'
+
 ## Always list directory contents and set title upon 'cd'
-cd() { builtin cd "$@"; ls  --color=auto -lFah; tabTitle ${PWD##*/}; }
+cd() { builtin cd "$@"; ls -lFah; tabTitle ${PWD##*/}; }
 
 ## sets the window name (tab) for iterm
 unset PROMPT_COMMAND
@@ -31,12 +32,6 @@ test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\0
 ## PATH MANIPULATION
 export PATH="$(brew --prefix scala)/bin:${PATH}"            # Scala
 export PATH="/opt/homebrew/bin:${PATH}"                     # Homebrew bin
-
-## ALIASES
-alias ls='ls --color=auto'
-alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
-alias notes='subl ~/Notes'
-alias beep='echo -e "\a"'
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -103,4 +98,3 @@ pykernel() {
 #source ~/.config-java-spark.sh
 
 #TODO troubleshoot java configuration 
-
