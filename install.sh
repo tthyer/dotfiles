@@ -37,7 +37,7 @@ installed_casks=( $(brew list --cask -1) )
 casks=(
   iterm2
   sublime-text
-  homebrew/cask-fonts/font-inconsolata
+  font-inconsolata-nerd-font
   intellij-idea-ce
   dropbox
   r
@@ -83,6 +83,9 @@ do
     echo "Done."
   fi
 done
+
+# Setup iTerm2 shell integration
+curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 # Setup Python
 bash python-setup.sh
