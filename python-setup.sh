@@ -4,6 +4,7 @@ python_version="3.9.4"
 if ! (pyenv versions | grep "${python_version}"); then
   pyenv install "${python_version}"
 fi
+eval "$(pyenv init -)"
 pyenv global "${python_version}"
 
 python -m pip install --upgrade pip
