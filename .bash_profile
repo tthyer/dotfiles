@@ -7,7 +7,8 @@ GREEN="\[\e[1;32m\]"
 
 ## Set the Command Prompt
 #export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date --iso-8601=seconds) ${NORMAL}\$ "
-export PS1="\$(iterm2_print_user_vars)${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
+#export PS1="\$(iterm2_print_user_vars)${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
+export PS1="${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
@@ -23,7 +24,7 @@ alias notes='subl ~/Notes'
 alias beep='echo -e "\a"'
 
 ## Always list directory contents and set title upon 'cd'
-cd() { builtin cd "$@"; ls -lFah; tabTitle ${PWD##*/}; }
+cd() { builtin cd "$@"; echo $PWD && ls -lFah; tabTitle ${PWD##*/}; }
 
 ## sets the window name (tab) for iterm
 unset PROMPT_COMMAND
