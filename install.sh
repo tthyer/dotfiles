@@ -45,6 +45,7 @@ casks=(
   docker
   slack
   google-chrome
+  session-manager-plugin
   )
 for cask in "${casks[@]}"
 do
