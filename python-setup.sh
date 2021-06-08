@@ -8,7 +8,7 @@ eval "$(pyenv init -)"
 pyenv global "${python_version}"
 
 python -m pip install --upgrade pip
-packages=(jupyterlab pandas numpy synapseclient flake8)
+packages=(pipenv jupyterlab pandas numpy synapseclient flake8)
 installed_packages=( $(python -m pip list) )
 for package in "${packages[@]}"
 do
@@ -16,7 +16,7 @@ do
     echo "${package} is already installed, skipping."
   else
     echo "Installing ${package} through pip."
-    python -m pip install "${package}"
+    python -m pip install --user "${package}"
     echo "Done."
   fi
 done
