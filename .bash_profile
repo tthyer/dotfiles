@@ -31,8 +31,9 @@ unset PROMPT_COMMAND
 test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
 
 ## PATH MANIPULATION
-export PATH="$(brew --prefix scala)/bin:${PATH}"            # Scala
-export PATH="/opt/homebrew/bin:${PATH}"                     # Homebrew bin
+export PATH="$(brew --prefix scala)/bin:${PATH}" # Scala
+export PATH="/opt/homebrew/bin:${PATH}".         # Homebrew bin
+export PATH="${HOME}/.local/bin:${PATH}"         # Local pip installs
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
