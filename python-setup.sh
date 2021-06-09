@@ -8,7 +8,7 @@ eval "$(pyenv init -)"
 pyenv global "${python_version}"
 
 python -m pip install --upgrade pip
-packages=(pipenv jupyterlab pandas numpy synapseclient flake8)
+packages=(pipenv jupyterlab pandas numpy synapseclient flake8 sceptre pre-commit)
 installed_packages=( $(python -m pip list) )
 for package in "${packages[@]}"
 do
