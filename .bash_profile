@@ -31,9 +31,10 @@ unset PROMPT_COMMAND
 test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
 
 ## PATH MANIPULATION
-export PATH="$(brew --prefix scala)/bin:${PATH}" # Scala
-export PATH="/opt/homebrew/bin:${PATH}"         # Homebrew bin
-export PATH="${HOME}/.local/bin:${PATH}"         # Local pip installs
+export PATH="$(brew --prefix scala)/bin:${PATH}"    # Scala
+export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
+export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
+export PATH="/usr/local/opt/mysql-client/bin:$PATH" # mysql (client only)
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -102,3 +103,46 @@ pykernel() {
 #source ~/.config-java-spark.sh
 
 #TODO troubleshoot java configuration 
+
+# start an ssm session
+ssmSession() {
+  target=$1
+  if [[ -z $target ]]; then
+    echo "an aws EC2 ID must be the first argument"
+    return 1
+  fi
+  aws ssm start-session --profile service-catalog \
+                        --target "${target}" \
+                        --document-name AWS-StartInteractiveCommand \
+                        --parameters command="sudo su - ec2-user"
+}
+
+scSSH() {
+  set -ex
+  target=$1
+  if [[ -z $target ]]; then
+    echo "an aws EC2 ID must be the first argument"
+    #return 1
+  fi
+  AWS_PROFILE=service-catalog
+  ssh -i ~/.ssh/id_rsa ec2-user@${target}
+  set +ex
+}
+
+ssmPortForward() {
+  set -ex
+  target=$1
+  remotePort=$2
+  localPort=$3
+  if [[ -z $target || -z $remotePort || -z $localPort ]]; then
+    echo "arguments for an EC2 ID, a remote port, and a local port must be specified, and in that order"
+    #return 1
+  fi
+  aws ssm start-session --profile service-catalog \
+                      --target "${target}" \
+                      --document-name AWS-StartPortForwardingSession \
+                      --parameters '{"portNumber":["8787"],"localPortNumber":["8787"]}'
+  set +ex
+}
+
+
