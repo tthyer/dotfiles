@@ -85,6 +85,9 @@ do
   fi
 done
 
+# download git autocompletion script
+wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
+
 # Setup iTerm2 shell integration
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
