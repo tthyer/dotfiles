@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 files=(
+    ".bashrc"
     ".bash_profile"
     ".vimrc"
     ".gitconfig"
