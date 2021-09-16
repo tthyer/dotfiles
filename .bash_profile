@@ -49,18 +49,6 @@ if [[ -f "${HOME}/Dropbox/Code/tokens/ghcr" ]]; then
   export GHCR_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/ghcr)"
 fi
 
-## BASH COMPLETION
-test -e "$(brew --prefix)/etc/bash_completion" && . $(brew --prefix)/etc/bash_completion
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-#complete -C '/usr/local/bin/aws_completer' aws
-
-# Git Completion
-if [[ -f "${HOME}/.git-completion.bash" ]]; then
-  source "${HOME}/.git-completion.bash"
-fi
-
 # Validate a Cloudformation template
 validateTemplate() {
   template_path=$1
@@ -145,4 +133,7 @@ ssmPortForward() {
   set +ex
 }
 
+listAwsProfiles() {
+  cat ~/.aws/config | grep '\['  
+}
 
