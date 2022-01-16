@@ -1,7 +1,7 @@
 {
-  "Ansi 2 Color" : {
+  "Ansi 3 Color" : {
     "Green Component" : 0.73333334922790527,
-    "Red Component" : 0,
+    "Red Component" : 0.73333334922790527,
     "Blue Component" : 0
   },
   "Tags" : [
@@ -13,11 +13,7 @@
     "Blue Component" : 1
   },
   "Normal Font" : "InconsolataNerdFontComplete-Medium 20",
-  "Ansi 4 Color" : {
-    "Green Component" : 0,
-    "Red Component" : 0,
-    "Blue Component" : 0.73333334922790527
-  },
+  "Transparency" : 0,
   "Bold Color" : {
     "Green Component" : 1,
     "Red Component" : 1,
@@ -63,7 +59,7 @@
   "Sync Title" : false,
   "Prompt Before Closing 2" : false,
   "BM Growl" : true,
-  "Command" : "",
+  "Command" : "\/bin\/bash",
   "Description" : "Default",
   "Mouse Reporting" : true,
   "Screen" : -1,
@@ -403,22 +399,22 @@
           "knobs" : {
             "base: priority" : 5,
             "shared background color" : {
-              "Red Component" : 0.10000000149011612,
+              "Red Component" : 0,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.10000000149011612,
+              "Blue Component" : 0,
               "Alpha Component" : 1,
-              "Green Component" : 0.10000000149011612
+              "Green Component" : 0
             },
             "expression" : "\\(user.awsProfile)",
             "maxwidth" : 1.7976931348623157e+308,
             "minwidth" : "0",
             "base: compression resistance" : 1,
             "shared text color" : {
-              "Red Component" : 0.932342529296875,
+              "Red Component" : 1,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.90211141109466553,
+              "Blue Component" : 0.29077458381652832,
               "Alpha Component" : 1,
-              "Green Component" : 0.90211141109466553
+              "Green Component" : 0.93051981925964355
             }
           },
           "layout advanced configuration dictionary value" : {
@@ -455,25 +451,29 @@
     "Red Component" : 0.73333334922790527,
     "Blue Component" : 0.73333334922790527
   },
-  "Transparency" : 0,
-  "Guid" : "D1172F9E-1D82-4874-B9ED-123D24B29B45",
-  "Custom Directory" : "Recycle",
   "Ansi 0 Color" : {
     "Green Component" : 0,
     "Red Component" : 0,
     "Blue Component" : 0
   },
+  "Guid" : "5491E85E-3839-42E3-9C29-527578A6A6B6",
+  "Horizontal Spacing" : 1,
   "Ansi 1 Color" : {
     "Green Component" : 0,
     "Red Component" : 0.73333334922790527,
     "Blue Component" : 0
   },
-  "Ansi 3 Color" : {
+  "Ansi 2 Color" : {
     "Green Component" : 0.73333334922790527,
-    "Red Component" : 0.73333334922790527,
+    "Red Component" : 0,
     "Blue Component" : 0
   },
-  "Horizontal Spacing" : 1,
+  "Custom Directory" : "Recycle",
+  "Ansi 4 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  },
   "Ansi 7 Color" : {
     "Green Component" : 0.73333334922790527,
     "Red Component" : 0.73333334922790527,
