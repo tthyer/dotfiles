@@ -1,18 +1,36 @@
 test -f ~/.bashrc && source ~/.bashrc
 
+## Bash Completion
+test -e "$(brew --prefix)/etc/bash_completion" && . $(brew --prefix)/etc/bash_completion
+
+## AWS completinon
+complete -C '/usr/local/bin/aws_completer' aws
+
+# Git Completion
+if [[ -f "${HOME}/.git-completion.bash" ]]; then
+  source "${HOME}/.git-completion.bash"
+fi
+
+## iterm2 shell integration
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# Prompt colors
 NORMAL="\[\033[00m\]"
 BLUE="\[\033[01;34m\]"
 YELLOW="\[\e[1;33m\]"
 GREEN="\[\e[1;32m\]"
 
 ## Set the Command Prompt
-#export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date --iso-8601=seconds) ${NORMAL}\$ "
-#export PS1="\$(iterm2_print_user_vars)${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
-export PS1="${BLUE}\W ${GREEN}\u ${NORMAL}\$ "
+export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ \[\$(iterm2_print_user_vars)\]"
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
+
+## Add iterm2 vars
+iterm2_print_user_vars() {
+  iterm2_set_user_var awsProfile "☁️ $AWS_PROFILE"
+}
 
 ## Set iTerm2 tab titles
 tabTitle() { echo -ne "\033]0;"$*"\007"; }
@@ -35,6 +53,7 @@ export PATH="$(brew --prefix scala)/bin:${PATH}"    # Scala
 export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
 export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
 export PATH="/usr/local/opt/mysql-client/bin:$PATH" # mysql (client only)
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # use gnu coreutils
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -136,4 +155,16 @@ ssmPortForward() {
 listAwsProfiles() {
   cat ~/.aws/config | grep '\['  
 }
+
+awsLogin() {
+  defaultProfile=etl-dev-admin
+  profile=$1
+  if [[ -z $profile ]]; then
+    profile=$defaultProfile
+  fi
+  aws sso login --profile $profile
+  export AWS_PROFILE=$profile
+}
+
+
 
