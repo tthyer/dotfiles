@@ -1,3 +1,5 @@
+set -x
+
 test -f ~/.bashrc && source ~/.bashrc
 
 ## Bash Completion
