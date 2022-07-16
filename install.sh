@@ -2,6 +2,9 @@
 
 set -e
 
+# Change the default shell to bash
+chsh -s /bin/bash
+
 # Install command line tools
 if [[ -d /Library/Developer/CommandLineTools ]]; then
  echo "Xcode command line tools already installed, skipping."
@@ -26,11 +29,10 @@ do
     echo "Making required brew directory $i"
     sudo mkdir -p $i
     sudo chown -R $(whoami) $i
+    chmod u+w $i
   else
     echo "Required directory $i already exists"
   fi
-  sudo chown -R $(whoami) $i
-  chmod u+w $i
 done
 
 installed_casks=( $(brew list --cask -1) )
@@ -39,13 +41,13 @@ casks=(
   sublime-text
   font-inconsolata-nerd-font
   intellij-idea-ce
-  dropbox
+  #dropbox
   r
   rstudio
   docker
   slack
   google-chrome
-  session-manager-plugin
+  session-manager-plugin #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
   )
 for cask in "${casks[@]}"
 do
@@ -89,7 +91,7 @@ done
 wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
 
 # Setup iTerm2 shell integration
-curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 
 # Setup Python
 bash python-setup.sh
@@ -115,7 +117,6 @@ other_things_todo=(
   "Install LastPass extension in Chrome"
   "Paste license into Sublime"
   "Sync Sublime Settings"
-  "Log into Dropbox"
   "Goto https://coderwall.com/p/h6yfda/use-and-to-jump-forwards-backwards-words-in-iterm-2-on-os-x for instructions on how to set up word navigation in iTerm"
   "TODO: find other keys configuration needed for iTerm"
   "Open Docker Desktop and login. You will also need to login on the command line."
