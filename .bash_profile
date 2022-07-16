@@ -1,5 +1,3 @@
-set -x
-
 test -f ~/.bashrc && source ~/.bashrc
 
 ## Bash Completion
@@ -51,12 +49,11 @@ unset PROMPT_COMMAND
 test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
 
 ## PATH MANIPULATION
-export PATH="$(brew --prefix scala)/bin:${PATH}"    # Scala
 export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
 export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
 export PATH="/usr/local/opt/mysql-client/bin:$PATH" # mysql (client only)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # use gnu coreutils
-export SPARK_HOME=$(brew --prefix apache-spark)/libexec
+export SPARK_HOME="/opt/homebrew/Cellar/apache-spark/libexec"
 export PATH="$SPARK_HOME/bin/:$PATH"
 
 ## K8S aliases and functions
@@ -95,7 +92,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# What do I need Ruby for?
+#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # create a kernel for use in jupyter notebook
 pykernel() {
