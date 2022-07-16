@@ -1,7 +1,9 @@
+set -x
+
 test -f ~/.bashrc && source ~/.bashrc
 
 ## Bash Completion
-test -e "$(brew --prefix)/etc/bash_completion" && . $(brew --prefix)/etc/bash_completion
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 ## AWS completinon
 complete -C '/usr/local/bin/aws_completer' aws
