@@ -25,7 +25,7 @@ do
   if [[ ! -d $i ]]; then
     echo "Making required brew directory $i"
     sudo mkdir -p $i
-    sudo chown -R $(whoami) $e
+    sudo chown -R $(whoami) $i
   else
     echo "Required directory $i already exists"
   fi
@@ -127,3 +127,4 @@ do
   echo $i
 done
 
+set +e
