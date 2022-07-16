@@ -3,7 +3,14 @@
 set -e
 
 # Change the default shell to bash
-chsh -s /bin/bash
+# get user's default shell rather than the current shell available in the
+# $SHELL variable
+user_shell=$(finger $USER | grep 'Shell:*' | cut -f3 -d ":")
+desired_shell=/bin/bash
+if [[ user_shell -ne desired_shell ]]; then
+  # this will prompt for password
+  chsh -s /bin/bash
+fi
 
 # Install command line tools
 if [[ -d /Library/Developer/CommandLineTools ]]; then
@@ -16,7 +23,9 @@ fi
 # HOMEBREW
 if [[ -z "$(which brew)" ]]; then
   echo "Installing Homebrew..."
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/tessthyer/.bash_profile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   echo "Done."
 else
   echo "Homebrew is already installed, skipping."
