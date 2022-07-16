@@ -54,6 +54,8 @@ export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
 export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
 export PATH="/usr/local/opt/mysql-client/bin:$PATH" # mysql (client only)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # use gnu coreutils
+export SPARK_HOME=$(brew --prefix apache-spark)/libexec
+export PATH="$SPARK_HOME/bin/:$PATH"
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -166,5 +168,5 @@ awsLogin() {
   export AWS_PROFILE=$profile
 }
 
-
-
+# this is a form of completion for sceptre
+eval "$(_SCEPTRE_COMPLETE=source sceptre)"
