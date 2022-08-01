@@ -1,3 +1,9 @@
+# Set the following to suppress this message on opening terminal windows:
+# "The default interactive shell is now zsh."
+# "To update your account to use zsh, please run `chsh -s /bin/zsh`."
+# "For more details, please visit https://support.apple.com/kb/HT208050."
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 test -f ~/.bashrc && source ~/.bashrc
 
 ## Bash Completion
