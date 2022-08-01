@@ -7,12 +7,10 @@ files=(
     ".gitconfig"
     ".gitignore_global"
     ".k8s"
+    ".terminal_setup.sh"
     )
 
 for dotfile in "${files[@]}"
 do
-    if [[ -f "$HOME/$dotfile" ]]; then
-      rm "$HOME/$dotfile"
-    fi
-    ln -sv "$(pwd)/$dotfile" "$HOME/$dotfile"
+  ln -fsv "$(pwd)/$dotfile" "$HOME/$dotfile"
 done
