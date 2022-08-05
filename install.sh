@@ -5,9 +5,9 @@ set -e
 # Change the default shell to bash
 # get user's default shell rather than the current shell available in the
 # $SHELL variable
-user_shell=$(finger $USER | grep 'Shell:*' | cut -f3 -d ":")
-desired_shell=/bin/bash
-if [[ user_shell -ne desired_shell ]]; then
+user_shell=$(finger $USER | grep 'Shell:*')
+desired_shell="bash"
+if grep -vq $desired_shell <<< $user_shell; then
   # this will prompt for password
   chsh -s /bin/bash
 fi
