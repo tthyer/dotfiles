@@ -74,7 +74,7 @@ formulae=(
   scala
   openjdk@11
   apache-spark
-  #sbt #only works on x86_64 atm 2021-05-20
+  sbt
   tree
   wget
   gnu-sed
