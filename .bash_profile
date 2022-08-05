@@ -23,10 +23,7 @@ cd() { builtin cd "$@"; echo $PWD && ls -lFah; tabTitle ${PWD##*/}; }
 ## PATH MANIPULATION
 export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
 export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
-export PATH="/usr/local/opt/mysql-client/bin:$PATH" # mysql (client only)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # use gnu coreutils
-export SPARK_HOME="/opt/homebrew/Cellar/apache-spark/libexec"
-export PATH="$SPARK_HOME/bin/:$PATH"
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -77,8 +74,7 @@ pykernel() {
 }
 
 # Configure Java and Spark
-#echo "configuring java and spark"
-#source ~/.config-java-spark.sh
+source ~/.config-java-spark.sh
 
 #TODO troubleshoot java configuration 
 
@@ -142,3 +138,4 @@ eval "$(_SCEPTRE_COMPLETE=source sceptre)"
 
 ## iterm2 Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash" || true
+eval "$(/opt/homebrew/bin/brew shellenv)"
