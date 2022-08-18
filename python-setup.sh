@@ -1,6 +1,6 @@
 #! /bin/bash
 
-python_version="3.9.4"
+python_version="3.9:latest"
 if ! (pyenv versions | grep "${python_version}"); then
   pyenv install "${python_version}"
 fi
@@ -20,4 +20,3 @@ do
     echo "Done."
   fi
 done
-
