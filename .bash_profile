@@ -3,7 +3,7 @@ test -e "${HOME}/.bashrc" && source "${HOME}/.bashrc"
 ## Bash Completion
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-## AWS completinon
+## AWS completion
 complete -C '/usr/local/bin/aws_completer' aws
 
 # Git Completion
@@ -21,9 +21,8 @@ alias beep='echo -e "\a"'
 cd() { builtin cd "$@"; echo $PWD && ls -lFah; tabTitle ${PWD##*/}; }
 
 ## PATH MANIPULATION
-export PATH="/opt/homebrew/bin:${PATH}"             # Homebrew bin
-export PATH="${HOME}/.local/bin:${PATH}"            # Local pip installs
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # use gnu coreutils
+# pathadd "/opt/homebrew/bin" # things installed by homebrew 
+pathadd "${HOME}/.local/bin" # system-wide python installs
 
 ## K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
@@ -56,11 +55,6 @@ module() {
   touch $moduleName/$moduleName.py
 }
 
-# Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 # create a kernel for use in jupyter notebook
 pykernel() {
   ENVIRONMENT_NAME=$1
@@ -75,8 +69,6 @@ pykernel() {
 
 # Configure Java and Spark
 source ~/.config-java-spark.sh
-
-#TODO troubleshoot java configuration 
 
 # start an ssm session
 ssmSession() {
@@ -96,10 +88,10 @@ scSSH() {
   target=$1
   if [[ -z $target ]]; then
     echo "an aws EC2 ID must be the first argument"
-    #return 1
+  else
+    AWS_PROFILE=service-catalog
+    ssh -i ~/.ssh/id_rsa ec2-user@${target}
   fi
-  AWS_PROFILE=service-catalog
-  ssh -i ~/.ssh/id_rsa ec2-user@${target}
   set +ex
 }
 
@@ -133,8 +125,10 @@ awsLogin() {
   export AWS_PROFILE=$profile
 }
 
-# this is a form of completion for sceptre
-eval "$(_SCEPTRE_COMPLETE=source sceptre)"
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 ## iterm2 Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash" || true
