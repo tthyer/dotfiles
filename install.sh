@@ -44,14 +44,20 @@ do
   fi
 done
 
+if [[ -z $(which r) ]]; then
+  pkgname=R-4.2.1.pkg
+  dir=${HOME}/Downloads
+  wget https://cran.r-project.org/bin/macosx/base/${pkgname} -P ${dir}
+  sudo installer -pkg ${dir}/${pkgname} -target /
+fi
+
 installed_casks=( $(brew list --cask -1) )
 casks=(
   iterm2
   sublime-text
   font-inconsolata-nerd-font
   intellij-idea-ce
-  #dropbox
-  r
+  #r #install this from CRAN instead -- when installed from homebrew there are dependency issues
   rstudio
   docker
   slack
@@ -72,7 +78,7 @@ done
 installed_formulae=( $(brew list --formula -1) )
 formulae=(
   scala
-  openjdk@11
+  #openjdk@11
   apache-spark
   sbt
   tree
@@ -84,6 +90,8 @@ formulae=(
   parquet-tools
   awscli
   graphviz
+  watch
+  utc-menu-clock
   )
 for formula in "${formulae[@]}"
 do
