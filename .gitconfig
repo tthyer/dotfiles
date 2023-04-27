@@ -14,9 +14,10 @@
     clone = "!f() { git clone \"$1\" && pre-commit install }; f"
     update-last = "!git add . && git commit --amend --no-edit && git push -f"
 [core]
-    excludesfile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [push]
-    default = simple
+  default = simple
+  autoSetupRemote = true
 [grep]
     lineNumber = true
 [fetch]

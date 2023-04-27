@@ -8,6 +8,7 @@ files=(
     ".gitignore_global"
     ".k8s"
     ".terminal_setup.sh"
+    "java-setup.sh"
     )
 
 for dotfile in "${files[@]}"

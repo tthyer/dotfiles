@@ -1,6 +1,6 @@
 #! /bin/bash
 
-python_version="3.9:latest"
+python_version="3.10.8"
 if ! (pyenv versions | grep "${python_version}"); then
   pyenv install "${python_version}"
 fi
@@ -8,7 +8,7 @@ eval "$(pyenv init -)"
 pyenv global "${python_version}"
 
 python -m pip install --upgrade pip
-packages=(pipenv jupyterlab pandas numpy synapseclient flake8 sceptre pre-commit cfn-flip)
+packages=(pipenv jupyterlab pandas numpy flake8 pre-commit cfn-flip pyspark)
 installed_packages=( $(python -m pip list) )
 for package in "${packages[@]}"
 do
