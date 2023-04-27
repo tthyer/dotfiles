@@ -2,6 +2,9 @@
 
 set -e
 
+# Move dotfiles into place
+./dotfiles.sh
+
 # Change the default shell to bash
 # get user's default shell rather than the current shell available in the
 # $SHELL variable
@@ -75,23 +78,22 @@ do
   fi
 done
 
+brew tap dbt-labs/dbt
+
 installed_formulae=( $(brew list --formula -1) )
 formulae=(
-  scala
-  #openjdk@11
-  apache-spark
-  sbt
+  openjdk
   tree
   wget
   gnu-sed
   bash-completion
   pyenv
   jq
-  parquet-tools
   awscli
   graphviz
   watch
   utc-menu-clock
+  dbt-redshift
   )
 for formula in "${formulae[@]}"
 do
@@ -105,7 +107,14 @@ do
 done
 
 # download git autocompletion script
-wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
+if [ ! -e $HOME/git-completion.bash ]; then
+  wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
+fi
+
+# download dbt autocompletion script
+if [ ! -e $HOME/.dbt-completion.bash ]; then
+  wget https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash -P $HOME
+fi
 
 # Setup iTerm2 shell integration
 curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
@@ -113,11 +122,10 @@ curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 # Setup Python
 bash python-setup.sh
 
-# Setup Spark
-bash spark.sh
+# Setup Java
+bash java-setup.sh
 
-# Setup dotfiles
-./dotfiles.sh
+
 source "${HOME}/.bash_profile"
 
 # Set bottom left hot corner to sleep display

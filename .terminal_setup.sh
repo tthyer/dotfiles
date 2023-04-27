@@ -31,11 +31,3 @@ tabTitle() { echo -ne "\033]0;"$*"\007"; }
 ## sets the window name (tab) for iterm
 unset PROMPT_COMMAND
 test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
-
-# adds a string to PATH, if it's not there already
-# from https://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
-pathadd() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-    export PATH="${PATH:+"$PATH:"}$1"
-  fi
-}

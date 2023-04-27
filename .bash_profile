@@ -1,35 +1,89 @@
-test -e "${HOME}/.bashrc" && source "${HOME}/.bashrc"
+### TERMINAL SETUP
 
-## Bash Completion
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+## iterm2 Shell Integration
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash" || true
 
-## AWS completion
-complete -C '/usr/local/bin/aws_completer' aws
+## customize iterm2
+test -h "${HOME}/.terminal_setup.sh" && source "${HOME}/.terminal_setup.sh"
 
-# Git Completion
-if [[ -f "${HOME}/.git-completion.bash" ]]; then
-  source "${HOME}/.git-completion.bash"
-fi
 
-## ALIASES
-alias ls='ls -G'
-alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
-alias notes='subl ~/Notes'
-alias beep='echo -e "\a"'
+### HOMEBREW ENVIRONMENT VARIABLES
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
+### FUNCTIONS
+
+# adds a string to PATH, if it's not there already
+# from https://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
+pathadd() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="${PATH:+"$PATH:"}$1"
+  fi
+}
 
 ## Always list directory contents and set title upon 'cd'
 cd() { builtin cd "$@"; echo $PWD && ls -lFah; tabTitle ${PWD##*/}; }
 
-## PATH MANIPULATION
+dotenv() {
+  set -x
+  env_file=$1
+  if [[ -z $env_file ]]; then
+    echo "requires an environment file argument"
+  fi
+  set -a; source "$env_file"; set +a
+  set +x
+}
+
+undotenv() {
+  env_file=$1
+  if [[ -z $env_file ]]; then
+    echo "requires an environment file argument"
+  fi
+  unset $(grep -v '^#' "$env_file" | sed -E 's/(.*)=.*/\1/' | xargs)
+}
+
+# some unused functions have been moved to bash_functions.sh
+
+
+### COMPLETION
+
+## Bash Completion
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+## AWS completion
+complete -C '/usr/local/bin/aws_completer' aws
+
+## Git Completion
+[[ -r "${HOME}/git-completion.bash" ]] && source "${HOME}/git-completion.bash"
+
+## dbt completion
+[[ -r "${HOME}/.dbt-completion.bash" ]] && source "${HOME}/.dbt-completion.bash"
+
+## Terraform completion
+complete -C /opt/homebrew/bin/terraform terraform
+
+
+### ALIASES
+
+alias ls='ls -G'
+alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
+alias beep='echo -e "\a"'
+
+
+### PATH MANIPULATION
+
 # pathadd "/opt/homebrew/bin" # things installed by homebrew 
 pathadd "${HOME}/.local/bin" # system-wide python installs
 
-## K8S aliases and functions
+
+### K8S aliases and functions
 if [[ -f "${PWD}/.k8s" ]]; then
   source "${PWD}/.k8s"
 fi
 
-## TOKENS
+
+### TOKENS
+
 if [[ -f "${HOME}/Dropbox/Code/tokens/homebrew" ]]; then
 	export HOMEBREW_GITHUB_API_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/homebrew)"
 fi
@@ -37,99 +91,20 @@ if [[ -f "${HOME}/Dropbox/Code/tokens/ghcr" ]]; then
   export GHCR_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/ghcr)"
 fi
 
-# Validate a Cloudformation template
-validateTemplate() {
-  template_path=$1
-  profile=$2
-  if [[ -z profile ]]; then
-    profile=default
-  fi
-  aws --profile $profile cloudformation validate-template --template-body file://$template_path
-}
 
-# Create new python module
-module() {
-  moduleName=$1
-  mkdir $moduleName
-  touch $moduleName/__init__.py
-  touch $moduleName/$moduleName.py
-}
+### PYTHON
 
-# create a kernel for use in jupyter notebook
-pykernel() {
-  ENVIRONMENT_NAME=$1
-  if [[ -z $ENVIRONMENT_NAME ]]; then
-    echo "a name for the environment must be the first argument"
-  fi
-  pipenv install ipykernel jupyterlab
-  pipenv run python -m ipykernel install --user --name=$ENVIRONMENT_NAME
-  echo "A kernel ${ENVIRONMENT_NAME} was created."
-  echo "To use activate the python environment, start jupyter, and select the kernel."
-}
-
-# Configure Java and Spark
-source ~/.config-java-spark.sh
-
-# start an ssm session
-ssmSession() {
-  target=$1
-  if [[ -z $target ]]; then
-    echo "an aws EC2 ID must be the first argument"
-    return 1
-  fi
-  aws ssm start-session --profile service-catalog \
-                        --target "${target}" \
-                        --document-name AWS-StartInteractiveCommand \
-                        --parameters command="sudo su - ec2-user"
-}
-
-scSSH() {
-  set -ex
-  target=$1
-  if [[ -z $target ]]; then
-    echo "an aws EC2 ID must be the first argument"
-  else
-    AWS_PROFILE=service-catalog
-    ssh -i ~/.ssh/id_rsa ec2-user@${target}
-  fi
-  set +ex
-}
-
-ssmPortForward() {
-  set -ex
-  target=$1
-  remotePort=$2
-  localPort=$3
-  if [[ -z $target || -z $remotePort || -z $localPort ]]; then
-    echo "arguments for an EC2 ID, a remote port, and a local port must be specified, and in that order"
-    #return 1
-  fi
-  aws ssm start-session --profile service-catalog \
-                      --target "${target}" \
-                      --document-name AWS-StartPortForwardingSession \
-                      --parameters '{"portNumber":["8787"],"localPortNumber":["8787"]}'
-  set +ex
-}
-
-listAwsProfiles() {
-  cat ~/.aws/config | grep '\['  
-}
-
-awsLogin() {
-  defaultProfile=etl-dev-admin
-  profile=$1
-  if [[ -z $profile ]]; then
-    profile=$defaultProfile
-  fi
-  aws sso login --profile $profile
-  export AWS_PROFILE=$profile
-}
-
-# Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-## iterm2 Shell Integration
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash" || true
-eval "$(/opt/homebrew/bin/brew shellenv)"
+
+### DOCKER BUSINESS
+source /Users/tessthyer/.docker/init-bash.sh || true # Added by Docker Desktop
+
+
+### SET DEFAULT AWS PROFILE
+export AWS_PROFILE=devadmin
+
+
+source "$HOME/java-setup.sh"

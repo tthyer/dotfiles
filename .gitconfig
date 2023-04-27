@@ -1,6 +1,6 @@
 [user]
     name = T. Thyer
-    email = tess.thyer@gmail.com
+    email = tthyer@powerx.ai
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ls-branches-local = for-each-ref --sort=-committerdate refs/heads/
@@ -14,9 +14,10 @@
     clone = "!f() { git clone \"$1\" && pre-commit install }; f"
     update-last = "!git add . && git commit --amend --no-edit && git push -f"
 [core]
-    excludesfile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [push]
-    default = simple
+  default = simple
+  autoSetupRemote = true
 [grep]
     lineNumber = true
 [fetch]
