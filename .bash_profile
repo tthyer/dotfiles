@@ -51,7 +51,7 @@ undotenv() {
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 ## AWS completion
-complete -C '/usr/local/bin/aws_completer' aws
+complete -C '/opt/homebrew/bin/aws_completer' aws
 
 ## Git Completion
 [[ -r "${HOME}/git-completion.bash" ]] && source "${HOME}/git-completion.bash"
@@ -77,8 +77,8 @@ pathadd "${HOME}/.local/bin" # system-wide python installs
 
 
 ### K8S aliases and functions
-if [[ -f "${PWD}/.k8s" ]]; then
-  source "${PWD}/.k8s"
+if [[ -f "${HOME}/.k8s" ]]; then
+  source "${HOME}/.k8s"
 fi
 
 
