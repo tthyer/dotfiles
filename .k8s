@@ -2,6 +2,10 @@
 alias kc='kubectl'
 alias kc-context='kubectl config current-context'
 
+switchContext() {
+  kc config set-context $1
+}
+
 getPodImage() {
  kc get pod $1 -o json | jq '.spec.containers[].image'
 }
