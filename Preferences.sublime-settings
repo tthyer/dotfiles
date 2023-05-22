@@ -1,0 +1,17 @@
+{
+	"font_face": "Inconsolata-dz",
+	"font_size": 20,
+	"rulers": [80],
+	"show_line_endings": true,
+	"tab_size": 2,
+	"translate_tabs_to_spaces": true,
+	"color_scheme": "Monokai.sublime-color-scheme",
+	"theme": "Adaptive.sublime-theme",
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"spell_check": true,
+	"show_encoding" : true,
+}
+
