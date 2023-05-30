@@ -83,6 +83,7 @@ formulae=(
   watch
   utc-menu-clock
   gdal # Geospatial Data Abstraction Library is a computer software library for reading and writing raster and vector geospatial data formats
+  mysql-client@5.7
   )
 for formula in "${formulae[@]}"
 do
