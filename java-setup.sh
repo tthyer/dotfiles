@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ${HOME}/bash_functions.sh
+
 java_path=$(brew --prefix openjdk) #should be like /opt/homebrew/opt/openjdk
 
 jdk_link_path=/Library/Java/JavaVirtualMachines/openjdk.jdk
