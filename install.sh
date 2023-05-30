@@ -47,24 +47,14 @@ do
   fi
 done
 
-if [[ -z $(which r) ]]; then
-  pkgname=R-4.2.1.pkg
-  dir=${HOME}/Downloads
-  wget https://cran.r-project.org/bin/macosx/base/${pkgname} -P ${dir}
-  sudo installer -pkg ${dir}/${pkgname} -target /
-fi
-
 installed_casks=( $(brew list --cask -1) )
 casks=(
   iterm2
   sublime-text
-  font-inconsolata-nerd-font
-  intellij-idea-ce
-  #r #install this from CRAN instead -- when installed from homebrew there are dependency issues
-  rstudio
   docker
   slack
   google-chrome
+  #rstudio
   session-manager-plugin #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
   )
 for cask in "${casks[@]}"
@@ -78,7 +68,6 @@ do
   fi
 done
 
-brew tap dbt-labs/dbt
 
 installed_formulae=( $(brew list --formula -1) )
 formulae=(
@@ -90,10 +79,8 @@ formulae=(
   pyenv
   jq
   awscli
-  graphviz
   watch
   utc-menu-clock
-  dbt-redshift
   )
 for formula in "${formulae[@]}"
 do
@@ -116,6 +103,13 @@ if [ ! -e $HOME/.dbt-completion.bash ]; then
   wget https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash -P $HOME
 fi
 
+if [[ -z $(which r) ]]; then
+  pkgname=R-4.3.0-arm64.pkg
+  dir=${HOME}/Downloads
+  wget https://cran.r-project.org/bin/macosx/big-sur-arm64/base/${pkgname} -P ${dir}
+  sudo installer -pkg ${dir}/${pkgname} -target /
+fi
+
 # Setup iTerm2 shell integration
 curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 
@@ -128,6 +122,14 @@ bash java-setup.sh
 
 source "${HOME}/.bash_profile"
 
+
+# VS code -- TODO would be nice to have this installed from here.
+
+
+
+## Google Cloud, and friends
+bash gcloud.sh
+
 # Set bottom left hot corner to sleep display
 echo "Setting hot corner..."
 defaults write com.apple.dock wvous-bl-corner -int 10
@@ -139,11 +141,10 @@ bash sublime.sh
 
 other_things_todo=(
   "Log into Chrome"
-  "Install LastPass extension in Chrome"
+  "Install password manager extension in Chrome"
   "Paste license into Sublime"
   "Sync Sublime Settings"
   "Goto https://coderwall.com/p/h6yfda/use-and-to-jump-forwards-backwards-words-in-iterm-2-on-os-x for instructions on how to set up word navigation in iTerm"
-  "TODO: find other keys configuration needed for iTerm"
   "Open Docker Desktop and login. You will also need to login on the command line."
   )
 
