@@ -43,7 +43,7 @@ alias beep='echo -e "\a"'
 
 # pathadd "/opt/homebrew/bin" # things installed by homebrew 
 pathadd "${HOME}/.local/bin" # system-wide python installs
-
+pathadd "/opt/homebrew/opt/mysql-client@5.7/bin"
 
 ### K8S aliases and functions
 if [[ -f "${HOME}/.k8s" ]]; then
