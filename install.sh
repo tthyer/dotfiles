@@ -55,7 +55,8 @@ casks=(
   slack
   google-chrome
   #rstudio
-  session-manager-plugin #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
+  #session-manager-plugin #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
+  dbeaver-community
   )
 for cask in "${casks[@]}"
 do
@@ -69,7 +70,7 @@ do
 done
 
 
-installed_formulae=( $(brew list --formula -1) )
+installed_formulae=( $(brew list --formula -1) $(brew list --cask -1))
 formulae=(
   openjdk
   tree

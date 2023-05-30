@@ -9,6 +9,10 @@ pathadd() {
   fi
 }
 
+testfunc() {
+  echo "test func!"
+}
+
 ## Always list directory contents and set title upon 'cd'
 cd() { builtin cd "$@"; echo $PWD && ls -lFah; tabTitle ${PWD##*/}; }
 
