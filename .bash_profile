@@ -82,16 +82,6 @@ if [[ -f "${HOME}/.k8s" ]]; then
 fi
 
 
-### TOKENS
-
-if [[ -f "${HOME}/Dropbox/Code/tokens/homebrew" ]]; then
-	export HOMEBREW_GITHUB_API_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/homebrew)"
-fi
-if [[ -f "${HOME}/Dropbox/Code/tokens/ghcr" ]]; then
-  export GHCR_TOKEN="$(cat ${HOME}/Dropbox/Code/tokens/ghcr)"
-fi
-
-
 ### PYTHON
 
 export PYENV_ROOT="$HOME/.pyenv"
@@ -99,12 +89,14 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 
-### DOCKER BUSINESS
-source /Users/tessthyer/.docker/init-bash.sh || true # Added by Docker Desktop
-
-
 ### SET DEFAULT AWS PROFILE
 export AWS_PROFILE=devadmin
 
 
 source "$HOME/java-setup.sh"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tessthyer/.gcloud/google-cloud-sdk/path.bash.inc' ]; then . '/Users/tessthyer/.gcloud/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tessthyer/.gcloud/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/tessthyer/.gcloud/google-cloud-sdk/completion.bash.inc'; fi
