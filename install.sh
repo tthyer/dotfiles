@@ -97,12 +97,12 @@ do
 done
 
 # download git autocompletion script
-if [ ! -e $HOME/git-completion.bash ]; then
+if [[ ! -e $HOME/git-completion.bash ]]; then
   wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
 fi
 
 # download dbt autocompletion script
-if [ ! -e $HOME/.dbt-completion.bash ]; then
+if [[ ! -e $HOME/dbt-completion.bash ]]; then
   wget https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash -P $HOME
 fi
 
