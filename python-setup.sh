@@ -8,7 +8,7 @@ eval "$(pyenv init -)"
 pyenv global "${python_version}"
 
 python -m pip install --upgrade pip
-packages=(pipenv jupyterlab pandas numpy flake8 pre-commit cfn-flip pyspark)
+packages=(pipenv poetry jupyterlab pandas numpy flake8 pre-commit cfn-flip pyspark)
 installed_packages=( $(python -m pip list) )
 for package in "${packages[@]}"
 do
