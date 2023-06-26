@@ -23,6 +23,7 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 ## Add iterm2 vars
 iterm2_print_user_vars() {
   iterm2_set_user_var awsProfile "☁️ $AWS_PROFILE"
+  iterm2_set_user_var amperonEnv "⚡️ $AMPERON_ENV"
 }
 
 ## Set iTerm2 tab titles

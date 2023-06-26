@@ -27,16 +27,12 @@
     "Red Component" : 1,
     "Blue Component" : 1
   },
-  "Ansi 3 Color" : {
-    "Green Component" : 0.73333334922790527,
+  "Ansi 5 Color" : {
+    "Green Component" : 0,
     "Red Component" : 0.73333334922790527,
-    "Blue Component" : 0
-  },
-  "Ansi 6 Color" : {
-    "Green Component" : 0.73333334922790527,
-    "Red Component" : 0,
     "Blue Component" : 0.73333334922790527
   },
+  "Use Non-ASCII Font" : false,
   "Rows" : 25,
   "Default Bookmark" : "No",
   "Non-ASCII Anti Aliased" : true,
@@ -278,7 +274,7 @@
   "Status Bar Layout" : {
     "components" : [
       {
-        "class" : "iTermStatusBarHostnameComponent",
+        "class" : "iTermStatusBarWorkingDirectoryComponent",
         "configuration" : {
           "knobs" : {
             "base: priority" : 5,
@@ -290,55 +286,22 @@
               "Green Component" : 0.10000000149011612
             },
             "maxwidth" : 1.7976931348623157e+308,
-            "minwidth" : "0",
-            "base: compression resistance" : 1,
-            "shared text color" : {
-              "Red Component" : 0.97540283203125,
-              "Color Space" : "sRGB",
-              "Blue Component" : 0.85082923997332682,
-              "Alpha Component" : 1,
-              "Green Component" : 0.45855958946049213
-            },
-            "path" : "hostname",
-            "abbreviate-localhost" : ""
-          },
-          "layout advanced configuration dictionary value" : {
-            "remove empty components" : false,
-            "auto-rainbow style" : 0,
-            "font" : ".AppleSystemUIFont 12",
-            "algorithm" : 0
-          }
-        }
-      },
-      {
-        "class" : "iTermStatusBarWorkingDirectoryComponent",
-        "configuration" : {
-          "knobs" : {
-            "base: priority" : 5,
-            "shared background color" : {
-              "Red Component" : 0.10000000000000001,
-              "Color Space" : "sRGB",
-              "Blue Component" : 0.10000000000000001,
-              "Alpha Component" : 1,
-              "Green Component" : 0.10000000000000001
-            },
-            "maxwidth" : 1.7976931348623157e+308,
             "minwidth" : 0,
-            "shared text color" : {
-              "Red Component" : 0.4673913512378931,
-              "Color Space" : "sRGB",
-              "Blue Component" : 0.916107177734375,
-              "Alpha Component" : 1,
-              "Green Component" : 0.81940213316652333
-            },
             "base: compression resistance" : 1,
+            "shared text color" : {
+              "Red Component" : 1,
+              "Color Space" : "sRGB",
+              "Blue Component" : 0.438720703125,
+              "Alpha Component" : 1,
+              "Green Component" : 0.81579597294330597
+            },
             "path" : "path"
           },
           "layout advanced configuration dictionary value" : {
             "remove empty components" : false,
-            "auto-rainbow style" : 0,
             "font" : ".AppleSystemUIFont 12",
-            "algorithm" : 0
+            "algorithm" : 0,
+            "auto-rainbow style" : 0
           }
         }
       },
@@ -357,20 +320,20 @@
             "iTermStatusBarGitComponentPollingIntervalKey" : 2,
             "maxwidth" : 1.7976931348623157e+308,
             "minwidth" : 0,
+            "base: compression resistance" : 1,
             "shared text color" : {
-              "Red Component" : 0.32573912292718887,
+              "Red Component" : 0.50049887613412092,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.37403407098890901,
+              "Blue Component" : 0.40104138385504484,
               "Alpha Component" : 1,
-              "Green Component" : 0.868072509765625
-            },
-            "base: compression resistance" : 1
+              "Green Component" : 0.953582763671875
+            }
           },
           "layout advanced configuration dictionary value" : {
             "remove empty components" : false,
-            "auto-rainbow style" : 0,
             "font" : ".AppleSystemUIFont 12",
-            "algorithm" : 0
+            "algorithm" : 0,
+            "auto-rainbow style" : 0
           }
         }
       },
@@ -378,16 +341,9 @@
         "class" : "iTermStatusBarJobComponent",
         "configuration" : {
           "knobs" : {
-            "base: priority" : 5,
             "base: compression resistance" : 1,
-            "shared text color" : {
-              "Red Component" : 0.906097412109375,
-              "Color Space" : "sRGB",
-              "Blue Component" : 0.10361166298389433,
-              "Alpha Component" : 1,
-              "Green Component" : 0.68762282202305869
-            },
-            "minwidth" : 0,
+            "maxwidth" : 1.7976931348623157e+308,
+            "base: priority" : 5,
             "shared background color" : {
               "Red Component" : 0.10000000149011612,
               "Color Space" : "sRGB",
@@ -395,13 +351,20 @@
               "Alpha Component" : 1,
               "Green Component" : 0.10000000149011612
             },
-            "maxwidth" : 1.7976931348623157e+308
+            "shared text color" : {
+              "Red Component" : 0.5079345703125,
+              "Color Space" : "sRGB",
+              "Blue Component" : 1,
+              "Alpha Component" : 1,
+              "Green Component" : 0.6850780945843391
+            },
+            "minwidth" : 0
           },
           "layout advanced configuration dictionary value" : {
             "remove empty components" : false,
-            "auto-rainbow style" : 0,
             "font" : ".AppleSystemUIFont 12",
-            "algorithm" : 0
+            "algorithm" : 0,
+            "auto-rainbow style" : 0
           }
         }
       },
@@ -417,32 +380,32 @@
               "Alpha Component" : 1,
               "Green Component" : 0
             },
-            "expression" : "\\(user.awsProfile)",
+            "expression" : "\\(user.amperonEnv)",
             "maxwidth" : 1.7976931348623157e+308,
             "minwidth" : "0",
+            "base: compression resistance" : 1,
             "shared text color" : {
               "Red Component" : 1,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.29077458381652832,
+              "Blue Component" : 0.68574944700875251,
               "Alpha Component" : 1,
-              "Green Component" : 0.93051981925964355
-            },
-            "base: compression resistance" : 1
+              "Green Component" : 0.512481689453125
+            }
           },
           "layout advanced configuration dictionary value" : {
             "remove empty components" : false,
-            "auto-rainbow style" : 0,
             "font" : ".AppleSystemUIFont 12",
-            "algorithm" : 0
+            "algorithm" : 0,
+            "auto-rainbow style" : 0
           }
         }
       }
     ],
     "advanced configuration" : {
       "remove empty components" : false,
-      "auto-rainbow style" : 0,
       "font" : ".AppleSystemUIFont 12",
-      "algorithm" : 0
+      "algorithm" : 0,
+      "auto-rainbow style" : 0
     }
   },
   "Silence Bell" : false,
@@ -465,11 +428,19 @@
     "Blue Component" : 0.73333334922790527
   },
   "Transparency" : 0,
-  "Ansi 1 Color" : {
-    "Green Component" : 0,
+  "Guid" : "5491E85E-3839-42E3-9C29-527578A6A6B6",
+  "Horizontal Spacing" : 1,
+  "Ansi 3 Color" : {
+    "Green Component" : 0.73333334922790527,
     "Red Component" : 0.73333334922790527,
     "Blue Component" : 0
   },
+  "Ansi 4 Color" : {
+    "Green Component" : 0,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  },
+  "Right Option Key Sends" : 0,
   "Ansi 2 Color" : {
     "Green Component" : 0.73333334922790527,
     "Red Component" : 0,
@@ -480,20 +451,16 @@
     "Red Component" : 0,
     "Blue Component" : 0
   },
-  "Ansi 4 Color" : {
-    "Green Component" : 0,
-    "Red Component" : 0,
-    "Blue Component" : 0.73333334922790527
-  },
-  "Ansi 5 Color" : {
+  "Normal Font" : "Inconsolata-Regular_Medium 20",
+  "Ansi 1 Color" : {
     "Green Component" : 0,
     "Red Component" : 0.73333334922790527,
-    "Blue Component" : 0.73333334922790527
+    "Blue Component" : 0
   },
-  "Use Non-ASCII Font" : false,
-  "Right Option Key Sends" : 0,
-  "Normal Font" : "InconsolataNerdFontComplete-Medium 20",
   "Custom Directory" : "Recycle",
-  "Guid" : "5491E85E-3839-42E3-9C29-527578A6A6B6",
-  "Horizontal Spacing" : 1
+  "Ansi 6 Color" : {
+    "Green Component" : 0.73333334922790527,
+    "Red Component" : 0,
+    "Blue Component" : 0.73333334922790527
+  }
 }
