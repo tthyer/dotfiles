@@ -18,6 +18,21 @@ sshPod() {
   kc exec -it $1 -- bash
 }
 
+argoSchedulingPods() {
+  kubectl get pods --all-namespaces --no-headers |  grep -v -E 'Completed|Running' | awk '{if ($1 ~ "argo-") print $0}'
+}
+export -f argoSchedulingPods
+
+argoRunningPods() {
+  kubectl get pods --all-namespaces --no-headers | grep Running | awk '{if ($1 ~ "argo-") print $0}'
+}
+export -f argoRunningPods
+
+argoActiveJobs() {
+  argo list --all-namespaces --since 6h --running
+}
+export -f argoActiveJobs
+
 opsPodName() {
   cut -d'/' -f2 <<< $(kubectl -n=default get pod -l name=k8s-ops-tools -o name)
 }
