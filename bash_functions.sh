@@ -120,3 +120,32 @@ undotenv() {
   fi
   unset $(grep -v '^#' "$env_file" | sed -E 's/(.*)=.*/\1/' | xargs)
 }
+
+
+switchEnv() {
+  env_name=$1
+  env_file_link_path="$HOME/github/amperon/amperon/.env"
+  case $env_name in
+    production_beta|development|local|testing)
+      echo "switching environment to $env_name"
+      rm -f ${env_file_link_path}
+      ln -s "$HOME/.amperon/.env.${env_name}" ${env_file_link_path}
+      ;;
+    *) echo "unknown environment $env_name: doing nothing" ;;
+  esac
+}
+
+proxyDev() {
+  cd ~/github/amperon/amperon
+  ./bin/proxy-server.sh development all
+}
+
+proxyProd() {
+  cd ~/github/amperon/amperon
+  ./bin/proxy-server.sh production_beta all:read
+}
+
+randomFreePort() {
+  python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()'
+}
+

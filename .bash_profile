@@ -41,9 +41,11 @@ alias beep='echo -e "\a"'
 
 ### PATH MANIPULATION
 
-# pathadd "/opt/homebrew/bin" # things installed by homebrew 
 pathadd "${HOME}/.local/bin" # system-wide python installs
 pathadd "/opt/homebrew/opt/mysql-client@5.7/bin"
+pathadd "${KREW_ROOT:-$HOME/.krew}/bin"
+
+#export PKG_CONFIG_PATH="$(brew --prefix mysql-client@5.7)/lib/pkgconfig"
 
 ### K8S aliases and functions
 if [[ -f "${HOME}/.k8s" ]]; then
@@ -69,3 +71,4 @@ if [ -f '/Users/tessthyer/.gcloud/google-cloud-sdk/path.bash.inc' ]; then . '/Us
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/tessthyer/.gcloud/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/tessthyer/.gcloud/google-cloud-sdk/completion.bash.inc'; fi
+
