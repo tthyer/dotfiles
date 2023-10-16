@@ -96,6 +96,18 @@ do
   fi
 done
 
+# install krew for k8s
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+
+
 # download git autocompletion script
 if [[ ! -e $HOME/git-completion.bash ]]; then
   wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P $HOME
@@ -141,20 +153,5 @@ killall Dock
 echo "Done."
 
 bash sublime.sh
-
-other_things_todo=(
-  "Log into Chrome"
-  "Install password manager extension in Chrome"
-  "Paste license into Sublime"
-  "Sync Sublime Settings"
-  "Goto https://coderwall.com/p/h6yfda/use-and-to-jump-forwards-backwards-words-in-iterm-2-on-os-x for instructions on how to set up word navigation in iTerm"
-  "Open Docker Desktop and login. You will also need to login on the command line."
-  )
-
-echo "Other things to do:"
-for i in "${other_things_todo[@]}"
-do
-  echo $i
-done
 
 set +e
