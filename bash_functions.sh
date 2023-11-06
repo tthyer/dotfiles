@@ -122,7 +122,7 @@ undotenv() {
 }
 
 
-switchEnv() {
+switchAmpEnv() {
   env_name=$1
   env_file_link_path="$HOME/github/amperon/amperon/.env"
   case $env_name in
@@ -135,12 +135,31 @@ switchEnv() {
   esac
 }
 
+switchGcpEnv() {
+  env_name=$1
+  case $env_name in
+    default)
+      echo "switching GCP environment to default"
+      gcloud config configurations activate default
+      kubectl config use-context prod
+      ;;
+    sandbox)
+      echo "switching GCP environment to sandbox"
+      gcloud config configurations activate sandbox
+      kubectl config use-context sandbox
+      ;;
+    *) echo "unknown environment $env_name: doing nothing" ;;
+  esac
+}
+
 proxyDev() {
+  switchGcpEnv default
   cd ~/github/amperon/amperon
   ./bin/proxy-server.sh development all
 }
 
 proxyProd() {
+  switchGcpEnv default
   cd ~/github/amperon/amperon
   ./bin/proxy-server.sh production_beta all:read
 }
