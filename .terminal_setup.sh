@@ -16,7 +16,7 @@ AQUA="\[\033[1;36m\]"
 
 ## Set the Command Prompt
 #export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ \[\$(iterm2_print_user_vars)\]"
-export PS1="${BLUE}\W ${GREEN}[k8s:\$(kubectl config current-context)] ${AQUA}[amp:${AMPERON_ENV}] ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ "
+export PS1="${BLUE}\W ${GREEN}(gcp:\$(gcloud info --format='value(config.active_config_name)') k8s:\$(kubectl config current-context) amp:${AMPERON_ENV}) ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ "
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
