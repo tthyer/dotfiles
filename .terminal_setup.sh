@@ -10,11 +10,13 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 # Prompt colors
 NORMAL="\[\033[00m\]"
 BLUE="\[\033[01;34m\]"
-YELLOW="\[\e[1;33m\]"
-GREEN="\[\e[1;32m\]"
+YELLOW="\[\033[1;33m\]"
+GREEN="\[\033[1;32m\]"
+AQUA="\[\033[1;36m\]"
 
 ## Set the Command Prompt
-export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ \[\$(iterm2_print_user_vars)\]"
+#export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ \[\$(iterm2_print_user_vars)\]"
+export PS1="${BLUE}\W ${GREEN}[k8s:\$(kubectl config current-context)] ${AQUA}[amp:${AMPERON_ENV}] ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ "
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
