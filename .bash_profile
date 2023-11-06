@@ -44,6 +44,7 @@ alias beep='echo -e "\a"'
 pathadd "${HOME}/.local/bin" # system-wide python installs
 pathadd "/opt/homebrew/opt/mysql-client@5.7/bin"
 pathadd "${KREW_ROOT:-$HOME/.krew}/bin"
+pathadd "/opt/homebrew/bin"
 
 #export PKG_CONFIG_PATH="$(brew --prefix mysql-client@5.7)/lib/pkgconfig"
 
