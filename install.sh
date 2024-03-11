@@ -47,6 +47,8 @@ do
   fi
 done
 
+brew update
+
 installed_casks=( $(brew list --cask -1) )
 casks=(
   iterm2
@@ -80,6 +82,8 @@ formulae=(
   pyenv
   jq
   awscli
+  azure-cli
+  Azure/kubelogin/kubelogin #azure-specific kubectl plugin
   watch
   utc-menu-clock
   gdal # Geospatial Data Abstraction Library is a computer software library for reading and writing raster and vector geospatial data formats
@@ -118,6 +122,7 @@ if [[ ! -e $HOME/dbt-completion.bash ]]; then
   wget https://raw.githubusercontent.com/fishtown-analytics/dbt-completion.bash/master/dbt-completion.bash -P $HOME
 fi
 
+#install r
 if [[ -z $(which r) ]]; then
   pkgname=R-4.3.0-arm64.pkg
   dir=${HOME}/Downloads
