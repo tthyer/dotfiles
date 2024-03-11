@@ -89,7 +89,7 @@ ssmPortForward() {
 }
 
 listAwsProfiles() {
-  cat ~/.aws/config | grep '\['  
+  cat ~/.aws/config | grep '\['
 }
 
 # use this to login if using AWS  SSO
@@ -166,5 +166,18 @@ proxyProd() {
 
 randomFreePort() {
   python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()'
+}
+
+klogs() {
+  # handles streaming logs from most k8s pods
+  local pod="$1"
+  local namespace="${2:-master}"
+  kubectl logs -f "$pod" -n "$namespace" | jq -R -r --stream --unbuffered 'fromjson? | .message'
+}
+
+
+am_klogs() {
+  # handles streaming logs from all_monitoring
+  kubectl logs -f $(kubectl get pods --selector app=all-monitoring -o name) | jq -r --stream --unbuffered '. | select(.[0][0]=="message") | .[1]'
 }
 

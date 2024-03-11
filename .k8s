@@ -21,17 +21,14 @@ sshPod() {
 argoSchedulingPods() {
   kubectl get pods --all-namespaces --no-headers |  grep -v -E 'Completed|Running' | awk '{if ($1 ~ "argo-") print $0}'
 }
-export -f argoSchedulingPods
 
 argoRunningPods() {
   kubectl get pods --all-namespaces --no-headers | grep Running | awk '{if ($1 ~ "argo-") print $0}'
 }
-export -f argoRunningPods
 
 argoActiveJobs() {
   argo list --all-namespaces --since 6h --running
 }
-export -f argoActiveJobs
 
 kubecostUi() {
   kubectl port-forward -n kubecost --context gke_applied-well-192611_us-east1_default  svc/kubecost-cost-analyzer 9090
