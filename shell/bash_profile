@@ -32,7 +32,7 @@ fi
 [[ -r "${HOME}/git-completion.bash" ]] && source "${HOME}/git-completion.bash"
 
 ## Terraform completion
-complete -C /opt/homebrew/bin/terraform terraform
+[[ -x /opt/homebrew/bin/terraform ]] && complete -C /opt/homebrew/bin/terraform terraform
 
 
 ### ALIASES
@@ -67,10 +67,10 @@ source "$HOME/java-setup.sh"
 export ARGO_API_URL=http://localhost:2746/api/v1
 export MONO="$HOME/github/amperon/amperon"
 
-# disable bracketed paste mode
-bind 'set enable-bracketed-paste off'
+# disable bracketed paste mode (interactive shells only)
+[[ $- == *i* ]] && bind 'set enable-bracketed-paste off'
 
-eval "$(direnv hook bash)"
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
 
 if [[ -f ~/.bashrc ]]; then
   source ~/.bashrc
