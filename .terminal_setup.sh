@@ -14,9 +14,16 @@ YELLOW="\[\033[1;33m\]"
 GREEN="\[\033[1;32m\]"
 AQUA="\[\033[1;36m\]"
 
-## Set the Command Prompt
-#export PS1="${BLUE}\W ${GREEN}\u ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ \[\$(iterm2_print_user_vars)\]"
-export PS1="${BLUE}\W ${GREEN}(gcp:\$(gcloud info --format='value(config.active_config_name)') k8s:\$(kubectl config current-context) amp:${AMPERON_ENV}) ${YELLOW}\$(date +'%H:%M:%S') ${NORMAL}\$ "
+set_prompt() {
+  local venv=""
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    venv="($(basename "$VIRTUAL_ENV")) "
+  fi
+
+  PS1="${venv}${BLUE}\W ${GREEN}az:$(az account show --query name -o tsv 2>/dev/null) k8s:$(kubectl config current-context 2>/dev/null)/$(kubens -c 2>/dev/null) amp:$(echo $AMPERON_ENV) ${YELLOW}$(date +'%H:%M:%S') ${NORMAL}\$ "
+}
+
+PROMPT_COMMAND=set_prompt
 
 ## Colorizes output of `ls`
 export CLICOLOR=1
@@ -32,5 +39,5 @@ iterm2_print_user_vars() {
 tabTitle() { echo -ne "\033]0;"$*"\007"; }
 
 ## sets the window name (tab) for iterm
-unset PROMPT_COMMAND
-test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";
+# unset PROMPT_COMMAND
+# test -n $ITERM_SESSION_ID && export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"${PROMPT_COMMAND}";

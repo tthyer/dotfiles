@@ -1,9 +1,8 @@
 ### K8S ALIASES
 alias kc='kubectl'
-alias kc-context='kubectl config current-context'
 
-switchContext() {
-  kc config set-context $1
+setContextNamespace() {
+  kubectl config set-context --current --namespace $1
 }
 
 getPodImage() {
@@ -55,14 +54,14 @@ copyToOpsPod() {
 }
 
 # The next line updates PATH for the Google Cloud SDK.
-if [[ -f "${HOME}/google-cloud-sdk/path.bash.inc" ]]; then
-  source "${HOME}/google-cloud-sdk/path.bash.inc"
-fi
+#if [[ -f "${HOME}/google-cloud-sdk/path.bash.inc" ]]; then
+#  source "${HOME}/google-cloud-sdk/path.bash.inc"
+#fi
 
 # The next line enables shell command completion for gcloud.
-if [[ -f "${HOME}/google-cloud-sdk/completion.bash.inc" ]]; then
-  source "${HOME}/google-cloud-sdk/completion.bash.inc"
-fi
+#if [[ -f "${HOME}/google-cloud-sdk/completion.bash.inc" ]]; then
+#  source "${HOME}/google-cloud-sdk/completion.bash.inc"
+#fi
 
 # Kubectl shell completion
 if [[ -f "${HOME}/.kube/completion.bash.inc" ]]; then

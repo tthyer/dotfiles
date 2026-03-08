@@ -74,20 +74,22 @@ done
 
 installed_formulae=( $(brew list --formula -1) $(brew list --cask -1))
 formulae=(
-  openjdk
-  tree
-  wget
-  gnu-sed
-  bash-completion
-  pyenv
-  jq
-  awscli
-  azure-cli
   Azure/kubelogin/kubelogin #azure-specific kubectl plugin
-  watch
+  #awscli
+  azure-cli
+  bash-completion
+  gnu-sed
+  jq
+  kubectl
+  kubectx
+  #mysql
+  openjdk
+  #pyenv
+  tree
   utc-menu-clock
-  gdal # Geospatial Data Abstraction Library is a computer software library for reading and writing raster and vector geospatial data formats
-  mysql-client@5.7
+  uv
+  watch
+  wget
   )
 for formula in "${formulae[@]}"
 do
