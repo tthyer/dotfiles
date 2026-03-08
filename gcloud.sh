@@ -2,7 +2,7 @@
 
 #TODO: find way to find latest version w/o hard-coding this from
 #https://cloud.google.com/sdk/docs/install
-archive=google-cloud-cli-431.0.0-darwin-arm.tar.gz
+archive=google-cloud-cli-475.0.0-darwin-arm.tar.gz
 download_dir=${HOME}/Downloads
 wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${archive} \
   -P ${download_dir}
