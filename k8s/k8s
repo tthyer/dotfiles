@@ -2,23 +2,23 @@
 alias kc='kubectl'
 
 setContextNamespace() {
-  kubectl config set-context --current --namespace $1
+  kubectl config set-context --current --namespace "$1"
 }
 
 getPodImage() {
- kc get pod $1 -o json | jq '.spec.containers[].image'
+  kc get pod "$1" -o json | jq '.spec.containers[].image'
 }
 
 getPodNode() {
-  kc get pod $1 -o json | jq '.spec.nodeName'
+  kc get pod "$1" -o json | jq '.spec.nodeName'
 }
 
 sshPod() {
-  kc exec -it $1 -- bash
+  kc exec -it "$1" -- bash
 }
 
 argoSchedulingPods() {
-  kubectl get pods --all-namespaces --no-headers |  grep -v -E 'Completed|Running' | awk '{if ($1 ~ "argo-") print $0}'
+  kubectl get pods --all-namespaces --no-headers | grep -v -E 'Completed|Running' | awk '{if ($1 ~ "argo-") print $0}'
 }
 
 argoRunningPods() {
@@ -30,42 +30,30 @@ argoActiveJobs() {
 }
 
 kubecostUi() {
-  kubectl port-forward -n kubecost --context gke_applied-well-192611_us-east1_default  svc/kubecost-cost-analyzer 9090
+  kubectl port-forward -n kubecost --context gke_applied-well-192611_us-east1_default svc/kubecost-cost-analyzer 9090
 }
 
 opsPodName() {
-  cut -d'/' -f2 <<< $(kubectl -n=default get pod -l name=k8s-ops-tools -o name)
+  cut -d'/' -f2 <<< "$(kubectl -n=default get pod -l name=k8s-ops-tools -o name)"
 }
 
 opsPod() {
-  kc -n=default exec -it $(opsPodName) -- bash
+  kc -n=default exec -it "$(opsPodName)" -- bash
 }
 
 opsPodExec() {
-  kc -n=default exec -it $(opsPodName) -- $1
+  kc -n=default exec -it "$(opsPodName)" -- "$1"
 }
 
 copyFromOpsPod() {
-  kc cp default/$(opsPodName):$1 $2
+  kc cp "default/$(opsPodName):$1" "$2"
 }
 
 copyToOpsPod() {
-  kc cp $1 default/$(opsPodName):$2
+  kc cp "$1" "default/$(opsPodName):$2"
 }
-
-# The next line updates PATH for the Google Cloud SDK.
-#if [[ -f "${HOME}/google-cloud-sdk/path.bash.inc" ]]; then
-#  source "${HOME}/google-cloud-sdk/path.bash.inc"
-#fi
-
-# The next line enables shell command completion for gcloud.
-#if [[ -f "${HOME}/google-cloud-sdk/completion.bash.inc" ]]; then
-#  source "${HOME}/google-cloud-sdk/completion.bash.inc"
-#fi
 
 # Kubectl shell completion
 if [[ -f "${HOME}/.kube/completion.bash.inc" ]]; then
   source "${HOME}/.kube/completion.bash.inc"
 fi
-
-
