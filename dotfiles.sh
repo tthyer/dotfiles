@@ -30,3 +30,8 @@ for pair in "${symlinks[@]}"; do
 
   ln -fsv "$source_path" "$target"
 done
+
+# iTerm2 Dynamic Profile (auto-loaded by iTerm2 from this directory)
+iterm2_dynamic_profiles_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+mkdir -p "$iterm2_dynamic_profiles_dir"
+ln -fsv "$DOTFILES_DIR/config/iterm2/tthyer-iterm-profile.json" "$iterm2_dynamic_profiles_dir/tthyer-iterm-profile.json"
