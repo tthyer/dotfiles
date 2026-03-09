@@ -107,6 +107,25 @@ fi
 # Setup Python
 bash setup/python-setup.sh
 
+# Check if a newer stable Python major/minor version is available
+pinned_python="3.13"
+latest_python=$(uv python list 2>/dev/null \
+  | grep -oE 'cpython-[0-9]+\.[0-9]+\.[0-9]+-' \
+  | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
+  | sort -t. -k1,1n -k2,2n -k3,3n \
+  | tail -1 \
+  | grep -oE '^[0-9]+\.[0-9]+')
+if [[ -n "$latest_python" ]]; then
+  pinned_minor=$(echo "$pinned_python" | cut -d. -f2)
+  latest_minor=$(echo "$latest_python" | cut -d. -f2)
+  if (( latest_minor > pinned_minor )); then
+    echo "WARNING: Python $latest_python is available but dotfiles are pinned to $pinned_python."
+    echo "         Update 'uv python find $pinned_python' in shell/bash_profile to use the newer version."
+  else
+    echo "Python pin ($pinned_python) is up to date."
+  fi
+fi
+
 # Setup Java
 bash java/java-setup.sh
 
