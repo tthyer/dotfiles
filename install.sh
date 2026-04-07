@@ -69,6 +69,7 @@ formulae=(
   uv
   watch
   wget
+  himalaya
   )
 for formula in "${formulae[@]}"
 do

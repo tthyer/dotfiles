@@ -15,7 +15,10 @@ symlinks=(
   "k8s/k8s:$HOME/.k8s"
   "vim/vimrc:$HOME/.vimrc"
   "java/java-setup.sh:$HOME/java-setup.sh"
+  "config/himalaya/config.toml:$HOME/.config/himalaya/config.toml"
 )
+
+mkdir -p "$HOME/.config/himalaya"
 
 for pair in "${symlinks[@]}"; do
   src="${pair%%:*}"
