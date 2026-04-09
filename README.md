@@ -12,6 +12,8 @@ cd dotfiles
 
 `install.sh` symlinks dotfiles, sets bash as default shell, installs Homebrew packages, and runs setup scripts.
 
+Ghostty config is linked to `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`. Put machine-specific overrides in `~/Library/Application Support/com.mitchellh.ghostty/local.ghostty`; that file is optional and intentionally not tracked.
+
 ## Structure
 
 ```
@@ -21,7 +23,7 @@ k8s/            kubectl aliases and helpers
 vim/            vimrc
 java/           java-setup.sh (sourced by bash_profile)
 setup/          one-time install scripts (python, git ssh)
-config/         app config backups (sublime, iterm2)
+config/         app configs (ghostty, himalaya, sublime)
 archive/        retired configs kept for reference
 dotfiles.sh     symlink manager
 install.sh      main setup orchestrator

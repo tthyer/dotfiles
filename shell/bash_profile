@@ -1,10 +1,7 @@
 ### TERMINAL SETUP
 source "${HOME}/bash_functions.sh"
 
-## iterm2 Shell Integration
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash" || true
-
-## customize iterm2
+## customize terminal
 test -h "${HOME}/.terminal_setup.sh" && source "${HOME}/.terminal_setup.sh"
 
 

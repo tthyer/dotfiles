@@ -15,15 +15,16 @@ symlinks=(
   "k8s/k8s:$HOME/.k8s"
   "vim/vimrc:$HOME/.vimrc"
   "java/java-setup.sh:$HOME/java-setup.sh"
+  "config/ghostty/config.ghostty:$HOME/Library/Application Support/com.mitchellh.ghostty/config.ghostty"
   "config/himalaya/config.toml:$HOME/.config/himalaya/config.toml"
 )
-
-mkdir -p "$HOME/.config/himalaya"
 
 for pair in "${symlinks[@]}"; do
   src="${pair%%:*}"
   target="${pair#*:}"
   source_path="$DOTFILES_DIR/$src"
+
+  mkdir -p "$(dirname "$target")"
 
   # Back up existing non-symlink files
   if [[ -e "$target" && ! -L "$target" ]]; then
@@ -33,8 +34,3 @@ for pair in "${symlinks[@]}"; do
 
   ln -fsv "$source_path" "$target"
 done
-
-# iTerm2 Dynamic Profile (auto-loaded by iTerm2 from this directory)
-iterm2_dynamic_profiles_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
-mkdir -p "$iterm2_dynamic_profiles_dir"
-ln -fsv "$DOTFILES_DIR/config/iterm2/tthyer-iterm-profile.json" "$iterm2_dynamic_profiles_dir/tthyer-iterm-profile.json"
