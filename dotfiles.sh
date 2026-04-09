@@ -8,6 +8,7 @@ symlinks=(
   "shell/bash_profile:$HOME/.bash_profile"
   "shell/bashrc:$HOME/.bashrc"
   "shell/bash_functions.sh:$HOME/bash_functions.sh"
+  "shell/ghostty-bash:$HOME/.local/bin/ghostty-bash"
   "shell/terminal_setup.sh:$HOME/.terminal_setup.sh"
   "shell/warp_setup.sh:$HOME/.warp_setup.sh"
   "git/gitconfig:$HOME/.gitconfig"

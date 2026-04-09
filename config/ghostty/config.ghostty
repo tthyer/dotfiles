@@ -18,7 +18,7 @@ cursor-style = block
 copy-on-select = clipboard
 confirm-close-surface = false
 macos-option-as-alt = left
-command = /opt/homebrew/bin/bash
+command = shell:$HOME/.local/bin/ghostty-bash
 shell-integration = bash
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
 
