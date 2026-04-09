@@ -23,11 +23,5 @@ PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
-## Add iterm2 vars
-iterm2_print_user_vars() {
-  iterm2_set_user_var awsProfile "$AWS_PROFILE"
-  iterm2_set_user_var amperonEnv "$AMPERON_ENV"
-}
-
-## Set iTerm2 tab titles
+## Set terminal tab titles
 tabTitle() { echo -ne "\033]0;$*\007"; }

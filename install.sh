@@ -35,7 +35,7 @@ brew update
 
 installed_casks=( $(brew list --cask -1) )
 casks=(
-  iterm2
+  ghostty
   sublime-text
   docker
   slack
@@ -65,7 +65,6 @@ formulae=(
   kubectx
   openjdk
   tree
-  utc-menu-clock
   uv
   watch
   wget
@@ -98,11 +97,6 @@ fi
 # download git autocompletion script
 if [[ ! -e "$HOME/git-completion.bash" ]]; then
   wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P "$HOME"
-fi
-
-# Setup iTerm2 shell integration (idempotent)
-if [[ ! -e "$HOME/.iterm2_shell_integration.bash" ]]; then
-  curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 fi
 
 # Setup Python
