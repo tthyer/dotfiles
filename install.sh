@@ -35,6 +35,7 @@ brew update
 
 installed_casks=( $(brew list --cask -1) )
 casks=(
+  font-jetbrains-mono
   ghostty
   sublime-text
   docker
