@@ -20,7 +20,9 @@ fi
 ### COMPLETION
 
 ## Bash Completion
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
+if (( BASH_VERSINFO[0] > 4 || (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 4) )); then
+  [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
+fi
 
 ## AWS completion
 #command -v aws_completer &>/dev/null && complete -C "$(command -v aws_completer)" aws
