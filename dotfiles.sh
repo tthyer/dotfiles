@@ -15,7 +15,7 @@ symlinks=(
   "k8s/k8s:$HOME/.k8s"
   "vim/vimrc:$HOME/.vimrc"
   "java/java-setup.sh:$HOME/java-setup.sh"
-  "config/ghostty/config.ghostty:$HOME/Library/Application Support/com.mitchellh.ghostty/config.ghostty"
+  "config/ghostty/config.ghostty:$HOME/Library/Application Support/com.mitchellh.ghostty/config"
   "config/himalaya/config.toml:$HOME/.config/himalaya/config.toml"
 )
 
@@ -34,3 +34,8 @@ for pair in "${symlinks[@]}"; do
 
   ln -fsv "$source_path" "$target"
 done
+
+ghostty_new_config="$HOME/Library/Application Support/com.mitchellh.ghostty/config.ghostty"
+if [[ -L "$ghostty_new_config" && "$(readlink "$ghostty_new_config")" == "$DOTFILES_DIR/config/ghostty/config.ghostty" ]]; then
+  rm -v "$ghostty_new_config"
+fi

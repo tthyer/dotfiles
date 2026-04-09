@@ -12,7 +12,7 @@ cd dotfiles
 
 `install.sh` symlinks dotfiles, sets bash as default shell, installs Homebrew packages, and runs setup scripts.
 
-Ghostty config is linked to `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`. Put machine-specific overrides in `~/Library/Application Support/com.mitchellh.ghostty/local.ghostty`; that file is optional and intentionally not tracked.
+Ghostty config is linked to `~/Library/Application Support/com.mitchellh.ghostty/config`. Put machine-specific overrides in `~/Library/Application Support/com.mitchellh.ghostty/local.ghostty`; that file is optional and intentionally not tracked.
 
 ## Structure
 
