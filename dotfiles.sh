@@ -16,7 +16,7 @@ symlinks=(
   "k8s/k8s:$HOME/.k8s"
   "vim/vimrc:$HOME/.vimrc"
   "java/java-setup.sh:$HOME/java-setup.sh"
-  "config/ghostty/config.ghostty:$HOME/.config/ghostty/config.ghostty"
+  "config/ghostty/config.ghostty:$HOME/.config/ghostty/config"
   "config/himalaya/config.toml:$HOME/.config/himalaya/config.toml"
 )
 
