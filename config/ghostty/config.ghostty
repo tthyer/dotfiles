@@ -1,9 +1,9 @@
 # Main Ghostty config.
 # Machine-specific overrides can live next to this file as local.ghostty.
 
-theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+theme = Catppuccin Mocha
 font-family = JetBrains Mono
-font-size = 14
+font-size = 18
 font-feature = -calt, -liga, -dlig
 
 window-padding-x = 8

@@ -3,11 +3,7 @@ set -euo pipefail
 
 for bash_path in /opt/homebrew/bin/bash /usr/local/bin/bash /bin/bash; do
   if [[ -x "$bash_path" ]]; then
-    if (($#)); then
-      exec "$bash_path" "$@"
-    else
-      exec "$bash_path" -l
-    fi
+    exec "$bash_path" --login "$@"
   fi
 done
 
