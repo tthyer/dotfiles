@@ -5,11 +5,15 @@ set -e
 # Move dotfiles into place
 ./dotfiles.sh
 
-# Change the default shell to bash
+# Change the default shell to homebrew bash
+HOMEBREW_BASH=/opt/homebrew/bin/bash
+if ! grep -qF "$HOMEBREW_BASH" /etc/shells; then
+  echo "Adding $HOMEBREW_BASH to /etc/shells (requires sudo)..."
+  sudo bash -c "echo $HOMEBREW_BASH >> /etc/shells"
+fi
 user_shell=$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}')
-if [[ "$user_shell" != *bash* ]]; then
-  # this will prompt for password
-  chsh -s /bin/bash
+if [[ "$user_shell" != "$HOMEBREW_BASH" ]]; then
+  chsh -s "$HOMEBREW_BASH"
 fi
 
 # Install command line tools
