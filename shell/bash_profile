@@ -28,7 +28,9 @@ fi
 #command -v aws_completer &>/dev/null && complete -C "$(command -v aws_completer)" aws
 
 ## Git Completion
-[[ -r "${HOME}/git-completion.bash" ]] && source "${HOME}/git-completion.bash"
+if (( BASH_VERSINFO[0] > 4 || (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 4) )); then
+  [[ -r "${HOME}/git-completion.bash" ]] && source "${HOME}/git-completion.bash"
+fi
 
 ## Terraform completion
 [[ -x /opt/homebrew/bin/terraform ]] && complete -C /opt/homebrew/bin/terraform terraform
