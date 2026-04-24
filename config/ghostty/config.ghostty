@@ -30,5 +30,3 @@ keybind = cmd+shift+d=new_split:down
 keybind = cmd+shift+[=previous_tab
 keybind = cmd+shift+]=next_tab
 keybind = cmd+shift+,=reload_config
-
-config-file = ?local.ghostty
