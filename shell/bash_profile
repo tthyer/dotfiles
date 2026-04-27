@@ -64,6 +64,9 @@ fi
 source "$HOME/java-setup.sh"
 
 
+### CLAUDE CODE
+export CLAUDE_CODE_NO_FLICKER=0
+
 ### ARGO
 export ARGO_API_URL=http://localhost:2746/api/v1
 export MONO="$HOME/github/amperon/amperon"
