@@ -74,6 +74,7 @@ export MONO="$HOME/github/amperon/amperon"
 # disable bracketed paste mode (interactive shells only)
 [[ $- == *i* ]] && bind 'set enable-bracketed-paste off'
 
+export DIRENV_LOG_FORMAT=""
 command -v direnv &>/dev/null && eval "$(direnv hook bash)"
 
 if [[ -f ~/.bashrc ]]; then
