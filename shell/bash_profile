@@ -1,3 +1,5 @@
+export EDITOR=vim
+
 ### TERMINAL SETUP
 source "${HOME}/bash_functions.sh"
 
@@ -41,6 +43,7 @@ fi
 alias ls='ls -G'
 alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
 alias beep='echo -e "\a"'
+alias daynight='osascript -e "tell application \"System Events\" to tell appearance preferences to set dark mode to not dark mode"'
 
 # Directory navigation shortcuts
 alias amperon='cd "$HOME/github/amperon/amperon" && echo "Switched to amperon repo: $(pwd)" && ls -la'
