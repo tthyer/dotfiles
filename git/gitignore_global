@@ -7,3 +7,6 @@ target/
 *.iml
 venv
 .vscode
+.omc/
+
+**/.claude/settings.local.json
