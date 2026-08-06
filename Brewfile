@@ -11,8 +11,6 @@
 
 # ---------------------------------------------------------------- taps
 tap "hashicorp/tap"          # terraform
-tap "4ier/tap"               # notion-cli
-tap "anomalyco/tap"          # opencode
 tap "stablyai/orca"          # Orca ADE — NOT the plotly `orca` cask in core
 
 # ------------------------------------------------- shell & core CLI
@@ -23,6 +21,7 @@ brew "findutils"
 brew "gnu-sed"
 brew "grep"
 brew "parallel"
+brew "gnu-time"
 brew "direnv"
 brew "tree"
 brew "watch"
@@ -51,7 +50,7 @@ brew "kustomize"
 brew "helm"
 brew "argo"
 brew "argocd"
-brew "k9s"
+brew "k9s"                   # the TUI; Headlamp below is the only GUI kept
 brew "minikube"
 brew "skaffold"
 brew "colima"
@@ -93,6 +92,9 @@ cask "codex"
 cask "cmux"                  # status pills wired up in shell/bashrc
 cask "stablyai/orca/orca"    # fully qualified: bare `orca` is plotly's, deprecated
 
+# ------------------------------------------------------------ email
+brew "himalaya"              # account config + Keychain helper live in the overlay
+
 # ----------------------------------------------------- docs & text
 brew "pandoc"
 brew "docutils"
@@ -106,6 +108,7 @@ brew "yt-dlp"
 # ------------------------------------------------- network & system
 brew "nmap"
 brew "gnupg"
+brew "arp-scan"
 
 # ------------------------------------------------------------ fonts
 cask "font-jetbrains-mono"
@@ -117,9 +120,12 @@ cask "google-chrome"
 cask "brave-browser"
 cask "slack"
 cask "docker-desktop"        # supersedes the old `docker` cask
-cask "dbeaver-community"
+cask "headlamp"
 cask "notion-cli"
 cask "session-manager-plugin"
+
+# No SQL GUI client: DataGrip, DBeaver, and TablePlus were all dropped in
+# favour of querying through the `amp:databases` skill.
 
 # --------------------------------------------------- GUI: personal
 cask "adobe-acrobat-reader"
@@ -127,7 +133,6 @@ cask "discord"
 cask "telegram"
 cask "whatsapp"
 cask "zoom"
-cask "anki"
 cask "tidal"
 cask "notunes"               # stops the media key launching Apple Music
 cask "stats"                 # menu-bar system monitor
@@ -135,48 +140,50 @@ cask "hiddenbar"
 cask "nordvpn"
 
 # ---------------------------------------------------- GUI: virtual
-cask "virtualbox"
+cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # VMware Fusion has no cask — Broadcom moved it behind an account login.
 # Download from support.broadcom.com by hand if you still need it.
 
 # ==============================================================
-# TRIAGE — decide before the migration, then delete this block.
-#
-# Install dates come from `brew info`, which records when a package was
-# INSTALLED, not when it was last used. macOS doesn't update atime on
-# read, so no last-used signal exists. Treat these as prompts, not proof.
+# DROPPED — decided during the 2026-08 migration. Kept as a record so
+# these don't get quietly reinstated. Delete once the move is done.
 # ==============================================================
 
-# --- looks abandoned; dates are last install ---
-# brew "sampler"             # 2023-09
-# brew "remake"              # 2024-03
-# brew "arp-scan"            # 2024-06
-# brew "kubespy"             # 2024-07
-# brew "gnu-time"            # 2024-11
+# --- formulae ---
+# brew "sampler"             # TUI dashboards, 2023
 # brew "gogcli"              # GOG downloader
-# brew "himalaya"            # CLI email — still reading mail this way?
-# brew "neovim"              # 2 launches ever, 0 files edited; see plan Phase 1
-# brew "anomalyco/tap/opencode"   # superseded by Orca?
-# brew "4ier/tap/notion-cli"      # you also use `ntn` from ~/.local/bin
+# brew "kubespy"             # k8s object tracing, 2024
+# brew "remake"              # GNU make debugger, 2024
+# brew "anomalyco/tap/opencode"   # superseded by Orca
+# brew "4ier/tap/notion-cli" # v0.4.0, provides `notion`; the cask v0.6.0 wins
+# brew "neovim"              # 2 launches ever, 0 files edited
 
-# --- superseded terminals ---
-# cask "warp"                # Ghostty replaced it
-# cask "iterm2"              # ditto
-
-# --- five kubernetes UIs; you probably want one or two ---
-# cask "openlens"
-# cask "kui"
-# cask "headlamp"
-#   (k9s above is the TUI and is staying)
-
-# --- awaiting your call ---
-# cask "visual-studio-code"  # settings.json touched Jun 4; still used post-Orca?
-# cask "claude"              # desktop app, separate from the Claude Code CLI
-# cask "datagrip"            # app data from Oct 2024
-# cask "tableplus"           # third SQL client alongside DataGrip + DBeaver
-# cask "sublime-text"        # dropping, confirmed
+# --- casks ---
+# cask "visual-studio-code"  # dropped deliberately — do not reinstate
+# cask "anki"                # 3 launches, 2023
+# cask "virtualbox"          # can't run macOS guests on ARM; UTM replaces it
+# cask "claude"              # desktop app, Apr 2026, minimal use
+# cask "bartender"           # Hidden Bar replaced it
+# cask "mactex-no-gui"       # several GB of LaTeX
 # cask "codeql"
 # cask "pants"
-# cask "mactex-no-gui"       # large; still writing LaTeX?
-# cask "microsoft-office"    # or is this MDM-managed by Company Portal?
+# cask "microsoft-office"    # MDM-managed via Company Portal
 # cask "microsoft-teams"     # ditto
+# cask "warp"                # Ghostty replaced it
+# cask "iterm2"              # ditto
+# cask "openlens"            # Headlamp kept instead
+# cask "lens"                # never launched
+# cask "kui"                 # never launched
+# cask "datagrip"            # querying goes through the databases skill now
+# cask "dbeaver-community"
+# cask "tableplus"
+# cask "cursor"              # unused since Aug 2025
+
+# --- taps with nothing installed ---
+# tap "4ier/tap"             # only provided the dropped notion-cli formula
+# tap "anomalyco/tap"        # only provided opencode
+# tap "lox/tap"
+# tap "powershell/tap"
+# tap "grafana/pyroscope"
+# tap "pantsbuild/tap"
+# tap "manaflow-ai/cmux"     # cmux is in homebrew/cask core now

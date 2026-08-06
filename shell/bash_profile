@@ -1,5 +1,14 @@
 export EDITOR=vim
 
+### HISTORY
+# bash defaults to 500 lines, which silently discards anything older than
+# roughly the last few days.
+export HISTSIZE=100000
+export HISTFILESIZE=200000
+export HISTCONTROL=ignoredups:erasedups
+export HISTTIMEFORMAT='%F %T '
+shopt -s histappend
+
 ### TERMINAL SETUP
 source "${HOME}/bash_functions.sh"
 
