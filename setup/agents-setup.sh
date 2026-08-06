@@ -78,8 +78,19 @@ PY
 echo "==> Linking Claude assets..."
 ln -fsv "$DOTFILES_DIR/config/claude/CLAUDE.md"            "$HOME/.claude/CLAUDE.md"
 ln -fsv "$DOTFILES_DIR/config/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
-ln -fsnv "$DOTFILES_DIR/config/claude/agents"              "$HOME/.claude/agents"
-ln -fsnv "$DOTFILES_DIR/config/claude/skills"              "$HOME/.claude/skills"
+
+# `ln -sn` onto an existing directory links *inside* it instead of replacing
+# it, so an existing real directory has to be cleared first.
+link_dir() {
+  local src="$1" target="$2"
+  if [[ -d "$target" && ! -L "$target" ]]; then
+    echo "    replacing directory $target with a link"
+    rm -rf "$target"
+  fi
+  ln -fsnv "$src" "$target"
+}
+link_dir "$DOTFILES_DIR/config/claude/agents" "$HOME/.claude/agents"
+link_dir "$DOTFILES_DIR/config/claude/skills" "$HOME/.claude/skills"
 
 # Plugins are regenerated, never copied: ~/.claude/plugins is a ~500MB cache.
 if command -v claude &>/dev/null; then
