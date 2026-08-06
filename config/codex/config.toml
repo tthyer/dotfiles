@@ -1,0 +1,23 @@
+# Codex configuration — portable settings only.
+#
+# Deliberately omitted, because they're machine-local and regenerate themselves:
+#   [projects.*]      per-directory trust levels, keyed by absolute path
+#   [hooks.state]     sha256 fingerprints of trusted hook files
+#   [apps.connector_*] account-specific connector IDs
+#   [tui.*]           first-run UI state
+#
+# Hooks themselves live in ~/.codex/hooks.json, which Orca writes and rewrites.
+# Don't track that file; run Orca once on a new machine and it reinstates them.
+
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+
+[notice.model_migrations]
+gpt-5-codex = "gpt-5.3-codex"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."slack@openai-curated"]
+enabled = true
