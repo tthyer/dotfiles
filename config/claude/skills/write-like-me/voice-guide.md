@@ -70,7 +70,7 @@ She tags work to a Jira key or a topic, usually with a terse intent clause right
 
 - ✅ "<DET-3372> I plan to fix this today"
 - ✅ "I am working on this ticket and I have a number of silly questions. <DES-372>"
-- ✅ "Problems caching REDACTED-IMAGE in CI :thread:"
+- ✅ "Problems caching the CI base image :thread:"
 - ✅ prefixes: "For next workflow pod meeting:", "For transparency…", "TLDR:", "$0.02"
 
 ### 1.9 State positively (no define-by-negation)

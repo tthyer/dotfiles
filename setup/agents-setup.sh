@@ -79,18 +79,29 @@ echo "==> Linking Claude assets..."
 ln -fsv "$DOTFILES_DIR/config/claude/CLAUDE.md"            "$HOME/.claude/CLAUDE.md"
 ln -fsv "$DOTFILES_DIR/config/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
 
-# `ln -sn` onto an existing directory links *inside* it instead of replacing
-# it, so an existing real directory has to be cleared first.
-link_dir() {
-  local src="$1" target="$2"
-  if [[ -d "$target" && ! -L "$target" ]]; then
-    echo "    replacing directory $target with a link"
-    rm -rf "$target"
-  fi
-  ln -fsnv "$src" "$target"
+# Skills and agents are contributed by BOTH repos, so link each item rather
+# than the containing directory — a directory symlink would let whichever
+# repo ran last hide the other's.
+#
+# `ln -sn` onto an existing directory also links *inside* it instead of
+# replacing it, hence the explicit clear.
+link_into() {
+  local src_dir="$1" dest_dir="$2"
+  [[ -d "$src_dir" ]] || return 0
+  mkdir -p "$dest_dir"
+  local item target
+  for item in "$src_dir"/*; do
+    [[ -e "$item" ]] || continue
+    target="$dest_dir/$(basename "$item")"
+    if [[ -e "$target" && ! -L "$target" ]]; then
+      echo "    replacing $target"
+      rm -rf "$target"
+    fi
+    ln -fsnv "$item" "$target"
+  done
 }
-link_dir "$DOTFILES_DIR/config/claude/agents" "$HOME/.claude/agents"
-link_dir "$DOTFILES_DIR/config/claude/skills" "$HOME/.claude/skills"
+link_into "$DOTFILES_DIR/config/claude/skills" "$HOME/.claude/skills"
+link_into "$DOTFILES_DIR/config/claude/agents" "$HOME/.claude/agents"
 
 # Plugins are regenerated, never copied: ~/.claude/plugins is a ~500MB cache.
 if command -v claude &>/dev/null; then
@@ -126,8 +137,8 @@ else
   echo "    installed a fresh ~/.codex/config.toml"
 fi
 
-ln -fsnv "$DOTFILES_DIR/config/codex/rules"    "$HOME/.codex/rules"
-ln -fsnv "$DOTFILES_DIR/config/codex/memories" "$HOME/.codex/memories"
+link_into "$DOTFILES_DIR/config/codex/memories" "$HOME/.codex/memories"
+link_into "$DOTFILES_DIR/config/codex/rules"    "$HOME/.codex/rules"
 
 echo "==> Agent setup complete."
 echo "    Run Orca once to reinstate its hooks in Claude, Codex, and Gemini."
