@@ -1,93 +1,76 @@
 #!/usr/bin/env bash
+#
+# Main setup orchestrator. Safe to re-run.
+#
+#   ./install.sh
+#
+# Picks up the private overlay automatically if it's cloned to
+# ~/github/tthyer/dotfiles-work (override with DOTFILES_OVERLAY).
 
-set -e
+set -euo pipefail
 
-# Move dotfiles into place
-./dotfiles.sh
-
-# Change the default shell to homebrew bash
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OVERLAY_DIR="${DOTFILES_OVERLAY:-$HOME/github/tthyer/dotfiles-work}"
 HOMEBREW_BASH=/opt/homebrew/bin/bash
-if ! grep -qF "$HOMEBREW_BASH" /etc/shells; then
-  echo "Adding $HOMEBREW_BASH to /etc/shells (requires sudo)..."
-  sudo bash -c "echo $HOMEBREW_BASH >> /etc/shells"
-fi
-user_shell=$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}')
-if [[ "$user_shell" != "$HOMEBREW_BASH" ]]; then
-  chsh -s "$HOMEBREW_BASH"
-fi
 
-# Install command line tools
+# ---------------------------------------------------------------- xcode
 if [[ -d /Library/Developer/CommandLineTools ]]; then
- echo "Xcode command line tools already installed, skipping."
+  echo "==> Xcode command line tools already installed."
 else
- echo "Installing xcode command line tools"
+  echo "==> Installing Xcode command line tools..."
   xcode-select --install
+  echo "    Re-run this script once the installer finishes."
+  exit 0
 fi
 
-# HOMEBREW
-if ! command -v brew &> /dev/null; then
-  echo "Installing Homebrew..."
+# ------------------------------------------------------------- homebrew
+if ! command -v brew &>/dev/null; then
+  echo "==> Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.bash_profile"
   eval "$(/opt/homebrew/bin/brew shellenv)"
-  echo "Done."
 else
-  echo "Homebrew is already installed, skipping."
+  echo "==> Homebrew already installed."
 fi
 
+echo "==> Updating Homebrew..."
 brew update
 
-installed_casks=( $(brew list --cask -1) )
-casks=(
-  font-jetbrains-mono
-  ghostty
-  sublime-text
-  docker
-  slack
-  google-chrome
-  dbeaver-community
-  )
-for cask in "${casks[@]}"
-do
-  if [[ "${installed_casks[@]}" =~ "${cask}" ]]; then
-    echo "${cask} is already installed, skipping."
-  else
-    echo "Installing ${cask} through Homebrew Cask..."
-    brew install --cask "${cask}"
-    echo "Done."
+echo "==> Installing packages from Brewfile..."
+brew bundle --file="$DOTFILES_DIR/Brewfile"
+
+if [[ -f "$OVERLAY_DIR/Brewfile.work" ]]; then
+  echo "==> Installing packages from the private overlay..."
+  brew bundle --file="$OVERLAY_DIR/Brewfile.work"
+fi
+
+# --------------------------------------------------------------- dotfiles
+# After Homebrew, so the symlinks land on a machine that has the tools.
+echo "==> Linking dotfiles..."
+"$DOTFILES_DIR/dotfiles.sh"
+
+# ------------------------------------------------------------ login shell
+# Homebrew bash 5, not Apple's /bin/bash 3.2. Verifies rather than assumes.
+if [[ -x "$HOMEBREW_BASH" ]]; then
+  if ! grep -qF "$HOMEBREW_BASH" /etc/shells; then
+    echo "==> Adding $HOMEBREW_BASH to /etc/shells (requires sudo)..."
+    sudo bash -c "echo $HOMEBREW_BASH >> /etc/shells"
   fi
-done
-
-
-installed_formulae=( $(brew list --formula -1) $(brew list --cask -1))
-formulae=(
-  Azure/kubelogin/kubelogin
-  azure-cli
-  bash-completion
-  gnu-sed
-  jq
-  kubectl
-  kubectx
-  openjdk
-  tree
-  uv
-  watch
-  wget
-  himalaya
-  )
-for formula in "${formulae[@]}"
-do
-  if [[ "${installed_formulae[@]}" =~ "${formula}" ]]; then
-    echo "${formula} is already installed, skipping."
+  user_shell=$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}')
+  if [[ "$user_shell" != "$HOMEBREW_BASH" ]]; then
+    echo "==> Setting login shell to $HOMEBREW_BASH..."
+    chsh -s "$HOMEBREW_BASH"
+    user_shell=$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}')
+    if [[ "$user_shell" != "$HOMEBREW_BASH" ]]; then
+      echo "    WARNING: login shell is still '$user_shell'. Set it by hand." >&2
+    fi
   else
-    echo "Installing ${formula} through Homebrew..."
-    brew install "${formula}"
-    echo "Done."
+    echo "==> Login shell already $HOMEBREW_BASH."
   fi
-done
+fi
 
-# install krew for k8s (idempotent)
+# ------------------------------------------------------------------ krew
 if ! kubectl krew version &>/dev/null; then
+  echo "==> Installing krew..."
   (
     set -x; cd "$(mktemp -d)" &&
     OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
@@ -99,15 +82,19 @@ if ! kubectl krew version &>/dev/null; then
   )
 fi
 
-# download git autocompletion script
+# ------------------------------------------------- git bash completion
 if [[ ! -e "$HOME/git-completion.bash" ]]; then
-  wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -P "$HOME"
+  echo "==> Fetching git bash completion..."
+  curl -fsSL -o "$HOME/git-completion.bash" \
+    https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 fi
 
-# Setup Python
-bash setup/python-setup.sh
+# ------------------------------------------------------ language tools
+bash "$DOTFILES_DIR/setup/python-setup.sh"
+bash "$DOTFILES_DIR/setup/node-setup.sh"
+bash "$DOTFILES_DIR/java/java-setup.sh"
 
-# Check if a newer stable Python major/minor version is available
+# Warn when the pinned Python minor version has fallen behind.
 pinned_python="3.13"
 latest_python=$(uv python list 2>/dev/null \
   | grep -oE 'cpython-[0-9]+\.[0-9]+\.[0-9]+-' \
@@ -116,29 +103,26 @@ latest_python=$(uv python list 2>/dev/null \
   | tail -1 \
   | grep -oE '^[0-9]+\.[0-9]+')
 if [[ -n "$latest_python" ]]; then
-  pinned_minor=$(echo "$pinned_python" | cut -d. -f2)
-  latest_minor=$(echo "$latest_python" | cut -d. -f2)
-  if (( latest_minor > pinned_minor )); then
-    echo "WARNING: Python $latest_python is available but dotfiles are pinned to $pinned_python."
-    echo "         Update 'uv python find $pinned_python' in shell/bash_profile to use the newer version."
-  else
-    echo "Python pin ($pinned_python) is up to date."
+  if (( $(echo "$latest_python" | cut -d. -f2) > $(echo "$pinned_python" | cut -d. -f2) )); then
+    echo "WARNING: Python $latest_python is available but dotfiles pin $pinned_python."
+    echo "         Update 'uv python find $pinned_python' in shell/bash_profile."
   fi
 fi
 
-# Setup Java
-bash java/java-setup.sh
+# ----------------------------------------------------- agents & macOS
+bash "$DOTFILES_DIR/setup/agents-setup.sh"
+bash "$DOTFILES_DIR/macos/defaults.sh"
 
+# ---------------------------------------------------------- overlay
+if [[ -x "$OVERLAY_DIR/apply.sh" ]]; then
+  echo "==> Applying private overlay from $OVERLAY_DIR..."
+  bash "$OVERLAY_DIR/apply.sh"
+else
+  echo "==> No private overlay found at $OVERLAY_DIR (skipping)."
+  echo "    Work config lives there; clone it and re-run to pick it up."
+fi
 
-source "${HOME}/.bash_profile"
-
-# Set bottom left hot corner to sleep display
-echo "Setting hot corner..."
-defaults write com.apple.dock wvous-bl-corner -int 10
-defaults write com.apple.dock wvous-bl-modifier -int 0
-killall Dock
-echo "Done."
-
-bash config/sublime/sublime.sh
-
-set +e
+echo
+echo "==> Done. Open a new shell, then check:"
+echo "      echo \$BASH_VERSION        # expect 5.x"
+echo "      dscl . -read ~/ UserShell  # expect $HOMEBREW_BASH"
