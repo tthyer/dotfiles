@@ -1,6 +1,11 @@
 [user]
     name = T. Thyer
     email = 1972488+tthyer@users.noreply.github.com
+
+; Work identity, from the private overlay. Absent on a personal machine,
+; in which case the noreply address above applies everywhere.
+[includeIf "gitdir:~/github/amperon/"]
+    path = ~/.gitconfig-work
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     branch-name = "!git rev-parse --abbrev-ref HEAD"

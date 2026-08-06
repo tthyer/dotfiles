@@ -45,11 +45,6 @@ alias epoch='date -j -f "%a %b %d %T %Z %Y" "`date`" "+%s"'
 alias beep='echo -e "\a"'
 alias daynight='osascript -e "tell application \"System Events\" to tell appearance preferences to set dark mode to not dark mode"'
 
-# Directory navigation shortcuts
-alias amperon='cd "$HOME/github/amperon/amperon" && echo "Switched to amperon repo: $(pwd)" && ls -la'
-alias infra='cd "$HOME/github/amperon/infra-azure" && echo "Switched to infra-azure repo: $(pwd)" && ls -la'
-alias repos='echo "Available repositories:" && echo "  amperon - Main amperon repository" && echo "  infra   - Infrastructure (Azure) repository"'
-
 
 ### PATH MANIPULATION
 
@@ -70,9 +65,10 @@ source "$HOME/java-setup.sh"
 ### CLAUDE CODE
 export CLAUDE_CODE_NO_FLICKER=0
 
-### ARGO
-export ARGO_API_URL=http://localhost:2746/api/v1
-export MONO="$HOME/github/amperon/amperon"
+### WORK ENVIRONMENT
+# Repo shortcuts, work env vars, and anything else tied to a specific
+# employer live in the private overlay. Absent on a personal machine.
+[[ -f "${HOME}/.work_setup.sh" ]] && source "${HOME}/.work_setup.sh"
 
 # disable bracketed paste mode (interactive shells only)
 [[ $- == *i* ]] && bind 'set enable-bracketed-paste off'

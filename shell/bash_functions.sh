@@ -39,20 +39,5 @@ az_subscription() {
   az account show --name "$name" --query "id"
 }
 
-why() {
-  python dev_tools/parse_argo_logs.py "$1"
-}
-
-# Login to Azure Container Registry
-acr_login() {
-  az acr login --name REDACTED-ACR
-}
-
-# Amperon workspace venv activation
-amp() {
-  source ~/github/amperon/amperon/.venv/bin/activate
-}
-
-omd() {
-  source ~/github/amperon/openmetadata-dags/.venv/bin/activate
-}
+# Work-specific functions (repo venvs, container registry login, log parsing)
+# live in the private overlay's shell/work.sh.
