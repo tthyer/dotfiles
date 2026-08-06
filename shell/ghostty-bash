@@ -1,11 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Resolve a real bash.
+bash_bin=
 for bash_path in /opt/homebrew/bin/bash /usr/local/bin/bash /bin/bash; do
-  if [[ -x "$bash_path" ]]; then
-    exec "$bash_path" --login "$@"
-  fi
+  if [[ -x "$bash_path" ]]; then bash_bin="$bash_path"; break; fi
 done
+[[ -z "$bash_bin" ]] && { echo "No bash executable found." >&2; exit 127; }
 
-echo "No bash executable found." >&2
-exit 127
+# Launch the tmux status-bar shim, unless:
+#   - tmux isn't installed
+#   - we're already inside tmux (avoid recursion)
+#   - the kill switch file exists  ->  touch ~/.config/tmux/DISABLED
+# Resolve tmux by absolute path: Ghostty's GUI PATH lacks /opt/homebrew/bin.
+tmux_bin=
+for tmux_path in /opt/homebrew/bin/tmux /usr/local/bin/tmux /usr/bin/tmux; do
+  if [[ -x "$tmux_path" ]]; then tmux_bin="$tmux_path"; break; fi
+done
+if [[ -n "$tmux_bin" && -z "${TMUX:-}" && ! -f "$HOME/.config/tmux/DISABLED" ]]; then
+  # One throwaway session per Ghostty surface; closing the shell closes it.
+  exec "$tmux_bin" -f "$HOME/.config/tmux/tmux.conf" new-session -s "g$$"
+fi
+
+exec "$bash_bin" --login "$@"
