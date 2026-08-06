@@ -4,6 +4,14 @@ export NVM_DIR="$HOME/.nvm"
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
 
+# cmux sidebar status pills — update on each prompt (no-op outside cmux)
+__cmux_status_update() {
+  [[ -z "${CMUX_WORKSPACE_ID:-}" ]] && return
+  bash "$HOME/.config/cmux/bar-update.sh" &>/dev/null &
+  disown
+}
+PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND}; }__cmux_status_update"
+
 # himalaya aliases
 alias hil='himalaya envelope list'
 function garchive() { himalaya message move "$1" "[Gmail]/All Mail"; }
