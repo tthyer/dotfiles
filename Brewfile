@@ -131,13 +131,29 @@ cask "session-manager-plugin"
 cask "adobe-acrobat-reader"
 cask "discord"
 cask "telegram"
-cask "whatsapp"
 cask "zoom"
 cask "tidal"
 cask "notunes"               # stops the media key launching Apple Music
 cask "stats"                 # menu-bar system monitor
-cask "hiddenbar"
 cask "nordvpn"
+# WhatsApp and Hidden Bar come from the App Store below, not from casks —
+# installing both would leave two copies from different sources.
+
+# --------------------------------------------------- Mac App Store
+# Needs `mas` (above) and an App Store login. `mas install` only works for
+# apps already in your purchase history, so a fresh Apple ID won't find them.
+mas "WhatsApp",   id: 310633997
+mas "Tailscale",  id: 1475387142   # GUI app; the CLI is the brew formula above
+mas "Hidden Bar", id: 1452453066
+mas "UTC Time",   id: 1538245904
+
+# Deliberately not reinstalled — a new Mac ships with these, or offers them
+# free from the App Store on demand:
+#   Xcode 497799835         the command line tools are enough; install.sh
+#                           already runs xcode-select --install
+#   Pages 409201541, Numbers 409203825, Keynote 409183694   iWork, last used 2023
+#   GarageBand 682658836, iMovie 408981434                  multi-GB, never opened
+#   Menu World Time 1446377255                              superseded by UTC Time
 
 # ---------------------------------------------------- GUI: virtual
 cask "utm"                   # macOS guests on Apple Silicon, for the dry run
