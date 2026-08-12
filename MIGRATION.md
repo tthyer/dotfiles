@@ -1,60 +1,184 @@
-# Migration checklist — 2026-08
+# Migration checklist
 
-Working checklist for moving to the new laptop. **Delete this file once the
-move is done.** The permanent runbook is in the README; this tracks the
-one-off work around it.
+Work through this top to bottom. Self-contained — you shouldn't need the
+README until the machine is running. **Delete this file when you're done.**
 
-## Before the new laptop arrives
+Keep the old laptop powered on and beside you until the last section.
 
-- [ ] **Audit `~/.ssh`.** Which keys exist, are any still RSA, what's in
-      `config`. Keys move by hand, never through a repo. Consider replacing
-      RSA keys with ed25519 — `setup/ssh-setup.sh` generates one.
-- [ ] **Rehearse in a VM.** `brew install --cask utm`, build a clean macOS
-      guest, run the README runbook end to end. Every failure is a repo bug
-      found while it's still cheap. VirtualBox can't do macOS guests on
-      Apple Silicon, which is why it's not in the Brewfile.
-      - App Store sign-in is unreliable in a guest VM, so the four `mas`
-        entries won't be fully testable there. Check them on the real machine.
-- [ ] **Note anything the rehearsal exposes** as a repo fix, not a manual step.
+---
 
-## On the new machine
+## 1. On the OLD machine
 
-Follow the README runbook. Then confirm:
+- [ ] Confirm both repos are pushed:
+      ```bash
+      for r in ~/github/tthyer/dotfiles ~/github/tthyer/dotfiles-work; do
+        echo "$r: $(git -C $r status --porcelain | wc -l) uncommitted, \
+      $(git -C $r log origin/master..HEAD --oneline | wc -l) unpushed"
+      done
+      ```
+      Both must read `0 uncommitted, 0 unpushed`.
+
+- [ ] Glance at `~/.ssh/config` and `~/.ssh/known_hosts` for hosts you don't
+      recognise — jump boxes, NAS, old clients. If the old RSA key is
+      authorised somewhere, this is the only place it'll show.
+
+- [ ] Note anything living outside `~/github` and `~/Documents` that you'd
+      miss. Desktop, Downloads you care about, scratch dirs.
+
+**Not transferring any SSH key.** Both are passphraseless, so each private
+key file is a plaintext credential and moving it is the risky part. You'll
+make a fresh one in step 3. The old RSA key
+(`tessthyer@Tesss-MacBook-Air.local`) isn't used for GitHub — verbose SSH
+shows `id_ed25519` doing that work — and predates this machine.
+
+---
+
+## 2. New machine — first boot
+
+- [ ] Sign in to the Apple ID.
+- [ ] **Sign in to the App Store** too. Four apps come from there later and
+      `mas` will fail silently-ish without it.
+- [ ] Install the command line tools, and let it finish:
+      ```bash
+      xcode-select --install
+      ```
+
+---
+
+## 3. SSH identity
+
+Fresh key. Nothing copied.
+
+- [ ] Generate, with a passphrase this time:
+      ```bash
+      ssh-keygen -t ed25519 -C "tessthyer@$(scutil --get ComputerName)"
+      ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+      pbcopy < ~/.ssh/id_ed25519.pub
+      ```
+- [ ] Paste it at https://github.com/settings/keys
+- [ ] Verify before going further:
+      ```bash
+      ssh -T git@github.com
+      ```
+      Expect `Hi tthyer! You've successfully authenticated`.
+
+---
+
+## 4. Homebrew
+
+- [ ] ```bash
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+      ```
+
+---
+
+## 5. Clone and install
+
+- [ ] ```bash
+      mkdir -p ~/github/tthyer
+      git clone git@github.com:tthyer/dotfiles.git      ~/github/tthyer/dotfiles
+      git clone git@github.com:tthyer/dotfiles-work.git ~/github/tthyer/dotfiles-work
+      cd ~/github/tthyer/dotfiles && ./install.sh
+      ```
+
+It will stop and ask you for things:
+
+- **`sudo` password** — adding Homebrew bash to `/etc/shells`
+- **`chsh`** — may prompt again
+- Long silences during `brew bundle`. `gdal` and `eccodes` pull a large
+  geo/weather dependency tree.
+
+The overlay is picked up automatically from
+`~/github/tthyer/dotfiles-work`. It brings the work git identity, k8s
+helpers, himalaya, Codex rules, and your worklog and handoffs.
+
+- [ ] Open a **new** shell before continuing. The old one is still bash 3.2.
+
+---
+
+## 6. Verify
 
 - [ ] `echo $BASH_VERSION` → 5.x, not 3.2
 - [ ] `dscl . -read ~/ UserShell` → `/opt/homebrew/bin/bash`
-- [ ] `brew bundle check --file=Brewfile` → satisfied
-- [ ] `git -C ~/github/amperon/amperon config user.email` → work address
-- [ ] `git config --global user.email` → noreply address
+- [ ] `brew bundle check --file=~/github/tthyer/dotfiles/Brewfile`
+      → ignore "or updated"; only genuinely missing things matter
+- [ ] `git config --global user.email` → the **noreply** address
+- [ ] `ls -la ~/.claude/worklog.md ~/.claude/handoffs` → both symlinks resolve
+- [ ] `wt list` → worktrunk reads its assembled config
+- [ ] `tailscale status` → tailnet reachable
+
+Then clone a work repo and check the identity switch:
+
+- [ ] ```bash
+      git clone git@github.com:amperon/amperon.git ~/github/amperon/amperon
+      git -C ~/github/amperon/amperon config user.email
+      ```
+      → the **work** address, via the `includeIf`
+
+---
+
+## 7. Sign in to everything
+
+- [ ] `gh auth login`
+- [ ] `az login`, then `gcloud auth login`, then `aws configure`
+- [ ] Claude Code, Codex — sign in to each
+- [ ] **Run Orca once.** It reinstates its hook block in Claude, Codex, and
+      Gemini. Nothing else puts those back.
+- [ ] MCP tokens into the Keychain, then register the servers:
+      ```bash
+      security add-generic-password -a "$USER" -s grafana-mcp-token    -w
+      security add-generic-password -a "$USER" -s amperon-kb-mcp-token -w
+      bash ~/github/tthyer/dotfiles-work/setup/mcp-servers.sh
+      ```
+      Both tokens are on the old machine in `~/.claude.json` under
+      `mcpServers` — copy them across by hand.
 - [ ] `claude plugin list` → 7 enabled
 - [ ] `claude mcp list` → grafana + amperon-kb
-- [ ] Run Orca once so it reinstates its hooks in Claude, Codex, and Gemini
-- [ ] MCP tokens added to the Keychain — see the overlay's README
 
-Copy by hand (nothing below is in a repo):
+---
 
-- [ ] `~/github`, `~/Documents`
-- [ ] `~/.ssh`, then `chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_*`
-- [ ] login keychain, browser profiles
-- [ ] Re-authenticate rather than copying: `~/.kube/config`, `~/.azure`,
-      `~/.config/gcloud`
+## 8. Copy the rest by hand
 
-## Cleanup, once you're confident
+Nothing here is in a repo.
 
-- [ ] Delete the pre-scrub backup mirror
-      `~/dotfiles-backup-20260805-190555.git`
+- [ ] `~/github` (or re-clone), `~/Documents`
+- [ ] Login keychain, browser profiles
+- [ ] Anything you noted in step 1
+- [ ] **Re-authenticate, don't copy:** `~/.kube/config`, `~/.azure`,
+      `~/.config/gcloud`. They hold live credentials and go stale.
+      ```bash
+      az aks get-credentials --resource-group <rg> --name prod-aks
+      kubelogin convert-kubeconfig -l azurecli
+      ```
+      `AAD_LOGIN_METHOD=azurecli` is already exported by the overlay, which
+      is what stops kubectl hanging on a device-code prompt.
+
+---
+
+## 9. Once the new machine is earning its keep
+
+- [ ] Delete the old SSH key from https://github.com/settings/keys
+- [ ] Delete the backup mirror `~/dotfiles-backup-20260805-190555.git`
 - [ ] Delete the `DROPPED` block at the bottom of `Brewfile`
-- [ ] Delete `~/.codex/logs_2.sqlite` (132MB) if it's still around
+- [ ] Delete `~/.codex/logs_2.sqlite` (132MB) if it came across
+- [ ] Wipe the old laptop
 - [ ] Delete this file
+
+---
 
 ## Decided against
 
 Recorded so they don't get re-litigated:
 
+- **The UTM rehearsal.** Its value was finding repo bugs cheaply, before the
+  machine arrived. With the new machine here and the old one beside it,
+  rehearsing costs more than trying. A dry run against a throwaway `$HOME`
+  already passed: 221 symlinks, none broken, both repos' skills and agents
+  present, settings merged correctly.
+- **Transferring the existing SSH keys.** Both passphraseless; fresh key
+  instead.
 - **Rotating the Grafana service-account token** in `~/.claude.json`. Raised,
   declined.
-- **Asking GitHub Support to garbage-collect** the pre-scrub commits. They stay
-  reachable by direct SHA until GitHub GCs on its own schedule. The identifiers
-  involved are low-sensitivity and already scraped.
-- **chezmoi.** Considered and set aside — the overlay repo solves the
-  public/private split without the extra machinery.
+- **Asking GitHub Support to garbage-collect** the pre-scrub commits.
+- **chezmoi.** The overlay repo solves the public/private split without it.
