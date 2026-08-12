@@ -9,14 +9,10 @@ Keep the old laptop powered on and beside you until the last section.
 
 ## 1. On the OLD machine
 
-- [ ] Confirm both repos are pushed:
+- [ ] Confirm both repos are pushed. Both must report `0 / 0`:
       ```bash
-      for r in ~/github/tthyer/dotfiles ~/github/tthyer/dotfiles-work; do
-        echo "$r: $(git -C $r status --porcelain | wc -l) uncommitted, \
-      $(git -C $r log origin/master..HEAD --oneline | wc -l) unpushed"
-      done
+      for r in ~/github/tthyer/dotfiles ~/github/tthyer/dotfiles-work; do echo "$(basename $r): $(git -C $r status --porcelain | wc -l | tr -d ' ') uncommitted / $(git -C $r log origin/master..HEAD --oneline | wc -l | tr -d ' ') unpushed"; done
       ```
-      Both must read `0 uncommitted, 0 unpushed`.
 
 - [ ] Glance at `~/.ssh/config` and `~/.ssh/known_hosts` for hosts you don't
       recognise — jump boxes, NAS, old clients. If the old RSA key is
@@ -49,11 +45,14 @@ shows `id_ed25519` doing that work — and predates this machine.
 
 Fresh key. Nothing copied.
 
-- [ ] Generate, with a passphrase this time:
+- [ ] Generate it. This one is interactive — it asks for a file location and
+      then a passphrase twice, so run it on its own:
       ```bash
       ssh-keygen -t ed25519 -C "tessthyer@$(scutil --get ComputerName)"
-      ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-      pbcopy < ~/.ssh/id_ed25519.pub
+      ```
+- [ ] Load it into the agent and copy the public half:
+      ```bash
+      ssh-add --apple-use-keychain ~/.ssh/id_ed25519 && pbcopy < ~/.ssh/id_ed25519.pub
       ```
 - [ ] Paste it at https://github.com/settings/keys
 - [ ] Verify before going further:
@@ -66,8 +65,12 @@ Fresh key. Nothing copied.
 
 ## 4. Homebrew
 
-- [ ] ```bash
+- [ ] Install it:
+      ```bash
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ```
+- [ ] Put it on PATH for this shell:
+      ```bash
       eval "$(/opt/homebrew/bin/brew shellenv)"
       ```
 
@@ -75,10 +78,12 @@ Fresh key. Nothing copied.
 
 ## 5. Clone and install
 
-- [ ] ```bash
-      mkdir -p ~/github/tthyer
-      git clone git@github.com:tthyer/dotfiles.git      ~/github/tthyer/dotfiles
-      git clone git@github.com:tthyer/dotfiles-work.git ~/github/tthyer/dotfiles-work
+- [ ] Clone both repos:
+      ```bash
+      mkdir -p ~/github/tthyer && git clone git@github.com:tthyer/dotfiles.git ~/github/tthyer/dotfiles && git clone git@github.com:tthyer/dotfiles-work.git ~/github/tthyer/dotfiles-work
+      ```
+- [ ] Run the installer:
+      ```bash
       cd ~/github/tthyer/dotfiles && ./install.sh
       ```
 
@@ -110,11 +115,11 @@ helpers, himalaya, Codex rules, and your worklog and handoffs.
 
 Then clone a work repo and check the identity switch:
 
-- [ ] ```bash
-      git clone git@github.com:amperon/amperon.git ~/github/amperon/amperon
-      git -C ~/github/amperon/amperon config user.email
+- [ ] Clone it, then read back the identity — expect the **work** address,
+      applied by the `includeIf`:
+      ```bash
+      git clone git@github.com:amperon/amperon.git ~/github/amperon/amperon && git -C ~/github/amperon/amperon config user.email
       ```
-      → the **work** address, via the `includeIf`
 
 ---
 
@@ -125,14 +130,21 @@ Then clone a work repo and check the identity switch:
 - [ ] Claude Code, Codex — sign in to each
 - [ ] **Run Orca once.** It reinstates its hook block in Claude, Codex, and
       Gemini. Nothing else puts those back.
-- [ ] MCP tokens into the Keychain, then register the servers:
+- [ ] MCP tokens into the Keychain. **Run these one at a time** — each waits
+      for you to type the token, so pasting both together feeds the second
+      command in as the first one's password:
       ```bash
-      security add-generic-password -a "$USER" -s grafana-mcp-token    -w
+      security add-generic-password -a "$USER" -s grafana-mcp-token -w
+      ```
+      ```bash
       security add-generic-password -a "$USER" -s amperon-kb-mcp-token -w
-      bash ~/github/tthyer/dotfiles-work/setup/mcp-servers.sh
       ```
       Both tokens are on the old machine in `~/.claude.json` under
       `mcpServers` — copy them across by hand.
+- [ ] Register the servers:
+      ```bash
+      bash ~/github/tthyer/dotfiles-work/setup/mcp-servers.sh
+      ```
 - [ ] `claude plugin list` → 7 enabled
 - [ ] `claude mcp list` → grafana + amperon-kb
 
@@ -147,8 +159,12 @@ Nothing here is in a repo.
 - [ ] Anything you noted in step 1
 - [ ] **Re-authenticate, don't copy:** `~/.kube/config`, `~/.azure`,
       `~/.config/gcloud`. They hold live credentials and go stale.
+      Substitute the real resource group — an unquoted `<rg>` would be read
+      as an input redirect, not a placeholder:
       ```bash
-      az aks get-credentials --resource-group <rg> --name prod-aks
+      az aks get-credentials --resource-group RESOURCE_GROUP --name prod-aks
+      ```
+      ```bash
       kubelogin convert-kubeconfig -l azurecli
       ```
       `AAD_LOGIN_METHOD=azurecli` is already exported by the overlay, which
