@@ -521,7 +521,35 @@ be opened.
 
 `kubelogin` comes from `Brewfile.work`, and `AAD_LOGIN_METHOD=azurecli` is
 exported by the overlay — without it `kubectl` hangs on a device-code prompt.
-Verified against `sandbox-aks`, which returned namespaces.
+The documented `kubelogin convert-kubeconfig -l azurecli` was skipped on
+purpose: the next `az aks get-credentials` undoes it, so the env var is the
+durable mechanism and the conversion is redundant.
+
+**But re-authenticating loses two things that aren't credentials**, and the
+checklist doesn't mention either:
+
+- **`current-context`.** `get-credentials` repoints it at whichever cluster was
+  fetched last. Ops was last in the loop, so the machine sat on
+  `ops-mgmt-aks` — one of the clusters with no Argo CRDs. Every `argo` command
+  failed with `the server could not find the requested resource (get
+  workflows.argoproj.io)`, which reads like a broken install rather than a
+  wrong cluster. havelock was on `prod-aks`.
+- **Per-context default namespaces.** `get-credentials` never sets them.
+  havelock had `prod-aks → argo-run`, `sandbox-aks → openmetadata`,
+  `test-aks → openmetadata`. Without them `argo list` looks in `default` and
+  reports nothing, which looks like an empty cluster rather than a
+  misconfiguration. Restoring `argo-run` made 276 workflows appear.
+
+Capture both before wiping the old machine:
+
+```bash
+kubectl config current-context
+kubectl config view -o json | jq -r '.contexts[] | "\(.name)\t\(.context.namespace // "")"'
+```
+
+Verifying that contexts exist and authenticate is not the same as verifying
+the one you're *on* is the one you work in. Both failures presented as the
+cluster being wrong or empty, never as configuration.
 
 ### Two rsync traps
 

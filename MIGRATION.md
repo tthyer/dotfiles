@@ -192,6 +192,18 @@ Nothing here is in a repo.
       `AAD_LOGIN_METHOD=azurecli` is already exported by the overlay, which
       is what stops kubectl hanging on a device-code prompt.
 
+      Re-authenticating restores credentials but **not** `current-context` or
+      per-context default namespaces. `get-credentials` repoints
+      `current-context` at whichever cluster it fetched last, and never sets a
+      namespace. Both failures look like a broken or empty cluster rather than
+      a config problem. Capture them from the old machine first:
+      ```bash
+      kubectl config current-context
+      kubectl config view -o json | jq -r '.contexts[] | "\(.name)\t\(.context.namespace // "")"'
+      ```
+      then replay with `kubectl config use-context <ctx>` and
+      `kubectl config set-context <ctx> --namespace=<ns>`.
+
 ---
 
 ## 8. Once the new machine is earning its keep
