@@ -11,6 +11,23 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OVERLAY_DIR="${DOTFILES_OVERLAY:-$HOME/github/tthyer/dotfiles-work}"
 
 # ============================================================ Claude Code
+# Install it if it isn't here. Everything below configures Claude Code, and
+# for a long time nothing installed it — the Brewfile has codex and cmux but
+# no claude, so a fresh machine got a fully configured tool that didn't
+# exist. There is no Homebrew formula; the native installer is the supported
+# route, and it self-updates thereafter (~/.claude.json records
+# "installMethod": "native").
+if ! command -v claude &>/dev/null && [[ ! -x "$HOME/.local/bin/claude" ]]; then
+  echo "==> Installing Claude Code..."
+  installer="$(mktemp)"
+  if curl -fsSL https://claude.ai/install.sh -o "$installer"; then
+    bash "$installer" || echo "    !! Claude Code install failed — continuing."
+  else
+    echo "    !! Couldn't fetch the Claude Code installer — continuing." >&2
+  fi
+  rm -f "$installer"
+fi
+
 mkdir -p "$HOME/.claude"
 
 echo "==> Merging Claude settings..."
