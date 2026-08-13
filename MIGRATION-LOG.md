@@ -348,6 +348,65 @@ directory under `~/github/amperon/` and read back `git config user.email`.
 
 ---
 
+## Step 6 — a wrong diagnosis that cost a morning
+
+`setup/mcp-servers.sh` couldn't read the gateway token from the `ampprod-misc`
+vault. Its failure message suggested activating PIM, so the morning went on
+waiting for an elevation. PIM was never the problem.
+
+The check that settled it took one command from havelock: same account, same
+subscription, and the read succeeded. Whatever was failing on totalbiscuit,
+it wasn't the account's permissions.
+
+The actual error, once stderr was allowed through:
+
+```
+(Forbidden) Public network access is disabled and request is not from a
+trusted service nor via an approved private link.
+    Inner error: { "code": "ForbiddenByConnection" }
+```
+
+The vault refuses connections from off-net, and never reaches authorization at
+all. Azure reports that as `Forbidden`, which reads exactly like a permissions
+problem. `ForbiddenByConnection` and the mention of a private link are the only
+things distinguishing it from one.
+
+Both machines were behind the same public IP — `38.172.237.28` — which ruled
+out an IP allowlist and left Tailscale as the only difference between the
+machine that could read the secret and the machine that couldn't. Tailscale
+had been treated as a low-priority item to do while PIM activated. It was the
+blocker the whole time.
+
+Three defects in the script came out of this, all now fixed:
+
+- It discarded Azure's stderr with `2>/dev/null` and printed a guess in its
+  place. The guess was a hypothesis written the day before, not something the
+  machine had reported, and it was indistinguishable from a real diagnosis.
+  It now prints what Azure actually said.
+- Its header claimed the token fetch didn't need Tailscale and only the later
+  queries did. Both need it.
+- `claude mcp add` defaults to `local` scope, which binds the server to
+  whatever directory the script ran in. havelock has `amperon-kb` at **user**
+  scope, so the reconstructed script was quietly producing a narrower
+  registration than the machine it was modelled on — it would have worked in
+  `dotfiles-work` and appeared missing everywhere else. Now `--scope user`.
+
+The general lesson is the one worth keeping: a script that catches a failure
+and explains it in its own words will keep telling you that story long after
+it stops being true. `mcp-servers.sh` had a plausible, confident, wrong
+explanation baked into it, and it was believed over the evidence because the
+evidence had been thrown away.
+
+Two smaller things. Tailscale is installed twice on purpose — the App Store
+app supplies the daemon (as `IPNExtension`, with no socket at
+`/var/run/tailscaled.socket`) and the brew formula supplies the CLI that talks
+to it; neither is redundant. And during sign-in the device showed in the
+tailnet as `macbook-pro`, which resolved to `totalbiscuit` once the device was
+approved — all three `scutil` names were correct throughout, so nothing needed
+renaming.
+
+---
+
 ## Fold back into the repo
 
 - [ ] Add hostname rename as a numbered step, before the SSH key step, with
@@ -366,6 +425,8 @@ directory under `~/github/amperon/` and read back `git config user.email`.
 - [ ] Warn that a new account short name may differ from the old one.
 - [x] Step 9: remove havelock's key from totalbiscuit's `authorized_keys`
       and turn Remote Login off. *(added)*
+- [ ] Move Tailscale sign-in ahead of the MCP registration and say why: the
+      vault read fails without it, in language that blames permissions.
 
 ---
 
