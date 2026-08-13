@@ -134,7 +134,6 @@ cask "discord"
 cask "telegram"
 cask "zoom"
 cask "tidal"
-cask "notunes"               # stops the media key launching Apple Music
 cask "stats"                 # menu-bar system monitor
 cask "nordvpn"
 # WhatsApp and Hidden Bar come from the App Store below, not from casks —
@@ -176,6 +175,8 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # brew "neovim"              # 2 launches ever, 0 files edited
 
 # --- casks ---
+# cask "notunes"             # meant to stop the media key launching Apple
+#                            # Music; didn't work. Never launched.
 # cask "visual-studio-code"  # dropped deliberately — do not reinstate
 # cask "anki"                # 3 launches, 2023
 # cask "virtualbox"          # can't run macOS guests on ARM; UTM replaces it
