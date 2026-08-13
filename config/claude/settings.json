@@ -2,7 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(cd * && git *)",
-      "Edit(/Users/tessthyer/.claude/*)",
+      "Edit(~/.claude/*)",
       "Bash(az consumption:*)",
       "Bash(az costmanagement:*)",
       "Bash(az account:*)",
@@ -142,7 +142,7 @@
       "mcp__grafana__query_prometheus",
       "Bash(wt config:*)",
       "Bash(wt hook:*)",
-      "Read(/Users/tessthyer/.local/share/uv/python/cpython-3.11.7-macos-aarch64-none/bin/**)",
+      "Read(~/.local/share/uv/python/**/bin/**)",
       "mcp__claude_ai_Slack__slack_search_public_and_private",
       "mcp__claude_ai_Slack__slack_search_channels",
       "Bash(gh issue:*)",
@@ -160,7 +160,6 @@
       "mcp__claude_ai_Slack__slack_read_user_profile",
       "mcp__claude_ai_Slack__slack_send_message_draft",
       "Bash(make lock-sqlalchemy-2.0.47)",
-      "Bash(~/.local/bin/sync-workspace-worktrees)",
       "Bash(wt step:*)",
       "Bash(wt list:*)",
       "mcp__grafana__generate_deeplink",
@@ -188,13 +187,13 @@
       "Skill(ops:logs)",
       "Bash(notion-cli --help)",
       "Bash(notion-cli page *)",
-      "Read(/Users/tessthyer/.config/notion-cli/**)",
+      "Read(~/.config/notion-cli/**)",
       "WebFetch(domain:community.sonarsource.com)",
       "Bash(gh search *)",
       "Bash(notion-cli db *)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(gh run *)",
-      "Read(/Users/tessthyer/.claude/**)",
+      "Read(~/.claude/**)",
       "Skill(slack:standup)"
     ],
     "deny": [

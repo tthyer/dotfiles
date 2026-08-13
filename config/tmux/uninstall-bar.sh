@@ -2,10 +2,15 @@
 # Remove the Ghostty tmux bottom-bar shim and restore originals.
 set -uo pipefail
 
-dotfile="/Users/tessthyer/github/tthyer/dotfiles/shell/ghostty-bash"
+# Derive the repo from this script's own location rather than hardcoding a
+# home directory — the account short name isn't the same on every machine.
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+dotfiles_dir="$(cd "$script_dir/../.." && pwd)"
+
+dotfile="$dotfiles_dir/shell/ghostty-bash"
 sl="$HOME/.claude/statusline-command.sh"
 sl_bak="$HOME/.claude/statusline-command.sh.pre-tmux.bak"
-ts="/Users/tessthyer/github/tthyer/dotfiles/shell/terminal_setup.sh"
+ts="$dotfiles_dir/shell/terminal_setup.sh"
 
 echo "Reverting dotfiles (ghostty-bash + terminal_setup.sh) ..."
 if git -C "$(dirname "$dotfile")" rev-parse --git-dir >/dev/null 2>&1; then
