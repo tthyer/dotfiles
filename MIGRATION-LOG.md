@@ -407,6 +407,81 @@ renaming.
 
 ---
 
+## Step 7 — what a fresh clone doesn't bring
+
+The checklist treated `~/github` as "re-clone it" and moved on. That's wrong,
+and the survey is the most valuable thing this migration produced.
+
+Cloning restores what's on the remote. It restores nothing that only ever
+existed on havelock's disk:
+
+| | havelock | on the remotes |
+|---|---|---|
+| `amperon/amperon` local-only branches | 12+, **354 commits** | none |
+| `amperon/amperon-jobs` | 5 branches, 13 commits | none |
+| `amperon/infra-azure` | 4 branches, 5 commits | none |
+| stashes | 9 (7 in `amperon/amperon`) | n/a |
+| repos with uncommitted changes | 6 | n/a |
+
+The most recent of those branches was **21 hours old**. This was live work, not
+archaeology, and it was one `diskutil eraseDisk` from gone. Stashes are worse
+than branches here — nothing about a stash is visible from the remote, and
+nothing warns you they exist.
+
+So the rule for next time: **a repo that has a remote is not therefore backed
+up.** Check `git log --branches --not --remotes` and `git stash list` in every
+repo before wiping anything.
+
+### Agent session history
+
+`~/.claude` was 1.4G and `~/.codex` 437M — 1,244 Claude transcripts and 396
+Codex sessions, plus 9 per-project `MEMORY.md` files, which are the quietest
+possible thing to lose because nothing refers to them until they're missing.
+
+The catch is that `~/.claude/projects` names each directory after the working
+directory it belongs to, path-encoded:
+`-Users-tessthyer-github-amperon-amperon`. The account short name changed in
+this migration — `tessthyer` → `tess` — so every one of the 75 directories
+pointed at a path that doesn't exist on the new machine. Copied as-is, the
+transcripts are all present and all invisible, since Claude Code looks for
+`-Users-tess-…`. They were renamed after the copy; one directory already
+existed on the new machine and was merged rather than overwritten.
+
+The `cwd` recorded *inside* each transcript still says `/Users/tessthyer/…`.
+Left alone deliberately: rewriting 1,244 files to correct history is more risk
+than the benefit, and the sessions really did happen on havelock.
+
+### What was excluded, and why
+
+- `.venv` (2.6G in `amperon/amperon` alone) — contains absolute paths to
+  `/Users/tessthyer`. Copying it produces a venv that breaks confusingly
+  rather than obviously. Same reasoning for `__pycache__`, `.mypy_cache`.
+- `~/.claude/plugins` (518M) — `agents-setup.sh` and the overlay reinstall it.
+- `~/.codex/logs_2.sqlite` (128M) — already on the delete list.
+- `~/bin` (117M) — one stale `argo-3.6.4` binary; Homebrew supplies `argo`.
+- `~/slush` (5.3G) and `~/Downloads` (3.6G) — declined. **These are now the
+  only unclaimed data on havelock.**
+
+### The login keychain
+
+Not migrated. The decision was to recover items as they're missed, which is
+reasonable and has one consequence worth stating plainly: it makes havelock's
+continued existence a dependency, so the wipe step is now gated on it. The one
+known item is the himalaya Gmail app password — signing into Gmail in a browser
+does not regenerate an app password.
+
+### Two rsync traps
+
+`--info=stats2` isn't supported by the rsync macOS ships; it printed usage and
+copied nothing. Worse, `rsync … | tail` reported **exit 0**, because the exit
+status of a pipeline is the last command's. A "successful" transfer had moved
+zero bytes. Verify copies by counting files on both ends, not by exit code.
+
+Directory names under `~/.claude/projects` begin with `-`, so `mv "$d" "$t"`
+parses them as options. `mv --` is required.
+
+---
+
 ## Fold back into the repo
 
 - [ ] Add hostname rename as a numbered step, before the SSH key step, with
@@ -427,6 +502,10 @@ renaming.
       and turn Remote Login off. *(added)*
 - [ ] Move Tailscale sign-in ahead of the MCP registration and say why: the
       vault read fails without it, in language that blames permissions.
+- [ ] Rewrite step 7. "Re-clone `~/github`" loses every local-only branch,
+      stash and uncommitted change. Add the audit commands, and add
+      `~/.claude/projects` + `~/.codex/sessions` with the path-encoding
+      rename that a changed account short name forces.
 
 ---
 
