@@ -47,6 +47,20 @@ From `kMDItemLastUsedDate` on havelock, 2026-08-12:
 | `hidden-bar` (mas) | 54 days | |
 | `utc-time` (mas) | 58 days | |
 
+### awscli
+
+Kept for now, but on thin ice. No `aws` invocations in shell history, and
+`aws configure` was deliberately skipped during the migration — no AWS
+credentials on totalbiscuit at all.
+
+The codebase does use boto3 in about ten files, including the Rhythm
+integration and the Gainsight syncs, but that runs in the cluster with its
+own credentials. The CLI is a separate question from the SDK.
+
+Revisit alongside the other CLI formulae. If it's still unused with real
+history behind it, it goes — `session-manager-plugin` already went on the
+same reasoning.
+
 ### CLI formulae — no usable evidence yet
 
 Homebrew records install dates but not usage, and bash history on havelock was

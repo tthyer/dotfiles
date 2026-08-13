@@ -141,7 +141,14 @@ Then clone a work repo and check the identity switch:
 ## 6. Sign in to everything
 
 - [ ] `gh auth login`
-- [ ] `az login`, then `gcloud auth login`, then `aws configure`
+- [ ] `az login`, then `gcloud auth login`
+- [ ] **Not `aws configure`.** The codebase uses boto3, but that runs in the
+      cluster with its own credentials — there's no evidence of the CLI being
+      driven from this laptop. Two minutes to set up the day you need it, and
+      until then it's one less set of live keys sitting on disk.
+- [ ] gcloud restores credentials but not settings. The overlay's
+      `setup/gcloud-config.sh` sets the project and compute defaults, and
+      `apply.sh` runs it.
 - [ ] Claude Code, Codex — sign in to each
 - [ ] **Run Orca once.** It reinstates its hook block in Claude, Codex, and
       Gemini. Nothing else puts those back.
