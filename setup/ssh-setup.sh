@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Generate an SSH key and register it with the agent and Keychain.
 #
-# Not called by install.sh — the normal path for a new machine is to copy
-# ~/.ssh across by hand, which keeps existing keys and known_hosts. This is
-# the fallback for a genuinely fresh key.
+# Not called by install.sh, because it has to run before the repo can be
+# cloned — the key is what clones it. Copy it across with scp, or curl it
+# from the raw GitHub URL.
+#
+# A fresh key per machine is the intended path. Copying ~/.ssh across keeps
+# known_hosts and saves a GitHub round trip, but any passphraseless private
+# key is a plaintext credential and moving it is the risky part.
 #
 #   bash setup/ssh-setup.sh [comment]
 set -euo pipefail
@@ -39,7 +43,17 @@ else
 fi
 chmod 600 "$HOME/.ssh/config"
 
-ssh-add --apple-use-keychain "$KEY"
+# macOS gives the agent socket to the GUI login session via launchd, so an
+# incoming SSH connection has no SSH_AUTH_SOCK and ssh-add fails. Not fatal —
+# UseKeychain and AddKeysToAgent above mean the first use in a console session
+# stores the passphrase anyway. Don't let it abort before printing the key.
+if [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
+  ssh-add --apple-use-keychain "$KEY"
+else
+  echo "No ssh-agent in this session — skipping ssh-add."
+  echo "Run this in Terminal on the machine itself to store the passphrase:"
+  echo "  ssh-add --apple-use-keychain $KEY"
+fi
 
 echo
 echo "Public key — add it at https://github.com/settings/keys"
