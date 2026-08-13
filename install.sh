@@ -40,6 +40,23 @@ fi
 echo "==> Updating Homebrew..."
 brew update
 
+# ------------------------------------------------------------ tap trust
+# Homebrew refuses to load formulae from third-party taps until they're
+# trusted, so `brew bundle` dies on the first one it meets. Read the taps out
+# of the Brewfiles rather than listing them here, so this can't drift out of
+# step with them. `brew help trust` guards older Homebrew, which has no such
+# command and needs none.
+if brew help trust &>/dev/null; then
+  for bf in "$DOTFILES_DIR/Brewfile" "$OVERLAY_DIR/Brewfile.work"; do
+    [[ -f "$bf" ]] || continue
+    while read -r tap; do
+      [[ -n "$tap" ]] || continue
+      brew trust --tap "$tap" >/dev/null
+    done < <(grep -oE '^tap "[^"]+"' "$bf" | sed -E 's/^tap "//; s/"$//')
+  done
+  echo "==> Third-party taps trusted."
+fi
+
 echo "==> Installing packages from Brewfile..."
 brew bundle --file="$DOTFILES_DIR/Brewfile"
 
