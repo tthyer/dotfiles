@@ -4,12 +4,16 @@
 set -euo pipefail
 
 # uv-managed tools
+# `pliers` was here and should never have been. Amperon's pliers is an
+# internal tool in amperon/dev_tools/pliers, run as ./bin/pliers from that
+# repo. There is an unrelated public PyPI package of the same name — a
+# multimodal feature-extraction library — and that's what this installed.
+# It failed loudly only because that package ships no entrypoints.
 uv_tools=(
   datamodel-code-generator
   ipython
   jupyterlab
   numpy
-  pliers
   pre-commit
 )
 for tool in "${uv_tools[@]}"; do
