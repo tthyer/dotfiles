@@ -16,7 +16,7 @@ HOMEBREW_BASH="$HOMEBREW_PREFIX/bin/bash"
 
 # --------------------------------------------------------------- sudo
 # First, so the one prompt it costs covers the sudo calls further down.
-bash "$DOTFILES_DIR/setup/sudo-touchid.sh"
+bash "$DOTFILES_DIR/setup/sudo-setup.sh"
 
 # ---------------------------------------------------------------- xcode
 bash "$DOTFILES_DIR/setup/clt-setup.sh"
