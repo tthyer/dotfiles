@@ -148,12 +148,10 @@ if command -v claude &>/dev/null; then
     fi
   done
 
-  echo "==> Registering MCP servers..."
-  if [[ -x "$HOME/.local/bin/mcp-grafana" ]]; then
-    claude mcp add grafana "$HOME/.local/bin/mcp-grafana" 2>/dev/null || true
-  else
-    echo "    skipping grafana: ~/.local/bin/mcp-grafana not installed"
-  fi
+  # MCP servers are registered by the overlay's setup/mcp-servers.sh, which
+  # is where the tokens are. This script used to also register grafana, with
+  # no token, duplicating and half-undoing that work. grafana has since been
+  # dropped entirely.
 else
   echo "==> claude not on PATH; skipping plugin and MCP registration."
   echo "    Install Claude Code, then re-run this script."
