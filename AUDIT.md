@@ -47,23 +47,6 @@ From `kMDItemLastUsedDate` on havelock, 2026-08-12:
 | `hidden-bar` (mas) | 54 days | |
 | `utc-time` (mas) | 58 days | |
 
-### openjdk — kept, but on a single thread
-
-`openjdk` was pulled by exactly two formulae, `gradle` and
-`openapi-generator`. Gradle is gone — there is no `build.gradle` anywhere in
-`~/github`, and the only JVM projects there are Maven and third-party
-(`argo-workflows`, `OpenMetadata`).
-
-So the whole JVM stack now rests on `openapi-generator`, which is genuinely
-referenced: the argo-workflows SDK Makefiles, and
-`amperon/.claude/skills/workflow/SKILL.md`. Worth knowing that's the only
-thing holding it up.
-
-If SDK generation ever moves into CI or a container, three things go together:
-`openapi-generator`, `openjdk`, and `java/java-setup.sh` — which would also
-remove a `sudo` prompt from `install.sh`, since it symlinks the JDK into
-`/Library/Java/JavaVirtualMachines`.
-
 ### CLI formulae — no usable evidence yet
 
 Homebrew records install dates but not usage, and bash history on havelock was

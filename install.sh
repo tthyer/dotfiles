@@ -114,7 +114,6 @@ fi
 # ------------------------------------------------------ language tools
 bash "$DOTFILES_DIR/setup/python-setup.sh"
 bash "$DOTFILES_DIR/setup/node-setup.sh"
-bash "$DOTFILES_DIR/java/java-setup.sh"
 
 # Warn when the pinned Python minor version has fallen behind.
 pinned_python="3.13"

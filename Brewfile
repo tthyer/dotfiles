@@ -81,9 +81,6 @@ brew "uv"
 brew "pipx"
 brew "pipdeptree"
 brew "cmake"
-brew "openjdk"               # only here because openapi-generator needs a JVM;
-                             # java/java-setup.sh symlinks it into place
-brew "openapi-generator"     # generates the argo-workflows Python SDK
 brew "gomplate"
 
 # -------------------------------------------------------- AI agents
@@ -171,8 +168,18 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # brew "anomalyco/tap/opencode"   # superseded by Orca
 # brew "4ier/tap/notion-cli" # v0.4.0, provides `notion`; the cask v0.6.0 wins
 # brew "neovim"              # 2 launches ever, 0 files edited
+# The whole JVM stack is gone. gradle, openapi-generator and openjdk went
+# together, and java/java-setup.sh with them — it existed only to put that
+# JDK on PATH and symlink it into /Library/Java, which cost a sudo prompt
+# on every fresh machine.
 # brew "gradle"              # no build.gradle anywhere in ~/github — the only
 #                            # JVM projects there are Maven, and third-party
+# brew "openapi-generator"   # generates the argo-workflows Python SDK, which
+#                            # is that project's own tooling and never run
+#                            # here. The one mention in the amperon workflow
+#                            # skill is documentation about reading userAgent
+#                            # strings, not a call.
+# brew "openjdk"             # only ever a dependency of the two above
 
 # --- casks ---
 # cask "notunes"             # meant to stop the media key launching Apple
