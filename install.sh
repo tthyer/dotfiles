@@ -19,14 +19,7 @@ HOMEBREW_BASH="$HOMEBREW_PREFIX/bin/bash"
 bash "$DOTFILES_DIR/setup/sudo-touchid.sh"
 
 # ---------------------------------------------------------------- xcode
-if [[ -d /Library/Developer/CommandLineTools ]]; then
-  echo "==> Xcode command line tools already installed."
-else
-  echo "==> Installing Xcode command line tools..."
-  xcode-select --install
-  echo "    Re-run this script once the installer finishes."
-  exit 0
-fi
+bash "$DOTFILES_DIR/setup/clt-setup.sh"
 
 # ------------------------------------------------------------- homebrew
 # Look at the path rather than trusting PATH. A shell opened before Homebrew
@@ -39,7 +32,7 @@ fi
 if ! command -v brew &>/dev/null; then
   echo "==> Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 else
   echo "==> Homebrew already installed."
 fi

@@ -34,10 +34,14 @@ shows `id_ed25519` doing that work — and predates this machine.
 - [ ] Sign in to the Apple ID.
 - [ ] **Sign in to the App Store** too. Four apps come from there later and
       `mas` will fail silently-ish without it.
-- [ ] Install the command line tools, and let it finish:
+- [ ] Install the command line tools. Fetched from the public repo rather
+      than cloned, because git doesn't work until this is done. Downloaded
+      and then run, not piped into `bash` — a piped script owns stdin, which
+      is hostile to anything that prompts:
       ```bash
-      xcode-select --install
+      curl -fsSL https://raw.githubusercontent.com/tthyer/dotfiles/master/setup/clt-setup.sh -o /tmp/clt-setup.sh && bash /tmp/clt-setup.sh
       ```
+      No dialog to click. Asks for `sudo` once, then downloads about 920MB.
 
 ---
 
@@ -45,17 +49,35 @@ shows `id_ed25519` doing that work — and predates this machine.
 
 Fresh key. Nothing copied.
 
-- [ ] Generate it. This one is interactive — it asks for a file location and
-      then a passphrase twice, so run it on its own:
+Rename the machine first — the key comment is built from `ComputerName`, so
+doing this afterwards leaves a key on GitHub labelled `Tess's MacBook Pro`:
+
+```bash
+NAME=newname; sudo scutil --set ComputerName "$NAME" && sudo scutil --set LocalHostName "$NAME" && sudo scutil --set HostName "$NAME"
+```
+
+- [ ] Generate the key, set permissions, and add the Keychain block to
+      `~/.ssh/config`. Interactive — it asks for a passphrase twice:
       ```bash
-      ssh-keygen -t ed25519 -C "tessthyer@$(scutil --get ComputerName)"
+      curl -fsSL https://raw.githubusercontent.com/tthyer/dotfiles/master/setup/ssh-setup.sh -o /tmp/ssh-setup.sh && bash /tmp/ssh-setup.sh
       ```
-- [ ] Load it into the agent and copy the public half:
+      Run it sitting at the machine. Over SSH there's no agent —
+      `SSH_AUTH_SOCK` is unset, because macOS gives the socket to the GUI
+      login session — so `ssh-add` is skipped and you'll be asked for the
+      passphrase on first use instead.
+
+- [ ] Register it with GitHub **from the OLD machine**, which already has an
+      authenticated `gh`. Substitute the new machine's name:
       ```bash
-      ssh-add --apple-use-keychain ~/.ssh/id_ed25519 && pbcopy < ~/.ssh/id_ed25519.pub
+      gh ssh-key add <(ssh NEW_MACHINE.local 'cat ~/.ssh/id_ed25519.pub') --title NEW_MACHINE
       ```
-- [ ] Paste it at https://github.com/settings/keys
-- [ ] Verify before going further:
+      One-time scope grant if it 404s or complains — reading the key list
+      fails the same way without it:
+      ```bash
+      gh auth refresh -h github.com -s admin:public_key
+      ```
+
+- [ ] Verify on the new machine before going further:
       ```bash
       ssh -T git@github.com
       ```
@@ -63,20 +85,7 @@ Fresh key. Nothing copied.
 
 ---
 
-## 4. Homebrew
-
-- [ ] Install it:
-      ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      ```
-- [ ] Put it on PATH for this shell:
-      ```bash
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-      ```
-
----
-
-## 5. Clone and install
+## 4. Clone and install
 
 - [ ] Clone both repos:
       ```bash
@@ -87,9 +96,15 @@ Fresh key. Nothing copied.
       cd ~/github/tthyer/dotfiles && ./install.sh
       ```
 
+`install.sh` installs Homebrew itself if it isn't there, so there's no
+separate step for it. It also handles the command line tools, though on a
+truly bare machine that's academic — you needed them in step 2 to get git.
+
 It will stop and ask you for things:
 
-- **`sudo` password** — adding Homebrew bash to `/etc/shells`
+- **`sudo` password** — adding Homebrew bash to `/etc/shells`. Touch ID
+  covers this if you're sitting at the machine; over SSH it falls back to
+  the password.
 - **`chsh`** — may prompt again
 - Long silences during `brew bundle`. `gdal` and `eccodes` pull a large
   geo/weather dependency tree.
@@ -102,7 +117,7 @@ helpers, himalaya, Codex rules, and your worklog and handoffs.
 
 ---
 
-## 6. Verify
+## 5. Verify
 
 - [ ] `echo $BASH_VERSION` → 5.x, not 3.2
 - [ ] `dscl . -read ~/ UserShell` → `/opt/homebrew/bin/bash`
@@ -123,7 +138,7 @@ Then clone a work repo and check the identity switch:
 
 ---
 
-## 7. Sign in to everything
+## 6. Sign in to everything
 
 - [ ] `gh auth login`
 - [ ] `az login`, then `gcloud auth login`, then `aws configure`
@@ -150,7 +165,7 @@ Then clone a work repo and check the identity switch:
 
 ---
 
-## 8. Copy the rest by hand
+## 7. Copy the rest by hand
 
 Nothing here is in a repo.
 
@@ -172,7 +187,7 @@ Nothing here is in a repo.
 
 ---
 
-## 9. Once the new machine is earning its keep
+## 8. Once the new machine is earning its keep
 
 - [ ] Delete the old SSH key from https://github.com/settings/keys
 - [ ] Remove havelock's key from `~/.ssh/authorized_keys` on totalbiscuit, and
