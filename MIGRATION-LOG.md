@@ -470,6 +470,40 @@ continued existence a dependency, so the wipe step is now gated on it. The one
 known item is the himalaya Gmail app password — signing into Gmail in a browser
 does not regenerate an app password.
 
+### Git worktrees break on a changed account name
+
+Worktrees don't survive a copy, and this is the third instance of the same
+root cause: **absolute paths recorded inside state, invalidated by the account
+short name changing from `tessthyer` to `tess`.**
+
+Git records the location in *both* directions — the worktree's `.git` file
+holds `gitdir: /Users/tessthyer/…/.git/worktrees/<name>`, and the main repo's
+`.git/worktrees/<name>/gitdir` points back at the worktree. After the copy all
+14 worktrees across four repos listed as **`prunable`**, which is an alarming
+word for something that is merely mislabelled — the files were all present and
+intact.
+
+`git worktree repair <paths…>`, run from the main working tree, rewrites both
+sides. 14 repaired across `amperon`, `amperon-claude-plugins` and
+`infra-azure`. Worth knowing that worktrees live in two places here:
+`.worktrees/` inside each repo, and `~/orca/workspaces/<project>/`.
+
+Three directories couldn't be repaired — `DP-285`, `DP-96-ado-uv-index`,
+`optimize-enable-bytecode-compilation`. Checking havelock showed the same
+state there: directory present, admin data absent. Already orphaned before the
+migration, so nothing was lost. Worth checking before assuming a copy broke
+something.
+
+Orca keeps its *own* index keyed by `<project-uuid>::<absolute-path>`, so
+repairing git isn't sufficient — anything Orca scanned before the repair keeps
+the stale key and the worktree stays invisible in the UI.
+
+The pattern to carry forward: after any migration that changes `$HOME`, hunt
+for absolute paths in state directories. `~/.claude/projects` encoded them in
+directory names, git encoded them in worktree metadata, Orca encoded them in
+JSON keys, and `.venv` encodes them in scripts. None of these announce
+themselves; they present as missing data.
+
 ### kubeconfig — regenerated, not copied
 
 The 6 AKS contexts authenticate through `kubelogin` with `exec`, so the file
