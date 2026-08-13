@@ -131,10 +131,9 @@ cask "notion-cli"
 cask "adobe-acrobat-reader"
 cask "discord"
 cask "telegram"
-cask "zoom"
+cask "zoom"                  # ~6 months since last launch; kept deliberately
 cask "tidal"
 cask "stats"                 # menu-bar system monitor
-cask "nordvpn"
 # WhatsApp and Hidden Bar come from the App Store below, not from casks —
 # installing both would leave two copies from different sources.
 
@@ -179,6 +178,7 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # cask "session-manager-plugin"  # AWS SSM plugin for `aws ssm start-session`;
 #                            # no calls to it in shell history. Reinstate if
 #                            # you need shell access to an EC2 instance.
+# cask "nordvpn"             # 184 days since last launch
 # cask "visual-studio-code"  # dropped deliberately — do not reinstate
 # cask "anki"                # 3 launches, 2023
 # cask "virtualbox"          # can't run macOS guests on ARM; UTM replaces it
