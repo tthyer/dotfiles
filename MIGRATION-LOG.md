@@ -200,6 +200,154 @@ and paste", check whether `gh` covers it first.
 
 ---
 
+## Step 5 — install.sh reinstalled Homebrew
+
+Tess noticed it installing Homebrew when Homebrew was already installed and
+verified. The assistant's first read was that the check was defective, then
+talked itself out of that on the grounds that a login shell has `brew` on
+PATH, then had to go back to the original answer once she pasted the actual
+output — the `curl | bash` installer really had re-run.
+
+The cause is shell age, not PATH in general. Homebrew's installer adds itself
+to `~/.zprofile`, which only affects shells started afterwards. Her SSH
+session had been open since before Homebrew existed, so `command -v brew`
+found nothing on a machine that plainly had it.
+
+Harmless — Homebrew's installer is safe on an existing install and reported
+success — but it cost a sudo prompt and produced output that reads like it's
+overwriting a working install. Fixed by testing `/opt/homebrew/bin/brew`
+directly and evaling `shellenv`, so the check doesn't depend on how old the
+shell is.
+
+Worth generalising: `command -v` answers a question about *this shell*, not
+about the machine. For anything installed during the same session, test the
+path.
+
+### Two more things brew bundle stopped on
+
+**Untrusted taps.** Homebrew now refuses to load formulae from non-official
+taps: `Refusing to load formula hashicorp/tap/terraform from untrusted tap`.
+Its suggested remedy trusts one formula, which means meeting the error again
+for the next one — six times here, since the overlay's Brewfile.work adds four
+taps of its own. `brew trust --tap` takes the whole tap; install.sh now does
+all of them up front, read out of both Brewfiles so the list can't drift.
+
+Worth noting the error surfaced a second time as `zsh: command not found:
+brew`, same stale-shell cause as before — the session predated Homebrew.
+
+**Orca's cask points at a release that doesn't exist.** `stablyai/orca/orca`
+is at 1.4.181, but there is no `v1.4.181` on GitHub — only `v1.4.181-rc.0`, a
+pre-release. Latest stable is `v1.4.180`, whose asset does download. Upstream
+shipped a cask update ahead of the release it references.
+
+Not patched around. The Brewfile entry is correct, including the fully
+qualified `stablyai/orca/orca` — bare `orca` is plotly's deprecated cask in
+core, which `brew info --cask orca` happily resolves to and which would be a
+confusing thing to install by accident. Skipped for the run instead:
+
+```bash
+HOMEBREW_BUNDLE_CASK_SKIP="orca" ./install.sh
+```
+
+**The value is the bare token, not the qualified name.** `bundle/dsl.rb`
+stores what the Brewfile wrote as `options[:full_name]` and then sanitises
+`name` down through `Utils.name_from_full_name(...).downcase`, so
+`stablyai/orca/orca` becomes `orca`. `skipper.rb` matches on `entry.name`.
+Passing the qualified string silently skips nothing.
+
+That mattered more than it sounds, because of how the fetch phase works.
+`bundle/installer.rb` collects every entry into a single `brew fetch` call,
+and if that one command fails it prints `Failed to fetch` followed by the
+entire list — 90 packages, reading as though everything were broken. In fact
+one 404 poisons the batch. Individual `brew fetch` calls for a core formula,
+a cask and a tap formula all succeeded while the batch was "failing".
+
+So: when `brew bundle` reports mass fetch failure, look for the single bad
+entry rather than a systemic cause. Disk and network were both fine.
+
+Resolved by installing `v1.4.180` by hand — download the dmg, mount, copy
+`Orca.app` to `/Applications`. The cask declares `auto_updates`, so an older
+install isn't a stale one: it pulls itself forward on first run. That beat
+waiting on upstream, and beat checking the tap out at an older revision and
+having to undo it later.
+
+`curl` doesn't set `com.apple.quarantine` — only browsers do — so there's no
+Gatekeeper prompt on first launch.
+
+Consequence for step 5: `brew bundle check` will report `orca` missing,
+because it isn't Homebrew-managed. Expected, not a failure. Once upstream
+fixes the cask, `brew install --cask stablyai/orca/orca` adopts the existing
+app.
+
+---
+
+## Step 4 — install.sh aborted four times before finishing
+
+`set -euo pipefail` means any failure takes the whole run down, and
+everything worth having is at the end: the symlinks, the login shell change,
+krew, the language tooling, the overlay. So four separate small failures each
+cost a full run, and for a long time the machine had 200-odd formulae and
+nothing else.
+
+In order: an untrusted tap; Orca's cask 404; krr failing with "failed to fix
+install linkage" in the overlay's Brewfile; and `uv tool install pliers`.
+
+That last one is the interesting one. **Amperon's `pliers` is an internal
+tool** in `amperon/dev_tools/pliers`, run as `./bin/pliers`. There is an
+unrelated public PyPI package of the same name, and that's what the public
+dotfiles were installing. It failed loudly only because that package ships no
+console entrypoints — had it shipped one, `install.sh` would have quietly put
+a `pliers` on `PATH` that wasn't Amperon's. Dependency confusion in miniature,
+and worth raising with security if internal tool names are resolved from
+public indexes anywhere else.
+
+Two failures inside the overlay's `apply.sh` did **not** stop the run, because
+it warns and continues rather than inheriting `set -e` semantics:
+`ssh-oauth-helper` and `openmetadata-ingestion`. That's the better behaviour —
+worth considering whether the public `install.sh` should treat optional
+package installs the same way, rather than making every one of them able to
+abort a twenty-minute run.
+
+### Removing the JVM stack broke every new shell
+
+Deleting `java/java-setup.sh` left two references behind: `bash_profile`
+sourced `~/java-setup.sh`, and `dotfiles.sh` symlinked it there. Every new
+shell then opened with a "No such file or directory" error. Fixed, and the
+stale symlink cleaned off totalbiscuit.
+
+The lesson is narrow and worth stating: deleting a file from this repo means
+grepping for it in `dotfiles.sh` and the shell configs, not just removing the
+caller you happened to be looking at.
+
+---
+
+## Step 5 — verification
+
+Clean, other than the two things that depend on step 6.
+
+| Check | Result |
+|---|---|
+| `BASH_VERSION` | 5.3.15, not Apple's 3.2 |
+| Login shell | `/opt/homebrew/bin/bash` |
+| `~/.local/bin` on PATH | yes |
+| `wt list` | works |
+| Global git identity | the noreply address |
+| Work identity via `includeIf` | `tess@amperon.co` inside `~/github/amperon` |
+| `brew bundle check` | only `orca` missing, as expected |
+| `tailscale status` | not signed in yet |
+
+Two notes on method. `ssh host 'bash -l -s'` runs **Apple's** bash 3.2
+regardless of what the login shell is set to, which made it look as though the
+shell change hadn't taken — invoke `/opt/homebrew/bin/bash` explicitly. And
+`wt list` fails with `git rev-parse --git-common-dir failed` when run from
+`$HOME`, because `$HOME` isn't a repo; that's not a worktrunk problem.
+
+The `includeIf` can be tested without cloning anything, which matters when the
+key has a passphrase and the session can't prompt: `git init` a scratch
+directory under `~/github/amperon/` and read back `git config user.email`.
+
+---
+
 ## Fold back into the repo
 
 - [ ] Add hostname rename as a numbered step, before the SSH key step, with
