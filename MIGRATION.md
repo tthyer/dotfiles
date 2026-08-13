@@ -203,7 +203,19 @@ Nothing here is in a repo.
 - [ ] Delete the backup mirror `~/dotfiles-backup-20260805-190555.git`
 - [ ] Delete the `DROPPED` block at the bottom of `Brewfile`
 - [ ] Delete `~/.codex/logs_2.sqlite` (132MB) if it came across
-- [ ] Wipe the old laptop
+- [ ] **Keychain — the last thing havelock is holding.** The login keychain was
+      deliberately not migrated; the plan is to recover items as they're missed.
+      That only works while havelock exists, so this is the real gate on wiping
+      it. The one known item is the himalaya Gmail app password (service
+      `himalaya`, account `tess@amperon.co`) — nothing else recreates it, since
+      signing into Gmail in a browser doesn't produce an app password. Anything
+      else, list with:
+      `security dump-keychain ~/Library/Keychains/login.keychain-db | grep '"svce"' | sort -u`
+      Run on havelock in a real terminal — an SSH session can't see the login
+      keychain. Copy across with `security add-generic-password -a <account>
+      -s <service> -w`, omitting the value so it prompts instead of landing in
+      shell history.
+- [ ] Wipe the old laptop — **not before the line above**
 - [ ] Delete this file
 
 ---
