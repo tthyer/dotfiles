@@ -14,7 +14,7 @@ Keep the old laptop powered on and beside you until the last section.
       for r in ~/github/tthyer/dotfiles ~/github/tthyer/dotfiles-work; do echo "$(basename $r): $(git -C $r status --porcelain | wc -l | tr -d ' ') uncommitted / $(git -C $r log origin/master..HEAD --oneline | wc -l | tr -d ' ') unpushed"; done
       ```
 
-- [ ] Glance at `~/.ssh/config` and `~/.ssh/known_hosts` for hosts you don't
+- [x] Glance at `~/.ssh/config` and `~/.ssh/known_hosts` for hosts you don't
       recognise — jump boxes, NAS, old clients. If the old RSA key is
       authorised somewhere, this is the only place it'll show.
 
@@ -175,6 +175,9 @@ Nothing here is in a repo.
 ## 9. Once the new machine is earning its keep
 
 - [ ] Delete the old SSH key from https://github.com/settings/keys
+- [ ] Remove havelock's key from `~/.ssh/authorized_keys` on totalbiscuit, and
+      turn Remote Login back off. Both were added only so the old machine
+      could drive the setup.
 - [ ] Delete the backup mirror `~/dotfiles-backup-20260805-190555.git`
 - [ ] Delete the `DROPPED` block at the bottom of `Brewfile`
 - [ ] Delete `~/.codex/logs_2.sqlite` (132MB) if it came across
