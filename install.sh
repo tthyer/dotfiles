@@ -11,7 +11,8 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OVERLAY_DIR="${DOTFILES_OVERLAY:-$HOME/github/tthyer/dotfiles-work}"
-HOMEBREW_BASH=/opt/homebrew/bin/bash
+HOMEBREW_PREFIX=/opt/homebrew
+HOMEBREW_BASH="$HOMEBREW_PREFIX/bin/bash"
 
 # --------------------------------------------------------------- sudo
 # First, so the one prompt it costs covers the sudo calls further down.
@@ -28,6 +29,13 @@ else
 fi
 
 # ------------------------------------------------------------- homebrew
+# Look at the path rather than trusting PATH. A shell opened before Homebrew
+# was installed won't have it, and `command -v brew` then reports nothing on a
+# machine that already has it — which reinstalls it, prompting for sudo again.
+if [[ -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+  eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+fi
+
 if ! command -v brew &>/dev/null; then
   echo "==> Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
