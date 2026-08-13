@@ -8,6 +8,18 @@ set -euo pipefail
 
 echo "==> Applying macOS defaults..."
 
+# ------------------------------------------------------------ appearance
+# Dark mode. More than cosmetic: Ghostty's theme line is
+# `light:GitHub Light High Contrast,dark:GitHub Dark High Contrast`, which
+# follows the system appearance — so a fresh Mac, which ships in Light,
+# gives you a blinding white terminal until this is set.
+#
+# osascript rather than `defaults write -g AppleInterfaceStyle`: the defaults
+# key doesn't reliably reach a running session, and deleting it is how you
+# get back to Light. This applies immediately.
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' 2>/dev/null || \
+  echo "    Couldn't set dark mode — needs Automation permission for the terminal."
+
 # ------------------------------------------------------------------ dock
 defaults write com.apple.dock tilesize -int 84
 defaults write com.apple.dock magnification -bool true
