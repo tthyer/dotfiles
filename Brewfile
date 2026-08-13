@@ -109,6 +109,7 @@ brew "yt-dlp"
 brew "nmap"
 brew "gnupg"
 brew "arp-scan"
+brew "dockutil"               # macos/dock.sh drives the Dock through this
 
 # ------------------------------------------------------------ fonts
 cask "font-jetbrains-mono"

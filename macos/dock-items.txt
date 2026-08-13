@@ -1,0 +1,26 @@
+# Dock contents, in order. Applied by macos/dock.sh.
+#
+# One path per line. Blank lines and # comments ignored. $HOME expands, so
+# don't hardcode /Users/<name> — the account short name isn't the same on
+# every machine.
+#
+# Anything after a tab or two spaces on the line is treated as a comment, so
+# you can annotate entries.
+#
+# Captured from havelock, 2026-08-12. Groom freely — this is the source of
+# truth, and re-running dock.sh rebuilds the Dock to match exactly.
+
+# ------------------------------------------------------------- apps
+/Applications/Ghostty.app
+/System/Applications/Apps.app
+/Applications/Discord.app
+/Applications/TIDAL.app
+/System/Applications/Preview.app
+/System/Applications/System Settings.app
+/Applications/Slack.app
+/Applications/Google Chrome.app
+/Applications/Orca.app
+
+# ----------------------------------------------------------- others
+# Stacks and folders, shown to the right of the divider.
+$HOME/Downloads
