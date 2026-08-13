@@ -124,9 +124,29 @@ link_into "$DOTFILES_DIR/config/claude/agents" "$HOME/.claude/agents"
 if command -v claude &>/dev/null; then
   echo "==> Registering Claude plugin marketplaces..."
   claude plugin marketplace add max-sixty/worktrunk 2>/dev/null || true
-  claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode.git 2>/dev/null || true
   echo "    'amperon-claude-plugins' and 'claude-plugins-official' are added by the"
   echo "    overlay and by Claude itself respectively."
+
+  # Adding a marketplace doesn't install anything from it. Without this the
+  # plugin list on a new machine is empty, however many marketplaces are
+  # registered — which is exactly what happened on totalbiscuit.
+  #
+  # Public plugins only; the amperon ones are installed by the overlay, which
+  # is also what adds their marketplace. Deliberately not reinstated:
+  # oh-my-claudecode and mcp2cli, both disabled on the old machine, and
+  # mcp2cli's marketplace is a local directory that won't exist elsewhere.
+  echo "==> Installing Claude plugins..."
+  for plugin in \
+    worktrunk@worktrunk \
+    mattpocock-skills@claude-plugins-official \
+    slack@claude-plugins-official
+  do
+    if claude plugin install "$plugin" 2>/dev/null; then
+      echo "    installed $plugin"
+    else
+      echo "    !! $plugin didn't install — continuing."
+    fi
+  done
 
   echo "==> Registering MCP servers..."
   if [[ -x "$HOME/.local/bin/mcp-grafana" ]]; then
