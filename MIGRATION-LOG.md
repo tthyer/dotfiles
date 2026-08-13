@@ -470,6 +470,25 @@ continued existence a dependency, so the wipe step is now gated on it. The one
 known item is the himalaya Gmail app password — signing into Gmail in a browser
 does not regenerate an app password.
 
+### kubeconfig — regenerated, not copied
+
+The 6 AKS contexts authenticate through `kubelogin` with `exec`, so the file
+holds no long-lived secret and copying it would have worked. Regenerating with
+`az aks get-credentials` was better anyway: havelock's config had a context for
+`prod-wf-aks`, and the cluster in Azure is now **`prod-wf1-aks`**. Copying
+would have carried a dead context to the new machine and left it looking like
+a permissions or networking fault the first time it was used.
+
+The resource group for each cluster is recoverable from the kubeconfig without
+reading any credential — the user entries are named
+`clusterUser_<resource-group>_<cluster>`. `kubectl config view` redacts secrets
+by default and is the right way to inspect this; the raw file doesn't need to
+be opened.
+
+`kubelogin` comes from `Brewfile.work`, and `AAD_LOGIN_METHOD=azurecli` is
+exported by the overlay — without it `kubectl` hangs on a device-code prompt.
+Verified against `sandbox-aks`, which returned namespaces.
+
 ### Two rsync traps
 
 `--info=stats2` isn't supported by the rsync macOS ships; it printed usage and
