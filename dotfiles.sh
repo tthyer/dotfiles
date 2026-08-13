@@ -14,7 +14,6 @@ symlinks=(
   "git/gitconfig:$HOME/.gitconfig"
   "git/gitignore_global:$HOME/.gitignore_global"
   "vim/vimrc:$HOME/.vimrc"
-  "java/java-setup.sh:$HOME/java-setup.sh"
   "config/ghostty/config.ghostty:$HOME/.config/ghostty/config"
   "config/tmux/tmux.conf:$HOME/.config/tmux/tmux.conf"
   "config/tmux/bar.sh:$HOME/.config/tmux/bar.sh"

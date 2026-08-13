@@ -68,9 +68,6 @@ if [[ -f "${HOME}/.k8s" ]]; then
 fi
 
 
-source "$HOME/java-setup.sh"
-
-
 ### CLAUDE CODE
 export CLAUDE_CODE_NO_FLICKER=0
 
