@@ -123,7 +123,6 @@ cask "slack"
 cask "docker-desktop"        # supersedes the old `docker` cask
 cask "headlamp"
 cask "notion-cli"
-cask "session-manager-plugin"
 
 # No SQL GUI client: DataGrip, DBeaver, and TablePlus were all dropped in
 # favour of querying through the `amp:databases` skill.
@@ -177,6 +176,9 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # --- casks ---
 # cask "notunes"             # meant to stop the media key launching Apple
 #                            # Music; didn't work. Never launched.
+# cask "session-manager-plugin"  # AWS SSM plugin for `aws ssm start-session`;
+#                            # no calls to it in shell history. Reinstate if
+#                            # you need shell access to an EC2 instance.
 # cask "visual-studio-code"  # dropped deliberately — do not reinstate
 # cask "anki"                # 3 launches, 2023
 # cask "virtualbox"          # can't run macOS guests on ARM; UTM replaces it
