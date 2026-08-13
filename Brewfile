@@ -81,9 +81,9 @@ brew "uv"
 brew "pipx"
 brew "pipdeptree"
 brew "cmake"
-brew "gradle"
-brew "openjdk"               # java/java-setup.sh symlinks this into place
-brew "openapi-generator"
+brew "openjdk"               # only here because openapi-generator needs a JVM;
+                             # java/java-setup.sh symlinks it into place
+brew "openapi-generator"     # generates the argo-workflows Python SDK
 brew "gomplate"
 
 # -------------------------------------------------------- AI agents
@@ -171,6 +171,8 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # brew "anomalyco/tap/opencode"   # superseded by Orca
 # brew "4ier/tap/notion-cli" # v0.4.0, provides `notion`; the cask v0.6.0 wins
 # brew "neovim"              # 2 launches ever, 0 files edited
+# brew "gradle"              # no build.gradle anywhere in ~/github — the only
+#                            # JVM projects there are Maven, and third-party
 
 # --- casks ---
 # cask "notunes"             # meant to stop the media key launching Apple
