@@ -15,7 +15,10 @@ tap "stablyai/orca"          # Orca ADE — NOT the plotly `orca` cask in core
 
 # ------------------------------------------------- shell & core CLI
 brew "bash"                  # bash 5; install.sh chsh's to this, not Apple's 3.2
-brew "bash-completion"
+brew "bash-completion@2"     # @2 is the one for bash 4.2+; plain
+                             # bash-completion targets Apple's 3.2 and ships
+                             # almost nothing. Same profile.d path either way,
+                             # so the miss is silent
 brew "coreutils"
 brew "findutils"
 brew "gnu-sed"
