@@ -13,6 +13,10 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OVERLAY_DIR="${DOTFILES_OVERLAY:-$HOME/github/tthyer/dotfiles-work}"
 HOMEBREW_BASH=/opt/homebrew/bin/bash
 
+# --------------------------------------------------------------- sudo
+# First, so the one prompt it costs covers the sudo calls further down.
+bash "$DOTFILES_DIR/setup/sudo-touchid.sh"
+
 # ---------------------------------------------------------------- xcode
 if [[ -d /Library/Developer/CommandLineTools ]]; then
   echo "==> Xcode command line tools already installed."
