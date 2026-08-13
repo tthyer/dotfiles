@@ -7,6 +7,7 @@ NORMAL="\[\033[00m\]"
 BLUE="\[\033[01;34m\]"
 YELLOW="\[\033[1;33m\]"
 GREEN="\[\033[1;32m\]"
+CYAN="\[\033[01;36m\]"
 
 # Cheap az/k8s/env lookups shared with the Claude Code statusline.
 # Resolve the real path since this file is sourced via a ~/.terminal_setup.sh symlink.
@@ -27,7 +28,9 @@ set_prompt() {
     mkdir -p "$HOME/.cache/ghostty-bar" 2>/dev/null
     printf '%s' "${AMPERON_ENV:-}" > "$HOME/.cache/ghostty-bar/amp-$TMUX_PANE" 2>/dev/null
   fi
-  PS1="${venv}${BLUE}\W ${GREEN}az:$(amp_az) k8s:$(amp_k8s) amp:$(amp_env) ${YELLOW}$(date +'%H:%M:%S') ${NORMAL}\$ "
+  # \h first: with two machines in play, and ssh sessions into either, the
+  # prompt carried no clue which one you were typing at.
+  PS1="${venv}${CYAN}\h ${BLUE}\W ${GREEN}az:$(amp_az) k8s:$(amp_k8s) amp:$(amp_env) ${YELLOW}$(date +'%H:%M:%S') ${NORMAL}\$ "
 }
 
 PROMPT_COMMAND=set_prompt
