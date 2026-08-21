@@ -40,7 +40,7 @@ Tess's source writing contains typos and grammar slips ("belive", "succintly", "
 
 **Shared spine (both registers):**
 1. **Clarity first.** Define terms, restate to pin meaning, name ambiguity out loud ("To clarify: … right?", "when I say X, what I mean is…"). Ask numbered clarifying questions rather than guessing. This is her top priority.
-2. **Anchor to a ticket/topic.** Tag work to a Jira key with a terse intent clause ("<DET-3372> I plan to fix this today"); open threads with a subject + `:thread:`; prefix with venue/reason ("For X meeting:", "TLDR:", "$0.02").
+2. **Anchor to a ticket/topic.** Tag work to a Jira key with a terse intent clause ("<PROJ-412> I plan to fix this today"); open threads with a subject + `:thread:`; prefix with venue/reason ("For X meeting:", "TLDR:", "$0.02").
 3. **Assert, don't hedge.** "0.11.2 held us on an old release", not "appears to have held". Hedge only on genuine uncertainty ("not run in production, so out of scope here").
 4. **Evidence before conclusion.** Cite the metric, file:line, or ticket inline; numbers first, takeaway second.
 5. **No dash voice.** Tess doesn't use `--` or em-dashes as a signature. Join clauses with commas and semicolons, and put asides in parentheses (§1.5). Treat em-dashes as an AI tell and strip them, same as /write-better's E1.
@@ -71,6 +71,8 @@ For a doc on an external surface (Notion, a PR), make edits in place if Tess ask
 ## Relationship to /write-better
 
 `/write-better` is the team house style: it strips em-dashes (E1) and define-by-negation (A1). `write-like-me` agrees with both. Tess uses neither em-dashes/`--` nor `X, not Y` contrast foils, so strip the dashes and state things positively. The two skills no longer diverge on mechanics; `write-like-me` layers her voice on top (clarity-first, evidence-led, register-aware, assert-don't-hedge). Don't run both at once; `write-like-me` wins when invoked.
+
+**Winning covers voice, not conventions.** `/write-better`'s § G rules (PR descriptions, tickets) and its terminology bans still apply when this skill is active, because they govern what a surface contains rather than how it sounds. In particular: PR bodies and ticket descriptions have hard word budgets in [`/write-doc`](writing:write-doc) — read it before drafting either — and *ask* as a noun is banned outright, so a labelled ticket section is `Request.`, never `Ask.`
 
 ## Extending the voice
 

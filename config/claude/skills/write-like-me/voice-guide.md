@@ -16,19 +16,19 @@ These hold whether she's writing a PR body or a Slack reply.
 She states findings as facts. The work is already done; she's reporting it.
 
 - ✅ "0.11.2 held us on an old release behind a stale '0.12 has breaking changes' comment."
-- ✅ "Comity's automated DA-price trading model broke as a result (DSS-952). This restores the time they built against."
+- ✅ "The customer's automated price-trading model broke as a result (PROJ-118). This restores the time they built against."
 - ❌ "It appears that 0.11.2 may have been holding us back, possibly due to a comment."
 
 Hedge **only** when the uncertainty is real, and say exactly what's uncertain:
-- ✅ "`compare_edi_with_agg_load.py` … breaks under the 0.12 keyword-only rule. Not run in production, so out of scope here."
+- ✅ "`compare_report_with_agg_totals.py` … breaks under the 0.12 keyword-only rule. Not run in production, so out of scope here."
 
 ### 1.2 Evidence before conclusion
 Lead with the number, file:line, or ticket. The takeaway lands after the evidence.
 
-- ✅ "The `:30` slot sits at ~1455 GB without `predict-price`. … Adding it back to `:30` lands ~1460 GB, well below the `:14` peak. The peak that drives node count and cost is unaffected."
-- ✅ "`predict-iso` alone runs ~420 to 895 GB per window … `predict-price` never appears in the top contributors at any minute. Future flattening should target those, not lightweight submitters like this one."
+- ✅ "The `:30` slot sits at ~1455 GB without `nightly-report`. … Adding it back to `:30` lands ~1460 GB, well below the `:14` peak. The peak that drives node count and cost is unaffected."
+- ✅ "`nightly-rollup` alone runs ~420 to 895 GB per window … `nightly-report` never appears in the top contributors at any minute. Future flattening should target those, not lightweight submitters like this one."
 
-Cite inline and casually: `forecast/evaluation/predictions_evaluations.py:791`, `(#20956)`, `DSS-952`, `DP-321`. She assumes shared context — Jira/Slack/GitHub references go in bare, no preamble.
+Cite inline and casually: `path/to/module.py:120`, `(#1256)`, `PROJ-118`, `PROJ-244`. She assumes shared context — Jira/Slack/GitHub references go in bare, no preamble.
 
 ### 1.3 No dash voice: commas, semicolons, parentheticals
 Tess does not use `--` or em-dashes as a signature. Join clauses with commas and semicolons, and tuck asides into parentheses (§1.5). Treat em-dashes as an AI tell and strip them, the same as `/write-better`'s E1.
@@ -43,7 +43,7 @@ Few adjectives. No "furthermore", "additionally", "moreover". For impact, start 
 ### 1.5 Parenthetical scoping asides
 She tucks scope, caveats, and pointers into parentheses rather than spinning up new sentences.
 
-- ✅ "Automating that monthly bump is tracked separately in DP-321 (and the GitHub app that lets it commit, in DP-320)."
+- ✅ "Automating that monthly bump is tracked separately in PROJ-244 (and the GitHub app that lets it commit, in PROJ-243)."
 - ✅ "0.13.2 is the current seaborn (0.14 is not yet released)."
 - ✅ "(written by me)"
 
@@ -68,8 +68,8 @@ When in doubt, she asks a numbered list of clarifying questions rather than gues
 ### 1.8 Anchor to a ticket or a topic
 She tags work to a Jira key or a topic, usually with a terse intent clause right after the key. She opens threads with a subject line plus `:thread:`, and prefixes messages with their venue or reason.
 
-- ✅ "<DET-3372> I plan to fix this today"
-- ✅ "I am working on this ticket and I have a number of silly questions. <DES-372>"
+- ✅ "<PROJ-412> I plan to fix this today"
+- ✅ "I am working on this ticket and I have a number of silly questions. <PROJ-377>"
 - ✅ "Problems caching the CI base image :thread:"
 - ✅ prefixes: "For next workflow pod meeting:", "For transparency…", "TLDR:", "$0.02"
 
@@ -111,10 +111,12 @@ If a sentence seems to need bold to land, the sentence is wrong. Rewrite it. Bac
 ### Anchors (lower-confidence — possibly AI-assisted)
 These come from PR/commit bodies that may have been co-written with me. Keep them as examples of *structure she ships*, not gospel on her unaided wording.
 
+**"Ships" is weaker evidence than it sounds, and weaker than this section used to imply.** Tess has stated twice that some of what shipped shipped because correcting it cost more time than she had. A heading or a length that drew no complaint tells you what she tolerated under time pressure, never what she wanted. So do not calibrate from these anchors, and do not defend a choice by pointing at a merged artifact. Rank evidence in this order: what she says directly (strongest), then the pre-2025 hand-written corpus in the section above, then anything shipped since (weakest, and unusable on its own). When only the third kind is available, ask her instead of inferring.
+
 **Commit subject** — imperative, scoped, ticket/PR suffix:
-- "DSS-952: Revert predict-price schedule from :52 back to :30 (#20930)"
-- "Use HUGEMEM pool for ERCOT 643 sy2021 task (#20900)"
-- "DP-319: pin uv exclude-newer to a static date (#20819)"
+- "PROJ-118: Revert nightly-report schedule from :52 back to :30 (#1230)"
+- "Use the high-memory pool for the large regional backfill task (#1200)"
+- "PROJ-241: pin uv exclude-newer to a static date (#1219)"
 
 **PR body — What/Why with evidence:**
 > ## What
@@ -132,11 +134,11 @@ These come from PR/commit bodies that may have been co-written with me. Keep the
 
 **Follow-up flag — deferred work with context, not a vague TODO:**
 > ## Follow-up: migrate `distplot` before lifting the `<0.14` ceiling
-> `forecast/evaluation/predictions_evaluations.py:791` calls `sns.distplot`, deprecated since 0.11 and scheduled for removal in 0.14. It still runs on 0.13.2 (emits a warning), which is why the pin caps at `<0.14`.
+> `path/to/module.py:120` calls `sns.distplot`, deprecated since 0.11 and scheduled for removal in 0.14. It still runs on 0.13.2 (emits a warning), which is why the pin caps at `<0.14`.
 
 **Reviewer callout — direct about ownership:**
 > ## Notes for reviewers
-> - **Infra owns this chart** (FEAT-1688) — requesting your review/sign-off before merge.
+> - **Infra owns this chart** (PROJ-688) — requesting your review/sign-off before merge.
 
 ---
 
@@ -153,12 +155,21 @@ These come from PR/commit bodies that may have been co-written with me. Keep the
 | Dashes | None as a signature. Use commas/semicolons, or parentheses for asides (§1.5); strip em-dashes. See §1.3. |
 | Lexicon | kk, gtk, yep, nope, pls, btw, fyi, cc, IMO, TLDR, EOL, atm, b/c, w/, tho, til, smallish, "$0.02", "a good bit", playful ("gajillion"). |
 | Greetings | "Hey you guys / folks / peeps", "Hi <name>", or none. Slightly more formal openers in cross-team/infra channels: "Hi folks,", "Just checking in --". **No sign-offs — ever.** No name, no "Thanks!" close. |
-| Emoji | Sparing, usually an end-of-line tone softener; loves in-joke custom emoji (`:old-man-yells-at-argo:`, `:picard-facepalm:`). |
+| Emoji | Sparing, usually an end-of-line tone softener; loves in-joke custom emoji (`:old-man-yells-at-cloud:`, `:picard-facepalm:`). |
 | Profanity | Fine in trusted DMs ("oh fuck", "this is fucked up", "pardon my french"). Not in broadcasts. |
 | Pivots | Standalone "However!" / "But" to turn an argument. "Case in point:", "Keep in mind that…". |
 
-### The big one: requests to people are softened
-This is the sharpest difference from how she talks to an assistant. To a person she **asks, gives an out, and often apologizes for the imposition** — the opposite of a bare imperative.
+### The big one: requests to people are softened, once
+This is the sharpest difference from how she talks to an assistant. To a person she asks and gives an out, rather than issuing a bare imperative.
+
+**One frame, not a stack.** Every anchor below carries exactly one softener. Piling them up reads as submission, and she rejects it outright: a drafted request that opened "could you try one test?", offered "Happy to run it myself instead", and closed "No rush" got the verdict "Assholish. Not to the point, manipulative and cloying" (2026-08-18, a ticket comment). What went wrong is worth naming precisely, because the fix is precision rather than deleting this section:
+
+- **Minimizing the work.** "could you try one test" understates something you are handing to someone else. State the work plainly.
+- **Offers as leverage.** "happy to do it myself instead" reads as a guilt lever unless the alternative is genuinely equivalent. Offer it once, or leave it out.
+- **Softener stacks.** One courteous frame is warm; three is wheedling. Skip "no rush" unless timing genuinely does not matter, and name the date when it does.
+- **Apologizing for the imposition.** Colleagues asking colleagues for work is normal. Do not apologize for it.
+
+Her permission-asking anchors ("Do you mind if I go ahead and update venv-andre too?") are a distinct case: she asks before touching someone else's work or a shared resource. That is courtesy about ownership, and it stays.
 
 - ✅ "(no rush) could you let me know if that fixes the problem for you?"
 - ✅ "Would you mind extending our meeting and maybe including just Bruno as an additional?"
@@ -167,6 +178,19 @@ This is the sharpest difference from how she talks to an assistant. To a person 
 - ✅ "Hey folks, could I get a review on <pr>? It's a smallish change but saves a lot of time."
 
 She asks permission before touching shared resources, and always leaves the other person an out ("let me know what you think").
+
+### Plain English, never business-speak
+Write the ordinary English word for the thing. Business jargon is vague by design: it lets a sentence gesture at meaning without committing to any, which is the opposite of her clarity-first priority.
+
+The tell is a verb or noun that could mean several things. "PROJ-221's result doesn't carry here" drew the objection "What do you mean by carry?" (2026-08-18). It meant *apply*, and the precise version says more with the same words: "PROJ-221 measured the CLI, so it tells us nothing about the server." Same draft used *carry* a second way for "puts in context", which is how one vague verb quietly does two jobs and communicates neither.
+
+Reach for the plain word: apply, spend, load, ask, decide, agree, start, finish, tell, measure. Distrust anything that sounds like a meeting: leverage, surface, socialize, circle back, align, unpack, drive, enable, touch base, learnings, deliverables, bandwidth, ask (as a noun), carry, land, own, deliver value. If a phrase would sound absurd said aloud to a colleague, it does not belong in writing to one either.
+
+This is the same instinct as `/write-better`'s D3 (literal terms over showy metaphors), applied to the corporate register rather than the poetic one.
+
+### Words she will not use
+- **"ask" as a noun.** Her words: "I will never use the word 'ask' as a noun. There is an existing noun in English for that. It is called, a request." So no "Ask:" label, no "the ask", no "my ask here is". Write *request*, or just state the request without labelling it.
+- **Invented section labels.** Her artifact labels are her own (Workload, Summary, Suggestions, Action items, TLDR:). Do not manufacture new ones like "Numbers:" to scaffold a message; lead with the sentence instead. Two carve-outs: a Jira description uses the sanctioned `Problem.` / `Cause.` / `Evidence.` / `Request.` skeleton (see `/write-doc`), and "Ask:" is not merely an invented label but a banned one, since *ask* as a noun is out entirely — the label is `Request.`
 
 ### Short reactions / acks
 - "kk" · "cool" · "nice, thanks" · "ok now it's alive" · "checking" · "merged to master" · "I'll make sure it scales down" · "let me go see" · "creating a pr for this"
@@ -186,7 +210,7 @@ CAPS for emphasis ("STOP ADDING TO IT") is hers. She'll apologize for *tone* ("S
 ### Announcements / broadcasts (proper caps, no profanity)
 - ✅ "PSA: I see that we are getting a dirty uv.lock. This is because we still have an oldstyle requirements file in one of the libs…"
 - ✅ "Reminder, if you are seeing a gajillion claude.ai mcps, you can turn them off by adding this to your ~/.claude/settings.json…"
-- ✅ "Found another :argo: bug. I wish we could keep this down to once a month but even once/week would be an improvement. :old-man-yells-at-argo:"
+- ✅ "Found another :scheduler: bug. I wish we could keep this down to once a month but even once/week would be an improvement. :old-man-yells-at-cloud:"
 
 ### Rhythm
 Bimodal — either a 1–4 word reaction, or dense technical reasoning narrated live ("I thought at first X… but actually not -- more that Y"). Little in between.
