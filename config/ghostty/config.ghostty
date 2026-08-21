@@ -1,7 +1,7 @@
 # Main Ghostty config.
 # Machine-specific overrides can live next to this file as local.ghostty.
 
-theme = light:GitHub Light High Contrast,dark:GitHub Dark High Contrast
+theme = GitHub Dark High Contrast
 font-family = JetBrains Mono
 font-size = 18
 font-feature = -calt, -liga, -dlig
