@@ -18,7 +18,6 @@ symlinks=(
   "config/tmux/tmux.conf:$HOME/.config/tmux/tmux.conf"
   "config/tmux/bar.sh:$HOME/.config/tmux/bar.sh"
   "config/tmux/uninstall-bar.sh:$HOME/.config/tmux/uninstall-bar.sh"
-  "config/cmux/bar-update.sh:$HOME/.config/cmux/bar-update.sh"
   "config/gh/config.yml:$HOME/.config/gh/config.yml"
 )
 

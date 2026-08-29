@@ -76,7 +76,6 @@ setup/             python, node, and AI agent setup scripts
 config/
   ghostty/         terminal config
   tmux/            status-bar shim only — see below
-  cmux/            sidebar status pills
   gh/              GitHub CLI
   worktrunk/       generic half; the overlay appends project entries
   claude/          CLAUDE.md, agents, skills, statusline, settings baseline

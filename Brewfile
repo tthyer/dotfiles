@@ -89,7 +89,6 @@ brew "gomplate"
 # -------------------------------------------------------- AI agents
 brew "llm"
 cask "codex"
-cask "cmux"                  # status pills wired up in shell/bashrc
 cask "stablyai/orca/orca"    # fully qualified: bare `orca` is plotly's, deprecated
 
 # ------------------------------------------------------------ email
@@ -218,4 +217,3 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # tap "powershell/tap"
 # tap "grafana/pyroscope"
 # tap "pantsbuild/tap"
-# tap "manaflow-ai/cmux"     # cmux is in homebrew/cask core now

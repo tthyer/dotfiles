@@ -12,8 +12,8 @@ OVERLAY_DIR="${DOTFILES_OVERLAY:-$HOME/github/tthyer/dotfiles-work}"
 
 # ============================================================ Claude Code
 # Install it if it isn't here. Everything below configures Claude Code, and
-# for a long time nothing installed it — the Brewfile has codex and cmux but
-# no claude, so a fresh machine got a fully configured tool that didn't
+# for a long time nothing installed it — the Brewfile has codex but no
+# claude, so a fresh machine got a fully configured tool that didn't
 # exist. There is no Homebrew formula; the native installer is the supported
 # route, and it self-updates thereafter (~/.claude.json records
 # "installMethod": "native").

@@ -73,20 +73,3 @@ if [ -n "${TMUX_PANE:-}" ]; then
     [ -n "$used" ] && printf ' ctx:%s%%' "$(printf '%.0f' "$used")"
   } > "$HOME/.cache/ghostty-bar/claude-${TMUX_PANE}" 2>/dev/null || true
 fi
-
-# --- cmux sidebar (additive; harmless outside cmux) ---
-if [ -n "${CMUX_SURFACE_ID:-}" ]; then
-  # Write cache so bar-update.sh can include claude in the workspace description
-  mkdir -p "$HOME/.cache/ghostty-bar" 2>/dev/null
-  {
-    [ -n "$model" ] && printf '%s' "$model"
-    [ -n "$used" ] && printf ' ctx:%s%%' "$(printf '%.0f' "$used")"
-  } > "$HOME/.cache/ghostty-bar/claude-${CMUX_SURFACE_ID}" 2>/dev/null || true
-
-  claude_pill=""
-  [ -n "$model" ] && claude_pill="$model"
-  [ -n "$used" ] && claude_pill="${claude_pill} ctx:$(printf '%.0f' "$used")%"
-  if [ -n "$claude_pill" ]; then
-    /opt/homebrew/bin/cmux set-status claude "$claude_pill" --icon "cpu" --color "#1a4a6e" --priority 60 2>/dev/null || true
-  fi
-fi
