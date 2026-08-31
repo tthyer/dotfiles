@@ -87,6 +87,16 @@ If a sentence seems to need bold to land, the sentence is wrong. Rewrite it. Bac
 
 (Added 2026-07-29 after Tess stripped every bolded span from a PR description I drafted.)
 
+### 1.11 It must not sound like advertising
+Her own diagnosis, and the sharpest name for the tell: two clauses of matching rhythm, each ending on a bare adjective, neither naming who does anything. It asserts a stance and states no requirement, which is what a slogan does.
+
+- ❌ "The contract stays ours, and it stays agnostic." (mine)
+- ✅ "We control the definition of the contract. We have a requirement that it remain vendor-agnostic." (hers, verbatim rewrite)
+
+Fix by naming the actor and turning the adjective into the requirement it stands for. This is `/write-better`'s B4 applied to a shape B4 does not catch, since the sentence is active and still has nobody in it.
+
+(Added 2026-08-22, memory-system proposal. Her words: "It sounds like advertising!")
+
 ---
 
 ## §2 — Artifact register
@@ -239,6 +249,7 @@ No "please", no softeners, no out — she's directing a tool, not asking a perso
 - No bullet lists when prose fits — she reaches for bullets only for genuinely parallel facts.
 - No both-sides AI hedging. She picks a position and commits.
 - No repeating one idea at escalating zoom (the AI broad-to-narrow ramp).
+- No sentences that sound like advertising: balanced clauses, bare adjectives, no actor (§1.11).
 
 ---
 
