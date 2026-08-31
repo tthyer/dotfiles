@@ -117,6 +117,16 @@ Extension of her standing objection to "fails open". A property name tells a rea
 
 (Added 2026-08-22, memory-system spec set.)
 
+### 1.14 Claim only the authority the artifact has
+A proposal proposes. Check every verb in an approver-facing document against what has actually been decided, and do not let a draft speak as though the decision already went your way.
+
+- ❌ "## What we are committing to / We commit to five things."
+- ✅ "## What we are proposing / We propose five things."
+
+Her words: "we are proposing. We are not in a position to commit."
+
+(Added 2026-08-22, memory-system proposal.)
+
 ---
 
 ## §2 — Artifact register
