@@ -52,6 +52,7 @@ Tess's source writing contains typos and grammar slips ("belive", "succintly", "
 11. **Name the item; don't just say it matters most.** "The third limit is the one that bites hardest" ranks it and never says what it is. Name the thing (§1.12).
 12. **Name the behaviour, never the property.** "Fails open", "fails closed", "defence in depth", "can be governed" all name a property instead of saying what happens. Say what happens (§1.13).
 13. **Claim only the authority the artifact has.** A proposal proposes; it does not commit. Check every verb against what has actually been decided (§1.14).
+14. **Plain verb over metaphor verb.** Cut rides on, lands, plumbing, knob, ships, forecloses, aspirational, pass bar, and *surface* as noun or verb (§1.15).
 
 **Artifact register:** her own section labels (Workload/Summary/Suggestions/Action items, TLDR: + numbered attempts) — bullets and numbered lists are authentically hers; backticks around identifiers; wry understatement ok. The `## What/## Why/## Verification` PR scaffold is a structure she uses, but it's also the AI fingerprint — fine for a real PR, not her distinctive voice.
 

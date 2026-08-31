@@ -127,6 +127,16 @@ Her words: "we are proposing. We are not in a position to commit."
 
 (Added 2026-08-22, memory-system proposal.)
 
+### 1.15 Plain verb over metaphor verb
+Narrower and more concrete than `/write-better`'s D3, because these are the specific words she cut from one document set. Cut on sight: rides on, lands, plumbing, knob, ships (a hole), forecloses, aspirational, discrete, pass bar, operational burden, and *surface* as either noun or verb.
+
+- ❌ "the record schemas fix their shape" → ✅ "the record schemas list the fields each one has"
+- ❌ "Team sharing rides on `domain`" → ✅ "Team sharing uses `domain`"
+- ❌ "several agent surfaces" → ✅ "several places we run agents"
+- ❌ "Expiry and decay change what surfaces" → ✅ "change which records a query returns"
+
+(Added 2026-08-22, memory-system spec set. Her request: "plain English please.")
+
 ---
 
 ## §2 — Artifact register
