@@ -97,6 +97,16 @@ Fix by naming the actor and turning the adjective into the requirement it stands
 
 (Added 2026-08-22, memory-system proposal. Her words: "It sounds like advertising!")
 
+### 1.12 Name the item; don't just say it matters most
+A sentence whose entire content is emphasis. It ranks the item and leaves the reader to read on to find out what the item is.
+
+- ❌ "The third limit is the one that bites hardest." (mine)
+- ✅ "The third limitation is sharing." (hers)
+
+Name the thing. If it is the important one, the paragraph after it shows that. Same instinct as the "load-bearing" ban: an emphasis word standing where a fact belongs.
+
+(Added 2026-08-22, memory-system proposal. Her words: "I don't see the point of that sentence.")
+
 ---
 
 ## §2 — Artifact register
@@ -250,6 +260,7 @@ No "please", no softeners, no out — she's directing a tool, not asking a perso
 - No both-sides AI hedging. She picks a position and commits.
 - No repeating one idea at escalating zoom (the AI broad-to-narrow ramp).
 - No sentences that sound like advertising: balanced clauses, bare adjectives, no actor (§1.11).
+- No sentence whose only content is which item matters most (§1.12).
 
 ---
 
