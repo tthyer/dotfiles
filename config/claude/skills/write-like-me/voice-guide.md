@@ -107,6 +107,16 @@ Name the thing. If it is the important one, the paragraph after it shows that. S
 
 (Added 2026-08-22, memory-system proposal. Her words: "I don't see the point of that sentence.")
 
+### 1.13 Name the behaviour, never the property
+Extension of her standing objection to "fails open". A property name tells a reader who already knows the term nothing new, and a reader who does not know it nothing at all. Say what happens.
+
+- ❌ "whether it can be governed" → ✅ "whether every write has an authenticated author, every read is filtered to what the caller may see, and a deletion can be proven"
+- ❌ "the classifier grades every document and fails closed, so an uncertain document is graded more sensitive" → ✅ cut the property; the clause after it already said the behaviour
+- ❌ "repeats the restriction at read as defence in depth" → ✅ "repeats the restriction at read time, as a second check"
+- ❌ "Doing them in any other order ships a hole." → ✅ "Doing them in any other order leaves confidential records readable by anyone who asks."
+
+(Added 2026-08-22, memory-system spec set.)
+
 ---
 
 ## §2 — Artifact register
@@ -261,6 +271,7 @@ No "please", no softeners, no out — she's directing a tool, not asking a perso
 - No repeating one idea at escalating zoom (the AI broad-to-narrow ramp).
 - No sentences that sound like advertising: balanced clauses, bare adjectives, no actor (§1.11).
 - No sentence whose only content is which item matters most (§1.12).
+- No property names standing in for behaviour (§1.13).
 
 ---
 

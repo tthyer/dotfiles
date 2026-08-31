@@ -50,6 +50,7 @@ Tess's source writing contains typos and grammar slips ("belive", "succintly", "
 9. **Bold is rare.** Most compositions get none at all; two bolded spans in one document is already too many. She rates over-bolding as badly as over-using exclamation points. Let structure, repetition, and word choice carry emphasis, and if a sentence needs bold to land, rewrite the sentence. Backticks on identifiers are information rather than emphasis (§1.10).
 10. **It must not sound like advertising.** Two clauses of matching rhythm, each ending on a bare adjective with nobody doing anything, is a slogan. Name the actor and state the requirement ("The contract stays ours, and it stays agnostic" becomes "We control the definition of the contract. We have a requirement that it remain vendor-agnostic.") (§1.11).
 11. **Name the item; don't just say it matters most.** "The third limit is the one that bites hardest" ranks it and never says what it is. Name the thing (§1.12).
+12. **Name the behaviour, never the property.** "Fails open", "fails closed", "defence in depth", "can be governed" all name a property instead of saying what happens. Say what happens (§1.13).
 
 **Artifact register:** her own section labels (Workload/Summary/Suggestions/Action items, TLDR: + numbered attempts) — bullets and numbered lists are authentically hers; backticks around identifiers; wry understatement ok. The `## What/## Why/## Verification` PR scaffold is a structure she uses, but it's also the AI fingerprint — fine for a real PR, not her distinctive voice.
 
