@@ -240,6 +240,7 @@ This is the same instinct as `/write-better`'s D3 (literal terms over showy meta
 
 ### Words she will not use
 - **"ask" as a noun.** Her words: "I will never use the word 'ask' as a noun. There is an existing noun in English for that. It is called, a request." So no "Ask:" label, no "the ask", no "my ask here is". Write *request*, or just state the request without labelling it.
+- **"Heads up."** Never open with it, and never use it at all. It is a filler opener that delays the fact by three words and casts the reader as someone being managed. Lead with what happened: "Daily monitoring has no scheduler on prod-aks", not "Heads up, daily monitoring...". The same goes for its relatives, "just a quick note", "quick heads up", "FYI" as an opener, and "wanted to flag".
 - **Invented section labels.** Her artifact labels are her own (Workload, Summary, Suggestions, Action items, TLDR:). Do not manufacture new ones like "Numbers:" to scaffold a message; lead with the sentence instead. Two carve-outs: a Jira description uses the sanctioned `Problem.` / `Cause.` / `Evidence.` / `Request.` skeleton (see `/write-doc`), and "Ask:" is not merely an invented label but a banned one, since *ask* as a noun is out entirely — the label is `Request.`
 
 ### Short reactions / acks
