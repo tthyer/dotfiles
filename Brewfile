@@ -33,7 +33,6 @@ brew "jq"
 brew "ijq"                   # interactive jq
 brew "yq"
 brew "ripgrep"
-brew "tmux"                  # Ghostty status bar shim only — see config/tmux/
 brew "worktrunk"
 brew "gh"
 brew "act"                   # run GitHub Actions locally

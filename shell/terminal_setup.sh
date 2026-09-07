@@ -21,13 +21,6 @@ set_prompt() {
   if [[ -n "$VIRTUAL_ENV" ]]; then
     venv="($(basename "$VIRTUAL_ENV")) "
   fi
-
-  # Publish AMPERON_ENV to a per-pane file the Ghostty bottom bar reads (it
-  # can't see the shell's env directly). Harmless outside tmux.
-  if [[ -n "${TMUX_PANE:-}" ]]; then
-    mkdir -p "$HOME/.cache/ghostty-bar" 2>/dev/null
-    printf '%s' "${AMPERON_ENV:-}" > "$HOME/.cache/ghostty-bar/amp-$TMUX_PANE" 2>/dev/null
-  fi
   # \h first: with two machines in play, and ssh sessions into either, the
   # prompt carried no clue which one you were typing at.
   PS1="${venv}${CYAN}\h ${BLUE}\W ${GREEN}az:$(amp_az) k8s:$(amp_k8s) amp:$(amp_env) ${YELLOW}$(date +'%H:%M:%S') ${NORMAL}\$ "

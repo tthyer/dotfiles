@@ -15,9 +15,6 @@ symlinks=(
   "git/gitignore_global:$HOME/.gitignore_global"
   "vim/vimrc:$HOME/.vimrc"
   "config/ghostty/config.ghostty:$HOME/.config/ghostty/config"
-  "config/tmux/tmux.conf:$HOME/.config/tmux/tmux.conf"
-  "config/tmux/bar.sh:$HOME/.config/tmux/bar.sh"
-  "config/tmux/uninstall-bar.sh:$HOME/.config/tmux/uninstall-bar.sh"
   "config/gh/config.yml:$HOME/.config/gh/config.yml"
 )
 
@@ -46,11 +43,3 @@ if [[ -f "$OVERLAY_DIR/config/worktrunk/projects.toml" ]]; then
   cat "$OVERLAY_DIR/config/worktrunk/projects.toml" >> "$worktrunk_target"
 fi
 echo "generated $worktrunk_target"
-
-# tmux exists only to paint the Ghostty status bar. Off by default; the shell
-# launcher honours this marker. Remove it to opt in.
-tmux_disabled="$HOME/.config/tmux/DISABLED"
-if [[ ! -e "$tmux_disabled" ]]; then
-  touch "$tmux_disabled"
-  echo "created $tmux_disabled (tmux status bar off; delete to enable)"
-fi

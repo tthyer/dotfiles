@@ -64,12 +64,3 @@ fi
 # Pass the line as an argument (not the format) so a literal "%" from ctx:NN%
 # isn't parsed as a format directive; %b still expands the \033 color escapes.
 printf '%b\n' "${arrow} ${dir_str}${git_str}${k8s_str}${meta}"
-
-# --- Ghostty bottom-bar integration (additive; harmless outside tmux) ---
-if [ -n "${TMUX_PANE:-}" ]; then
-  mkdir -p "$HOME/.cache/ghostty-bar" 2>/dev/null
-  {
-    [ -n "$model" ] && printf '%s' "$model"
-    [ -n "$used" ] && printf ' ctx:%s%%' "$(printf '%.0f' "$used")"
-  } > "$HOME/.cache/ghostty-bar/claude-${TMUX_PANE}" 2>/dev/null || true
-fi

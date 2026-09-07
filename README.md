@@ -75,7 +75,6 @@ macos/             defaults.sh — Dock, keyboard, Finder, screenshots
 setup/             python, node, and AI agent setup scripts
 config/
   ghostty/         terminal config
-  tmux/            status-bar shim only — see below
   gh/              GitHub CLI
   worktrunk/       generic half; the overlay appends project entries
   claude/          CLAUDE.md, agents, skills, statusline, settings baseline
@@ -87,10 +86,6 @@ config/
 **Terminal.** Ghostty. Its config links to `~/.config/ghostty/config`. Put
 machine-specific overrides in `~/.config/ghostty/local.ghostty`, which is
 deliberately untracked.
-
-**tmux** exists only to paint a two-row status bar under Ghostty; Ghostty still
-owns tabs and splits. It's **off by default** via a `~/.config/tmux/DISABLED`
-marker that `dotfiles.sh` creates. Delete the marker to turn it on.
 
 **Shell.** Homebrew bash 5, not Apple's `/bin/bash` 3.2. `install.sh` adds it to
 `/etc/shells`, runs `chsh`, and then verifies with `dscl` — if the login shell
