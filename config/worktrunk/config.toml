@@ -4,7 +4,10 @@
 # overlay and are appended to this file by its apply.sh. Edit the overlay,
 # not the generated ~/.config/worktrunk/config.toml.
 
-worktree-path = "{{ repo_path }}/.worktrees/{{ branch | sanitize }}"
+# Under .claude/worktrees/ so Claude Code's EnterWorktree accepts them. A session
+# pinned to one worktree can otherwise neither run git in another nor delegate it,
+# since subagents inherit the pin. Measured 2026-09-09.
+worktree-path = "{{ repo_path }}/.claude/worktrees/{{ branch | sanitize }}"
 
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
