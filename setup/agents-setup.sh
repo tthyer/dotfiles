@@ -132,6 +132,8 @@ link_into() {
 }
 link_into "$DOTFILES_DIR/config/claude/skills" "$HOME/.claude/skills"
 link_into "$DOTFILES_DIR/config/claude/agents" "$HOME/.claude/agents"
+link_into "$OVERLAY_DIR/config/claude/skills"  "$HOME/.claude/skills"
+link_into "$OVERLAY_DIR/config/claude/agents"  "$HOME/.claude/agents"
 
 # Plugins are regenerated, never copied: ~/.claude/plugins is a ~500MB cache.
 if command -v claude &>/dev/null; then
@@ -187,6 +189,19 @@ fi
 
 link_into "$DOTFILES_DIR/config/codex/memories" "$HOME/.codex/memories"
 link_into "$DOTFILES_DIR/config/codex/rules"    "$HOME/.codex/rules"
+
+# Codex rules and skills come from the overlay, not from here. Without these
+# a rebuilt machine has an empty ~/.codex/rules and re-prompts for every
+# command the allowlist already covers.
+link_into "$OVERLAY_DIR/config/codex/rules"  "$HOME/.codex/rules"
+link_into "$OVERLAY_DIR/config/codex/skills" "$HOME/.codex/skills"
+
+# Codex has no import directive, so its global instructions are a single file
+# rather than a generated stub like ~/.claude/CLAUDE.md. Only the overlay
+# contributes one today.
+if [[ -f "$OVERLAY_DIR/config/codex/AGENTS.md" ]]; then
+  ln -fsv "$OVERLAY_DIR/config/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+fi
 
 echo "==> Agent setup complete."
 echo "    Run Orca once to reinstate its hooks in Claude, Codex, and Gemini."
