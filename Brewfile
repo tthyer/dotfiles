@@ -76,6 +76,7 @@ brew "eccodes"               # GRIB decoding; pulls the hdf5/netcdf/proj stack
 # ----------------------------------------------- languages & build
 brew "go"
 brew "node"
+brew "node@24"               # OpenRig: its better-sqlite3@11 does not build on newer Node
 brew "nvm"                   # sourced by shell/bashrc
 brew "python@3.11"
 brew "python@3.12"

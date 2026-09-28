@@ -1,0 +1,5 @@
+#!/bin/sh
+# Runs OpenRig under Node 24: its better-sqlite3@11 does not build on Node 26.
+set -eu
+export PATH='/opt/homebrew/opt/node@24/bin':"${PATH:-/usr/local/bin:/usr/bin:/bin}"
+exec '/opt/homebrew/opt/node@24/bin/node' '/opt/homebrew/lib/node_modules/@openrig/cli/tui/dist/main.js' "$@"

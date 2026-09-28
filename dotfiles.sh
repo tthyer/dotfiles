@@ -10,6 +10,8 @@ symlinks=(
   "shell/bashrc:$HOME/.bashrc"
   "shell/bash_functions.sh:$HOME/bash_functions.sh"
   "shell/ghostty-bash:$HOME/.local/bin/ghostty-bash"
+  "shell/openrig/rig:$HOME/.local/bin/rig"
+  "shell/openrig/openrig-tui:$HOME/.local/bin/openrig-tui"
   "shell/terminal_setup.sh:$HOME/.terminal_setup.sh"
   "git/gitconfig:$HOME/.gitconfig"
   "git/gitignore_global:$HOME/.gitignore_global"
