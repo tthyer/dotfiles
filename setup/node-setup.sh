@@ -10,7 +10,6 @@ fi
 
 npm_globals=(
   dotenv-cli
-  dotenv
 )
 for pkg in "${npm_globals[@]}"; do
   echo "==> npm install -g $pkg"
