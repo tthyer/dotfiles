@@ -210,6 +210,8 @@
   "model": "opus",
   "enabledMcpjsonServers": [],
   "disableClaudeAiConnectors": true,
+  "syncClaudeAiPlugins": false,
+  "syncClaudeAiSkills": false,
   "disableWorkflows": true,
   "statusLine": {
     "type": "command",
@@ -217,12 +219,8 @@
   },
   "enabledPlugins": {
     "slack@claude-plugins-official": true,
-    "amp@amperon-claude-plugins": true,
-    "ops@amperon-claude-plugins": true,
     "worktrunk@worktrunk": true,
     "oh-my-claudecode@omc": false,
-    "writing@amperon-claude-plugins": true,
-    "maintenance@amperon-claude-plugins": true,
     "mattpocock-skills@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
