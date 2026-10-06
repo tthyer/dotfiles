@@ -95,6 +95,20 @@ doesn't change, it says so rather than failing silently.
 their own settings at runtime, and Orca reinstalls its hook block on every
 launch. `setup/agents-setup.sh` merges the tracked baseline into the live file
 and unions permission lists, so nothing granted since the last sync is revoked.
+Tracked keys get a three-way merge against the repo values the last run applied,
+which setup saves in `~/.claude/.dotfiles-settings-base.json`:
+- If the repo changed a value and the live file still matches the last run, the
+  repo's value is applied.
+- If the repo removed a key, the key is removed from the live file too.
+  `enabledPlugins` and `extraKnownMarketplaces` work entry by entry.
+- If the live file changed a value at runtime (`/model`, `/plugin`, `/config`),
+  setup shows the drift and asks before overwriting it. With no terminal it keeps
+  the live value, and `DOTFILES_SETTINGS_FORCE=1` takes the repo's.
+- Anything added at runtime is kept.
+
+On the first run there is no saved base, so every difference counts as drift.
+Plugins the repo doesn't list are offered for removal, and if any drift is left
+undecided, no base is saved.
 Never track `~/.claude.json` — it holds MCP tokens in plaintext.
 
 **Secrets** are never committed, to either repo. They live in the macOS

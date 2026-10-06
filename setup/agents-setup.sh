@@ -51,21 +51,98 @@ if os.path.exists(target):
         print(f"    {target} is not valid JSON; backing it up.")
         os.replace(target, target + ".bak")
 
-merged = dict(live)
-for key, value in desired.items():
-    if key == "permissions":
-        # Union the permission lists rather than replacing them, so
-        # approvals granted since the last sync aren't silently revoked.
-        perms = dict(live.get("permissions", {}))
-        for bucket, entries in value.items():
-            if isinstance(entries, list):
-                existing = perms.get(bucket, [])
-                perms[bucket] = sorted(set(existing) | set(entries))
-            else:
-                perms[bucket] = entries
-        merged["permissions"] = perms
+# statusLine is stored with $HOME so it survives a different username.
+if "command" in desired.get("statusLine", {}):
+    desired["statusLine"]["command"] = desired["statusLine"]["command"].replace(
+        "$HOME", os.path.expanduser("~"))
+
+# Three-way merge against the repo values the last run applied (the base), so a
+# runtime change can be told apart from a repo change:
+#   live == base, repo moved     -> the repo changed it: take the repo's value
+#   live != base, repo != live   -> changed at runtime (/model, /plugin,
+#                                   /config): show it, keep live unless confirmed
+#   in base, gone from the repo  -> the repo removed it: remove it from live too
+#   in live, never in the repo   -> added at runtime: keep it
+# With no base yet (first run), every difference is drift, and a plugin or
+# marketplace the repo doesn't list is offered for removal.
+base_path = os.path.expanduser("~/.claude/.dotfiles-settings-base.json")
+base = None
+if os.path.exists(base_path):
+    with open(base_path) as f:
+        base = json.load(f)
+
+force = os.environ.get("DOTFILES_SETTINGS_FORCE") == "1"
+try:
+    tty = open("/dev/tty", "r+")  # stdin is this heredoc, not the terminal
+except OSError:
+    tty = None
+
+MISSING = object()
+drift = []
+undecided = []
+
+def take_repo(label, live_value, repo_value):
+    drift.append(label)
+    print(f"    drift in {label}:")
+    print(f"      live: {json.dumps(live_value)}")
+    print(f"      repo: {'(not in the repo)' if repo_value is MISSING else json.dumps(repo_value)}")
+    if force:
+        print("      -> repo (DOTFILES_SETTINGS_FORCE=1)")
+        return True
+    if tty is None:
+        undecided.append(label)
+        print("      -> keeping live (no terminal; DOTFILES_SETTINGS_FORCE=1 takes the repo)")
+        return False
+    tty.write(f"      {'remove it from live' if repo_value is MISSING else 'take the repo value'}? [y/N] ")
+    tty.flush()
+    return tty.readline().strip().lower() in ("y", "yes")
+
+# Maps merged entry by entry, so one plugin or marketplace changed at runtime
+# doesn't make the whole map drift.
+PER_ENTRY = {"enabledPlugins", "extraKnownMarketplaces"}
+
+def reconcile(prefix, live_map, repo_map, base_map, nested=(), offer_unknown=False):
+    out = dict(live_map)
+    for name, repo_value in repo_map.items():
+        label = prefix + name
+        live_value = live_map.get(name, MISSING)
+        base_value = MISSING if base_map is None else base_map.get(name, MISSING)
+        if name in nested and isinstance(live_value, dict) and isinstance(repo_value, dict):
+            sub_base = base_value if isinstance(base_value, dict) else None
+            out[name] = reconcile(label + ".", live_value, repo_value, sub_base, offer_unknown=base_map is None)
+        elif live_value is MISSING or live_value == repo_value:
+            out[name] = repo_value
+        elif live_value == base_value:
+            print(f"    {label}: updated from the repo")
+            out[name] = repo_value
+        elif take_repo(label, live_value, repo_value):
+            out[name] = repo_value
+    for name in sorted(set(live_map) - set(repo_map)):
+        label = prefix + name
+        if base_map is not None and name in base_map:
+            if live_map[name] == base_map[name]:
+                print(f"    {label}: removed (no longer in the repo)")
+                del out[name]
+            elif take_repo(label, live_map[name], MISSING):
+                del out[name]
+        elif offer_unknown and take_repo(label, live_map[name], MISSING):
+            del out[name]
+    return out
+
+tracked = {k: v for k, v in desired.items() if k != "permissions"}
+tracked_live = {k: v for k, v in live.items() if k in tracked or (base is not None and k in base)}
+merged = {k: v for k, v in live.items() if k not in tracked_live}
+merged.update(reconcile("", tracked_live, tracked, base, nested=PER_ENTRY))
+
+# Union the permission lists rather than replacing them, so approvals granted
+# since the last sync aren't silently revoked.
+perms = dict(live.get("permissions", {}))
+for bucket, entries in desired.get("permissions", {}).items():
+    if isinstance(entries, list):
+        perms[bucket] = sorted(set(perms.get(bucket, [])) | set(entries))
     else:
-        merged[key] = value
+        perms[bucket] = entries
+merged["permissions"] = perms
 
 # Overlay adds work-only permissions.
 work = os.path.join(overlay, "config/claude/settings.work.json")
@@ -78,17 +155,22 @@ if os.path.exists(work):
     merged["permissions"] = perms
     print("    merged work permissions from the overlay")
 
-# statusLine is stored with $HOME so it survives a different username.
-if "statusLine" in merged and "command" in merged["statusLine"]:
-    merged["statusLine"]["command"] = merged["statusLine"]["command"].replace(
-        "$HOME", os.path.expanduser("~"))
-
 with open(target, "w") as f:
     json.dump(merged, f, indent=2)
     f.write("\n")
 
+# A first run that left drift undecided keeps no base: saving one would make
+# every entry it couldn't ask about look like a runtime addition from then on.
+if base is None and undecided:
+    print("    no base saved: rerun in a terminal (or with DOTFILES_SETTINGS_FORCE=1) to settle the drift above")
+else:
+    with open(base_path, "w") as f:
+        json.dump({k: v for k, v in desired.items() if k != "permissions"}, f, indent=2)
+        f.write("\n")
+
 kept = "hooks" in merged
 print(f"    wrote {target}")
+print(f"    drift: {len(drift)} ({', '.join(drift) or 'none'})")
 print(f"    existing hooks preserved: {kept}")
 PY
 
