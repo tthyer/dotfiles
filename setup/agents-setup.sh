@@ -286,4 +286,16 @@ if [[ -f "$OVERLAY_DIR/config/codex/AGENTS.md" ]]; then
 fi
 
 echo "==> Agent setup complete."
-echo "    Run Orca once to reinstate its hooks in Claude, Codex, and Gemini."
+# Orca writes its hook block into each agent's config on launch. Only point at
+# it when a block is actually missing (a fresh machine), not on every run.
+orca_missing=()
+for f in "$HOME/.claude/settings.json" "$HOME/.codex/hooks.json"; do
+  grep -qs '\.orca/agent-hooks' "$f" || orca_missing+=("$f")
+done
+if [[ -d "$HOME/.gemini" ]] && ! grep -qs '\.orca/agent-hooks' "$HOME/.gemini/settings.json"; then
+  orca_missing+=("$HOME/.gemini/settings.json")
+fi
+if (( ${#orca_missing[@]} )); then
+  echo "    Orca hooks missing from: ${orca_missing[*]}"
+  echo "    Launch Orca once to reinstate them."
+fi
