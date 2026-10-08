@@ -152,23 +152,18 @@ Then clone a work repo and check the identity switch:
 - [ ] Claude Code, Codex — sign in to each
 - [ ] **Run Orca once.** It reinstates its hook block in Claude, Codex, and
       Gemini. Nothing else puts those back.
-- [ ] MCP tokens into the Keychain. **Run these one at a time** — each waits
-      for you to type the token, so pasting both together feeds the second
-      command in as the first one's password:
-      ```bash
-      security add-generic-password -a "$USER" -s grafana-mcp-token -w
-      ```
+- [ ] MCP token into the Keychain. It waits for you to type the token:
       ```bash
       security add-generic-password -a "$USER" -s amperon-kb-mcp-token -w
       ```
-      Both tokens are on the old machine in `~/.claude.json` under
-      `mcpServers` — copy them across by hand.
+      The token is on the old machine in `~/.claude.json` under
+      `mcpServers` — copy it across by hand.
 - [ ] Register the servers:
       ```bash
       bash ~/github/tthyer/dotfiles-work/setup/mcp-servers.sh
       ```
 - [ ] `claude plugin list` → 7 enabled
-- [ ] `claude mcp list` → grafana + amperon-kb
+- [ ] `claude mcp list` → amperon-kb
 
 ---
 
@@ -244,6 +239,6 @@ Recorded so they don't get re-litigated:
 - **Transferring the existing SSH keys.** Both passphraseless; fresh key
   instead.
 - **Rotating the Grafana service-account token** in `~/.claude.json`. Raised,
-  declined.
+  declined. (Moot since: the grafana MCP and its token were later dropped.)
 - **Asking GitHub Support to garbage-collect** the pre-scrub commits.
 - **chezmoi.** The overlay repo solves the public/private split without it.
