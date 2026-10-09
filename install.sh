@@ -112,6 +112,9 @@ if [[ ! -e "$HOME/git-completion.bash" ]]; then
 fi
 
 # ------------------------------------------------------ language tools
+# uv before python-setup.sh, which installs tools through it. Not from the
+# Brewfile — see the header of uv-setup.sh.
+bash "$DOTFILES_DIR/setup/uv-setup.sh"
 bash "$DOTFILES_DIR/setup/python-setup.sh"
 bash "$DOTFILES_DIR/setup/node-setup.sh"
 

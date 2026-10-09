@@ -80,7 +80,6 @@ brew "node@24"               # OpenRig: its better-sqlite3@11 does not build on 
 brew "nvm"                   # sourced by shell/bashrc
 brew "python@3.11"
 brew "python@3.12"
-brew "uv"
 brew "pipx"
 brew "pipdeptree"
 brew "cmake"
@@ -163,6 +162,13 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # ==============================================================
 
 # --- formulae ---
+# brew "uv"                 # dropped 2026-10-09. amperon/amperon pins
+#                           # required-version = ">=0.12.5,<0.13", and a
+#                           # Homebrew uv can neither self-update into that
+#                           # range nor stay out of 0.13 once it ships.
+#                           # /opt/homebrew/bin also precedes ~/.local/bin, so
+#                           # it would shadow, not merely coexist with, the
+#                           # standalone install. See setup/uv-setup.sh.
 # brew "sampler"             # TUI dashboards, 2023
 # brew "gogcli"              # GOG downloader
 # brew "kubespy"             # k8s object tracing, 2024
