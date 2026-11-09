@@ -132,7 +132,7 @@ cask "telegram"
 cask "zoom"                  # ~6 months since last launch; kept deliberately
 cask "tidal"
 cask "stats"                 # menu-bar system monitor
-# WhatsApp and Hidden Bar come from the App Store below, not from casks —
+# WhatsApp comes from the App Store below, not from a cask —
 # installing both would leave two copies from different sources.
 
 # --------------------------------------------------- Mac App Store
@@ -140,7 +140,6 @@ cask "stats"                 # menu-bar system monitor
 # apps already in your purchase history, so a fresh Apple ID won't find them.
 mas "WhatsApp",   id: 310633997
 mas "Tailscale",  id: 1475387142   # GUI app; the CLI is the brew formula above
-mas "Hidden Bar", id: 1452453066
 mas "UTC Time",   id: 1538245904
 
 # Deliberately not reinstalled — a new Mac ships with these, or offers them
@@ -200,7 +199,7 @@ cask "utm"                   # macOS guests on Apple Silicon, for the dry run
 # cask "anki"                # 3 launches, 2023
 # cask "virtualbox"          # can't run macOS guests on ARM; UTM replaces it
 # cask "claude"              # desktop app, Apr 2026, minimal use
-# cask "bartender"           # Hidden Bar replaced it
+# cask "bartender"           # dropped; Hidden Bar also dropped 2026-11-09
 # cask "mactex-no-gui"       # several GB of LaTeX
 # cask "codeql"
 # cask "pants"
